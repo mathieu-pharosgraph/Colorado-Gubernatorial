@@ -112,23 +112,19 @@ with tabs[2]:
     st.header("🧭 Issue Topic Affinities")
     topic_rows = []
     for _, row in df.iterrows():
-        topic_rows = []
-        for _, row in df.iterrows():
-            for topic_obj, score in row.get("issue_topic_affinities", {}).items():
-                # handle dicts or structured labels
-                if isinstance(topic_obj, dict):
-                    topic_label = topic_obj.get("label") or json.dumps(topic_obj)
-                elif isinstance(topic_obj, (list, tuple)):
-                    topic_label = ", ".join(map(str, topic_obj))
-                else:
-                    topic_label = str(topic_obj)
+        for topic_obj, score in row.get("issue_topic_affinities", {}).items():
+            if isinstance(topic_obj, dict):
+                topic_label = topic_obj.get("label") or json.dumps(topic_obj)
+            elif isinstance(topic_obj, (list, tuple)):
+                topic_label = ", ".join(map(str, topic_obj))
+            else:
+                topic_label = str(topic_obj)
 
-                topic_rows.append({
-                    "candidate": row["candidate"],
-                    "topic": topic_label.strip(),  # ✅ force to flat string
-                    "score": score
-                })
-
+            topic_rows.append({
+                "candidate": row["candidate"],
+                "topic": topic_label.strip(),
+                "score": score
+            })
     topic_df = pd.DataFrame(topic_rows)
     if not topic_df.empty:
         pivot = topic_df.groupby(["candidate", "topic"])["score"].mean().reset_index()
