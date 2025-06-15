@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(layout="wide")
 
 # --- Logo and Header ---
-st.image("pharos_logo.png", width=180)
+st.image("src/pharos_logo.png", width=180)
 st.markdown("# Share of Model: Colorado Narrative Intelligence Dashboard")
 
 # --- Load Core CSV Data ---
