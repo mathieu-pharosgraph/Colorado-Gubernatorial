@@ -14,7 +14,7 @@ st.markdown("# Share of Model: Colorado Narrative Intelligence Dashboard")
 # --- Load Core CSV Data ---
 @st.cache_data
 def load_main():
-    df = pd.read_csv("looker_export_colorado.csv")
+    df = pd.read_csv("data/looker_export_colorado.csv")
     for col in [
         "issue_topic_affinities", "matched_moral_foundations_semantic_scores",
         "framing_polarity_score", "positive_frame", "negative_frame",
@@ -32,7 +32,7 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
 # --- Load Structured JSONL ---
 @st.cache_data
 def load_structured():
-    with open("enriched_structured_insights.jsonl") as f:
+    with open("data/enriched_structured_insights.jsonl") as f:
         lines = [json.loads(line) for line in f]
     rows = []
     for r in lines:
@@ -119,7 +119,7 @@ with tabs[3]:
 # --- Framing Polarity ---
 with tabs[4]:
     st.header("🪞 Framing Polarity")
-    with open("framing_contrast_colorado.jsonl") as f:
+    with open("data/framing_contrast_colorado.jsonl") as f:
         framing_df = pd.DataFrame([json.loads(line) for line in f])
     framing_df = framing_df[framing_df["prompt_type"] == "framing"]
     framing_df["framing_polarity_score"] = pd.to_numeric(framing_df["framing_polarity_score"], errors="coerce")
@@ -136,7 +136,7 @@ with tabs[4]:
 # --- Top Issues ---
 with tabs[5]:
     st.header("📋 Top Issues by Candidate")
-    with open("responses_gpt4_colorado.jsonl") as f:
+    with open("data/responses_gpt4_colorado.jsonl") as f:
         raw = [json.loads(l) for l in f if l.get("prompt_type") == "top_issues"]
     issue_map = {}
     for r in raw:
