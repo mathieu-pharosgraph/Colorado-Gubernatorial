@@ -4,6 +4,7 @@ import json
 import altair as alt
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+import re
 
 st.set_page_config(layout="wide")
 
@@ -117,7 +118,17 @@ with tabs[2]:
     if not topic_df.empty:
         pivot = topic_df.groupby(["candidate", "topic"])["score"].mean().reset_index()
         chart = alt.Chart(pivot).mark_rect().encode(
-            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=400)),
+            x=alt.X(
+                "topic:N",
+                sort="-y",
+                axis=alt.Axis(
+                    labelAngle=-45,
+                    labelLimit=999,         # allow full width
+                    labelOverlap=False,     # don't drop labels
+                    labelFlush=False,
+                    labelExpr="datum"       # show full label
+                )
+            )
             y="candidate:N",
             color=alt.Color("score:Q", scale=alt.Scale(scheme="blues")),
             tooltip=["candidate", "topic", "score"]
@@ -165,7 +176,8 @@ with tabs[5]:
     for i, cand in enumerate(selected):
         cols[i].markdown(f"**{cand}**")
         for j, issue in enumerate(issue_map.get(cand, []), 1):
-            cols[i].markdown(f"{j}. {issue}")
+            cleaned = re.sub(r"^\\d+\\.\\s*", "", issue)
+            cols[i].markdown(f"{j}. {cleaned}")
 
 # --- Tab 6: Structured Narrative Insights ---
 with tabs[6]:
