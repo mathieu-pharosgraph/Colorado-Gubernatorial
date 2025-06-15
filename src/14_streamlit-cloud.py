@@ -85,15 +85,6 @@ with tabs[0]:
     st.altair_chart(chart, use_container_width=True)
 
 # --- Tab 1: Frames ---
-
-def safe_normalize(g):
-    total = g["score"].sum()
-    if total == 0 or pd.isna(total):
-        g["norm_score"] = 0
-    else:
-        g["norm_score"] = (g["score"] / total) * 100
-    return g
-
 with tabs[1]:
     st.header("🧠 Semantic Frames")
     frame_rows = []
@@ -107,14 +98,22 @@ with tabs[1]:
         except:
             continue
     frame_df = pd.DataFrame(frame_rows)
+
+    def safe_normalize(g):
+        total = g["score"].sum()
+        g["norm_score"] = (g["score"] / total * 100) if total > 0 else 0
+        return g
+
     if not frame_df.empty:
         norm = frame_df.groupby("candidate").apply(safe_normalize).reset_index(drop=True)
+        norm = norm[norm["norm_score"].notnull() & ~norm["norm_score"].isin([float("inf"), float("-inf")])]
         chart = alt.Chart(norm).mark_rect().encode(
             x="frame:N", y="candidate:N",
             color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens")),
             tooltip=["candidate", "frame", "norm_score"]
         )
         st.altair_chart(chart, use_container_width=True)
+
 
 # --- Tab 2: Topics ---
 with tabs[2]:
@@ -134,29 +133,21 @@ with tabs[2]:
                 "topic": topic_label.strip(),
                 "score": score
             })
+
     topic_df = pd.DataFrame(topic_rows)
-    st.write("Topic rows:", len(topic_rows))
-    st.write("Unique topics:", topic_df["topic"].nunique())
     if not topic_df.empty:
         pivot = topic_df.groupby(["candidate", "topic"])["score"].mean().reset_index()
-        pivot["topic"] = pivot["topic"].astype(str)  # force string again
+        pivot = pivot[pivot["score"].notnull() & ~pivot["score"].isin([float("inf"), float("-inf")])]
+        pivot["topic"] = pivot["topic"].astype(str)
+
         chart = alt.Chart(pivot).mark_rect().encode(
-            x=alt.X(
-                "topic:N",
-                sort="-y",
-                axis=alt.Axis(
-                    labelAngle=-45,
-                    labelLimit=999,         # allow full width
-                    labelOverlap=False,     # don't drop labels
-                    labelFlush=False,
-                    labelExpr="datum"       # show full label
-                )
-            ),
+            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=999, labelExpr="datum")),
             y="candidate:N",
             color=alt.Color("score:Q", scale=alt.Scale(scheme="blues")),
             tooltip=["candidate", "topic", "score"]
         )
         st.altair_chart(chart, use_container_width=True)
+
 
 # --- Tab 3: Salience ---
 with tabs[3]:
