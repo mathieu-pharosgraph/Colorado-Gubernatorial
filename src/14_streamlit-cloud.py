@@ -75,14 +75,32 @@ with tabs[0]:
     st.header("🦸 Narrative Roles")
     selected = st.multiselect("Filter candidates:", candidates, default=candidates)
     filtered = df[df["candidate"].isin(selected)]
-    role_counts = filtered.groupby(["candidate", "refined_role_label"]).size().reset_index(name="count")
+
+    # Count and normalize by candidate
+    role_counts = (
+        filtered.groupby(["candidate", "refined_role_label"])
+        .size().reset_index(name="count")
+    )
+    total_counts = role_counts.groupby("candidate")["count"].transform("sum")
+    role_counts["percentage"] = (role_counts["count"] / total_counts * 100).round(1)
+
+    # Chart with % in tooltip
     chart = alt.Chart(role_counts).mark_bar().encode(
         x=alt.X("candidate:N", sort="-y"),
         y="count:Q",
-        color=alt.Color("refined_role_label:N", scale=alt.Scale(domain=["Hero", "Neutral", "Villain"], range=["#00C853", "#B0BEC5", "#E53935"])),
-        tooltip=["candidate", "refined_role_label", "count"]
+        color=alt.Color("refined_role_label:N", scale=alt.Scale(
+            domain=["Hero", "Neutral", "Villain"],
+            range=["#00C853", "#B0BEC5", "#E53935"]
+        )),
+        tooltip=[
+            alt.Tooltip("candidate:N"),
+            alt.Tooltip("refined_role_label:N", title="Role"),
+            alt.Tooltip("count:Q", title="Count"),
+            alt.Tooltip("percentage:Q", title="% of Candidate", format=".1f")
+        ]
     )
     st.altair_chart(chart, use_container_width=True)
+
 
 # --- Tab 1: Frames ---
 with tabs[1]:
@@ -121,18 +139,22 @@ with tabs[2]:
     topic_rows = []
     for _, row in df.iterrows():
         for topic_obj, score in row.get("issue_topic_affinities", {}).items():
-            if isinstance(topic_obj, dict):
-                topic_label = topic_obj.get("label") or json.dumps(topic_obj)
-            elif isinstance(topic_obj, (list, tuple)):
-                topic_label = ", ".join(map(str, topic_obj))
-            else:
-                topic_label = str(topic_obj)
+            try:
+                if isinstance(topic_obj, dict):
+                    topic_label = topic_obj.get("label") or topic_obj.get("name") or str(topic_obj)
+                elif isinstance(topic_obj, (list, tuple)):
+                    topic_label = ", ".join(map(str, topic_obj))
+                else:
+                    topic_label = str(topic_obj)
+            except Exception:
+                topic_label = "Unlabeled Topic"
 
             topic_rows.append({
                 "candidate": row["candidate"],
                 "topic": topic_label.strip(),
                 "score": score
             })
+
 
     topic_df = pd.DataFrame(topic_rows)
     if not topic_df.empty:
@@ -141,14 +163,18 @@ with tabs[2]:
         pivot["topic"] = pivot["topic"].astype(str)
 
         chart = alt.Chart(pivot).mark_rect().encode(
-            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=999, labelExpr="datum")),
+            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=999, labelExpr=None)),
             y="candidate:N",
             color=alt.Color("score:Q", scale=alt.Scale(scheme="blues")),
-            tooltip=["candidate", "topic", "score"]
+            tooltip=[
+                alt.Tooltip("candidate:N"),
+                alt.Tooltip("refined_role_label:N", title="Role"),
+                alt.Tooltip("count:Q", title="Count", format=",.0f")
+            ]
         )
         st.altair_chart(chart, use_container_width=True)
 
-"""
+
 # --- Tab 3: Salience ---
 with tabs[3]:
     st.header("📢 Salience Overview")
@@ -160,7 +186,7 @@ with tabs[3]:
             tooltip=["candidate", "issue", "salience_score", "salience_mentions"]
         )
         st.altair_chart(scatter, use_container_width=True)
-"""
+
 # --- Tab 4: Framing Polarity ---
 with tabs[4]:
     st.header("🪞 Framing Polarity")
@@ -172,7 +198,11 @@ with tabs[4]:
     chart = alt.Chart(framing_df).mark_circle(size=250).encode(
         x="issue:N", y="candidate:N",
         color=alt.Color("framing_polarity_score:Q", scale=alt.Scale(domain=[-1, 0, 1], range=["#FF0051", "#F0F0F0", "#00FF00"])),
-        tooltip=["candidate", "issue", "framing_polarity_score"]
+        tooltip=[
+            alt.Tooltip("candidate:N"),
+            alt.Tooltip("frame:N"),
+            alt.Tooltip("norm_score:Q", title="Score", format=".2f")
+        ]
     )
     st.altair_chart(chart, use_container_width=True)
 
