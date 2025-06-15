@@ -128,7 +128,7 @@ with tabs[2]:
                     labelFlush=False,
                     labelExpr="datum"       # show full label
                 )
-            )
+            ),
             y="candidate:N",
             color=alt.Color("score:Q", scale=alt.Scale(scheme="blues")),
             tooltip=["candidate", "topic", "score"]
