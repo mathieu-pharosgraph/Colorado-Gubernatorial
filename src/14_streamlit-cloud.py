@@ -67,7 +67,7 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
 # --- Tabs ---
-tabs = st.tabs(["Roles", "Frames", "Topics", "Salience", "Framing Polarity", "Top Issues", "Narrative Insights"])
+tabs = st.tabs(["Roles", "Frames", "Topics", "Framing Polarity", "Top Issues", "Narrative Insights"])
 candidates = sorted(df["candidate"].dropna().unique())
 
 # --- Tab 0: Roles ---
