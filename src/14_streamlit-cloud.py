@@ -56,8 +56,8 @@ def load_structured():
 sdf = load_structured()
 if not sdf.empty:
 # --- Setup Tabs ---
-tabs = st.tabs(["Roles", "Frames", "Topics", "Salience", "Framing Polarity", "Top Issues", "Narrative Insights"])
-candidates = sorted(df["candidate"].dropna().unique())
+    tabs = st.tabs(["Roles", "Frames", "Topics", "Salience", "Framing Polarity", "Top Issues", "Narrative Insights"])
+    candidates = sorted(df["candidate"].dropna().unique())
 
 # --- Roles ---
 with tabs[0]:
