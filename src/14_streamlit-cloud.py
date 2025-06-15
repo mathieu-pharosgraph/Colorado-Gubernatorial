@@ -85,6 +85,15 @@ with tabs[0]:
     st.altair_chart(chart, use_container_width=True)
 
 # --- Tab 1: Frames ---
+
+def safe_normalize(g):
+    total = g["score"].sum()
+    if total == 0 or pd.isna(total):
+        g["norm_score"] = 0
+    else:
+        g["norm_score"] = (g["score"] / total) * 100
+    return g
+
 with tabs[1]:
     st.header("🧠 Semantic Frames")
     frame_rows = []
@@ -99,7 +108,7 @@ with tabs[1]:
             continue
     frame_df = pd.DataFrame(frame_rows)
     if not frame_df.empty:
-        norm = frame_df.groupby("candidate").apply(lambda g: g.assign(norm_score=(g["score"] / g["score"].sum()) * 100)).reset_index(drop=True)
+        norm = frame_df.groupby("candidate").apply(safe_normalize).reset_index(drop=True)
         chart = alt.Chart(norm).mark_rect().encode(
             x="frame:N", y="candidate:N",
             color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens")),
