@@ -78,7 +78,7 @@ with tabs[0]:
     chart = alt.Chart(role_counts).mark_bar().encode(
         x=alt.X("candidate:N", sort="-y"),
         y="count:Q",
-        color="refined_role_label:N",
+        color=alt.Color("refined_role_label:N", scale=alt.Scale(domain=["Hero", "Neutral", "Villain"], range=["#00C853", "#B0BEC5", "#E53935"])),
         tooltip=["candidate", "refined_role_label", "count"]
     )
     st.altair_chart(chart, use_container_width=True)
@@ -88,8 +88,14 @@ with tabs[1]:
     st.header("🧠 Semantic Frames")
     frame_rows = []
     for _, row in df.iterrows():
-        for frame, score in row.get("matched_frames_semantic_scores", {}).items():
-            frame_rows.append({"candidate": row["candidate"], "frame": frame, "score": float(score)})
+        try:
+            parsed = row.get("matched_frames_semantic_scores", {})
+            if isinstance(parsed, str):
+                parsed = json.loads(parsed)
+            for frame, score in parsed.items():
+                frame_rows.append({"candidate": row["candidate"], "frame": frame, "score": float(score)})
+        except:
+            continue
     frame_df = pd.DataFrame(frame_rows)
     if not frame_df.empty:
         norm = frame_df.groupby("candidate").apply(lambda g: g.assign(norm_score=(g["score"] / g["score"].sum()) * 100)).reset_index(drop=True)
