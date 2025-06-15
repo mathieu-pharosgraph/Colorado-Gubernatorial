@@ -126,6 +126,8 @@ with tabs[2]:
                 "score": score
             })
     topic_df = pd.DataFrame(topic_rows)
+    st.write("Topic rows:", len(topic_rows))
+    st.write("Unique topics:", topic_df["topic"].nunique())
     if not topic_df.empty:
         pivot = topic_df.groupby(["candidate", "topic"])["score"].mean().reset_index()
         pivot["topic"] = pivot["topic"].astype(str)  # force string again
