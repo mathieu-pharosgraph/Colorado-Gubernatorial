@@ -113,7 +113,11 @@ with tabs[2]:
     topic_rows = []
     for _, row in df.iterrows():
         for topic, score in row.get("issue_topic_affinities", {}).items():
-            topic_rows.append({"candidate": row["candidate"], "topic": topic, "score": score})
+            topic_rows.append({
+                "candidate": row["candidate"],
+                "topic": str(topic),  # ← ensures string
+                "score": score
+            })
     topic_df = pd.DataFrame(topic_rows)
     if not topic_df.empty:
         pivot = topic_df.groupby(["candidate", "topic"])["score"].mean().reset_index()
@@ -176,7 +180,7 @@ with tabs[5]:
     for i, cand in enumerate(selected):
         cols[i].markdown(f"**{cand}**")
         for j, issue in enumerate(issue_map.get(cand, []), 1):
-            cleaned = re.sub(r"^\\d+\\.\\s*", "", issue)
+            cleaned = re.sub(r"^\\d+\\.\\s*", "", issue)  # removes leading numbers like '1. '
             cols[i].markdown(f"{j}. {cleaned}")
 
 # --- Tab 6: Structured Narrative Insights ---
