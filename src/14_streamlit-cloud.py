@@ -121,6 +121,7 @@ with tabs[2]:
     topic_df = pd.DataFrame(topic_rows)
     if not topic_df.empty:
         pivot = topic_df.groupby(["candidate", "topic"])["score"].mean().reset_index()
+        pivot["topic"] = pivot["topic"].astype(str)  # force string again
         chart = alt.Chart(pivot).mark_rect().encode(
             x=alt.X(
                 "topic:N",
@@ -180,7 +181,8 @@ with tabs[5]:
     for i, cand in enumerate(selected):
         cols[i].markdown(f"**{cand}**")
         for j, issue in enumerate(issue_map.get(cand, []), 1):
-            cleaned = re.sub(r"^\\d+\\.\\s*", "", issue)  # removes leading numbers like '1. '
+            cleaned = re.sub(r"^\d+\.\s*", "", issue)  # correct regex
+            cleaned = re.sub(r"^\d+\.\s*", "", issue).strip()
             cols[i].markdown(f"{j}. {cleaned}")
 
 # --- Tab 6: Structured Narrative Insights ---
