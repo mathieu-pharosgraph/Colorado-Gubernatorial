@@ -163,7 +163,7 @@ with tabs[2]:
         pivot["topic"] = pivot["topic"].astype(str)
 
         chart = alt.Chart(pivot).mark_rect().encode(
-            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=999, labelExpr=None)),
+            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=999)),
             y="candidate:N",
             color=alt.Color("score:Q", scale=alt.Scale(scheme="blues")),
             tooltip=[
