@@ -32,20 +32,29 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
 # --- Load Structured JSONL ---
 @st.cache_data
 def load_structured():
-    with open("data/enriched_structured_insights.jsonl") as f:
-        lines = [json.loads(line) for line in f]
-    rows = []
-    for r in lines:
-        try:
-            s = json.loads(r["structured"])
-            s.update({"candidate": r["candidate"], "issue": r["issue"], "prompt_type": r["prompt_type"]})
-            rows.append(s)
-        except:
-            continue
-    return pd.DataFrame(rows)
+    try:
+        with open("data/enriched_structured_insights.jsonl") as f:
+            lines = [json.loads(line) for line in f]
+        rows = []
+        for r in lines:
+            try:
+                s = json.loads(r["structured"])
+                s.update({
+                    "candidate": r["candidate"],
+                    "issue": r.get("issue"),
+                    "prompt_type": r["prompt_type"]
+                })
+                rows.append(s)
+            except:
+                continue
+        return pd.DataFrame(rows)
+    except FileNotFoundError:
+        st.warning("⚠️ `enriched_structured_insights.jsonl` not found — skipping structured insights.")
+        return pd.DataFrame()
+
 
 sdf = load_structured()
-
+if not sdf.empty:
 # --- Setup Tabs ---
 tabs = st.tabs(["Roles", "Frames", "Topics", "Salience", "Framing Polarity", "Top Issues", "Narrative Insights"])
 candidates = sorted(df["candidate"].dropna().unique())
