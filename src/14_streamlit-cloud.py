@@ -166,11 +166,7 @@ with tabs[2]:
             x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=999)),
             y="candidate:N",
             color=alt.Color("score:Q", scale=alt.Scale(scheme="blues")),
-            tooltip=[
-                alt.Tooltip("candidate:N"),
-                alt.Tooltip("refined_role_label:N", title="Role"),
-                alt.Tooltip("count:Q", title="Count", format=",.0f")
-            ]
+            tooltip=["candidate", "topic", "score"]
         )
         st.altair_chart(chart, use_container_width=True)
 
