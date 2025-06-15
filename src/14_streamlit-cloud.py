@@ -148,7 +148,7 @@ with tabs[2]:
         )
         st.altair_chart(chart, use_container_width=True)
 
-
+"""
 # --- Tab 3: Salience ---
 with tabs[3]:
     st.header("📢 Salience Overview")
@@ -160,7 +160,7 @@ with tabs[3]:
             tooltip=["candidate", "issue", "salience_score", "salience_mentions"]
         )
         st.altair_chart(scatter, use_container_width=True)
-
+"""
 # --- Tab 4: Framing Polarity ---
 with tabs[4]:
     st.header("🪞 Framing Polarity")
