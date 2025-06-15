@@ -113,9 +113,17 @@ with tabs[2]:
     topic_rows = []
     for _, row in df.iterrows():
         for topic, score in row.get("issue_topic_affinities", {}).items():
+            # Safely extract text if topic is a dict or other object
+            if isinstance(topic, dict):
+                topic_label = topic.get("label") or json.dumps(topic)
+            elif isinstance(topic, (list, tuple)):
+                topic_label = ", ".join(map(str, topic))
+            else:
+                topic_label = str(topic)
+
             topic_rows.append({
                 "candidate": row["candidate"],
-                "topic": str(topic),  # ← ensures string
+                "topic": topic_label.strip(),
                 "score": score
             })
     topic_df = pd.DataFrame(topic_rows)
