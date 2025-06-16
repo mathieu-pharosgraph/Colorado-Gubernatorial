@@ -5,6 +5,7 @@ import altair as alt
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import re
+from pathlib import Path
 
 st.set_page_config(layout="wide")
 
@@ -27,8 +28,9 @@ def load_main():
 
 @st.cache_data
 def load_structured():
-    path = "data/enriched_structured_insights.jsonl"
-    if not Path(path).exists():
+    from pathlib import Path
+    path = Path("data/enriched_structured_insights.jsonl")
+    if not path.exists():
         return pd.DataFrame()
 
     rows = []
@@ -36,7 +38,7 @@ def load_structured():
         for line in f:
             try:
                 r = json.loads(line.strip())
-                s = json.loads(r["structured"])
+                s = json.loads(r.get("structured", "{}"))
                 s.update({
                     "candidate": r["candidate"],
                     "issue": r.get("issue"),
@@ -44,10 +46,10 @@ def load_structured():
                 })
                 rows.append(s)
             except Exception as e:
-                print(f"Skipping line due to error: {e}")
                 continue
 
     return pd.DataFrame(rows)
+
 
 @st.cache_data
 def load_framing():
@@ -95,9 +97,10 @@ with tabs[0]:
         )),
         tooltip=[
             alt.Tooltip("candidate:N"),
-            alt.Tooltip("refined_role_label:N", title="Role"),
-            alt.Tooltip("count:Q", title="Count"),
-            alt.Tooltip("percentage:Q", title="% of Candidate", format=".1f")
+            alt.Tooltip("issue:N"),
+            alt.Tooltip("framing_polarity_score:Q", title="Polarity", format=".2f"),
+            alt.Tooltip("positive_frame:N", title="Positive Frame"),
+            alt.Tooltip("negative_frame:N", title="Negative Frame")
         ]
     )
     st.altair_chart(chart, use_container_width=True)
