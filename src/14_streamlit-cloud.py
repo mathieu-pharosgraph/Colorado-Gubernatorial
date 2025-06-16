@@ -128,7 +128,12 @@ with tabs[1]:
         chart = alt.Chart(norm).mark_rect().encode(
             x="frame:N", y="candidate:N",
             color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens")),
-            tooltip=["candidate", "frame", "norm_score"]
+            tooltip=[
+                alt.Tooltip("candidate:N"),
+                alt.Tooltip("frame:N"),
+                alt.Tooltip("norm_score:Q", title="Score", format=".2f")
+            ],
+            color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens"))
         )
         st.altair_chart(chart, use_container_width=True)
 
