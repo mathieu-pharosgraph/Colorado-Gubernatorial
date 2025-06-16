@@ -74,8 +74,8 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
 
 # --- Tabs ---
 tabs = st.tabs([
-    "Roles", "Frames", "Topics", "Salience",
-    "Framing Polarity", "Top Issues", "Narrative Insights"
+    "Roles", "Frames", "Topics",
+    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights"
 ])
 
 candidates = sorted(df["candidate"].dropna().unique())
@@ -177,20 +177,10 @@ with tabs[2]:
         st.altair_chart(chart, use_container_width=True)
 
 
-# --- Tab 3: Salience ---
-with tabs[3]:
-    st.header("📢 Salience Overview")
-    salient = df[df["salience_score"].notnull() & df["salience_mentions"].notnull()]
-    if not salient.empty:
-        scatter = alt.Chart(salient).mark_circle(size=150).encode(
-            x="salience_mentions:Q", y="salience_score:Q",
-            color="candidate:N",
-            tooltip=["candidate", "issue", "salience_score", "salience_mentions"]
-        )
-        st.altair_chart(scatter, use_container_width=True)
 
-# --- Tab 4: Framing Polarity ---
-with tabs[4]:
+
+# --- Tab 3: Framing Polarity ---
+with tabs[3]:
     st.header("🪞 Framing Polarity")
     framing_df = fdf[fdf["prompt_type"] == "framing"]
     framing_df["framing_polarity_score"] = pd.to_numeric(framing_df["framing_polarity_score"], errors="coerce")
@@ -208,8 +198,8 @@ with tabs[4]:
     )
     st.altair_chart(chart, use_container_width=True)
 
-# --- Tab 5: Top Issues ---
-with tabs[5]:
+# --- Tab 4: Top Issues ---
+with tabs[4]:
     st.header("📋 Top Issues by Candidate")
 
     issue_map = {}
@@ -229,6 +219,44 @@ with tabs[5]:
             cleaned = re.sub(r"^\d+\.\s*", "", issue)  # correct regex
             cleaned = re.sub(r"^\d+\.\s*", "", issue).strip()
             cols[i].markdown(f"{j}. {cleaned}")
+
+# --- Tab 5: Framing Wordclouds ---
+with tabs[5]:
+    st.header("🧩 Narrative Tags & Wordclouds")
+
+    @st.cache_data
+    def load_narratives():
+        with open("data/framing_narratives_enriched_colorado.jsonl") as f:
+            return pd.DataFrame([json.loads(line) for line in f if json.loads(line).get("prompt_type") == "framing"])
+
+    narratives = load_narratives()
+    candidate_filter = st.selectbox("Select a candidate:", sorted(narratives["candidate"].dropna().unique()), key="distinct_candidate")
+    issue_filter = st.multiselect("Select issue(s):", sorted(narratives["issue"].dropna().unique()), default=narratives["issue"].dropna().unique(), key="distinct_issues")
+
+    filtered = narratives[
+        (narratives["candidate"] == candidate_filter) &
+        (narratives["issue"].isin(issue_filter))
+    ]
+
+    def display_wordcloud(title, field):
+        st.subheader(title)
+        tokens = []
+        for items in filtered[field].dropna():
+            if isinstance(items, list):
+                tokens.extend(items)
+        if tokens:
+            text = " ".join(tokens)
+            wc = WordCloud(width=800, height=300, background_color="white").generate(text)
+            st.image(wc.to_image())
+        else:
+            st.info("No data to display.")
+
+    # Wordclouds to show
+    display_wordcloud("Traits", "traits")
+    display_wordcloud("Themes", "themes")
+    display_wordcloud("Criticisms", "criticisms")
+    display_wordcloud("Archetypes", "archetypes")
+    display_wordcloud("Alignments", "alignments")
 
 # --- Tab 6: Structured Narrative Insights ---
 with tabs[6]:
