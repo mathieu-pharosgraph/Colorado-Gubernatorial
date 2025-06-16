@@ -191,8 +191,8 @@ with tabs[3]:
         color=alt.Color("framing_polarity_score:Q", scale=alt.Scale(domain=[-1, 0, 1], range=["#FF0051", "#F0F0F0", "#00FF00"])),
         tooltip=[
             alt.Tooltip("candidate:N"),
-            alt.Tooltip("frame:N"),
-            alt.Tooltip("norm_score:Q", title="Score", format=".2f")
+            alt.Tooltip("issue:N"),
+            alt.Tooltip("framing_polarity_score:Q", title="Polarity Score", format=".2f")
         ]
     )
     st.altair_chart(chart, use_container_width=True)
