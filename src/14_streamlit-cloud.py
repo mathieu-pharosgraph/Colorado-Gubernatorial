@@ -28,7 +28,6 @@ def load_main():
 
 @st.cache_data
 def load_structured():
-    from pathlib import Path
     path = Path("data/enriched_structured_insights.jsonl")
     if not path.exists():
         return pd.DataFrame()
@@ -38,7 +37,10 @@ def load_structured():
         for line in f:
             try:
                 r = json.loads(line.strip())
-                s = json.loads(r.get("structured", "{}"))
+                structured_raw = r.get("structured", "").strip()
+                if structured_raw.startswith("```json"):
+                    structured_raw = structured_raw.replace("```json", "").replace("```", "").strip()
+                s = json.loads(structured_raw)
                 s.update({
                     "candidate": r["candidate"],
                     "issue": r.get("issue"),
@@ -46,8 +48,7 @@ def load_structured():
                 })
                 rows.append(s)
             except Exception as e:
-                continue
-
+                continue  # optional: log error if needed
     return pd.DataFrame(rows)
 
 
@@ -210,11 +211,15 @@ with tabs[4]:
 # --- Tab 5: Top Issues ---
 with tabs[5]:
     st.header("📋 Top Issues by Candidate")
+
     issue_map = {}
     for r in top_issues_raw:
-        lines = r["response"].split("\n")
-        extracted = [line.split(":")[0].strip() for line in lines if line.strip() and line[0].isdigit()]
-        issue_map[r["candidate"]] = extracted[:10]
+        candidate = r["candidate"]
+        matches = re.findall(r"\d+\.\s+(.*)", r["response"])
+        cleaned = [m.strip() for m in matches if m.strip()]
+        if cleaned:
+            issue_map[candidate] = cleaned[:10]
+
 
     selected = st.multiselect("Select candidates", sorted(issue_map.keys()), default=list(issue_map.keys())[:4])
     cols = st.columns(max(len(selected), 1))
