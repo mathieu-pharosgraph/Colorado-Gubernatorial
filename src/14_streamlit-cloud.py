@@ -33,7 +33,9 @@ def load_structured():
         rows = []
         for r in lines:
             try:
-                s = json.loads(r["structured"])
+                s = json.loads(r.get("structured", "{}"))
+                if "prompt_type" not in r or "candidate" not in r:
+                    continue
                 s.update({
                     "candidate": r["candidate"],
                     "issue": r.get("issue"),
@@ -68,7 +70,7 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
 
 # --- Tabs ---
 tabs = st.tabs([
-    "Roles", "Frames", "Topics", "Salience", 
+    "Roles", "Frames", "Topics", "Salience",
     "Framing Polarity", "Top Issues", "Narrative Insights"
 ])
 
@@ -79,16 +81,10 @@ with tabs[0]:
     st.header("🦸 Narrative Roles")
     selected = st.multiselect("Filter candidates:", candidates, default=candidates)
     filtered = df[df["candidate"].isin(selected)]
-
-    # Count and normalize by candidate
-    role_counts = (
-        filtered.groupby(["candidate", "refined_role_label"])
-        .size().reset_index(name="count")
-    )
+    role_counts = filtered.groupby(["candidate", "refined_role_label"]).size().reset_index(name="count")
     total_counts = role_counts.groupby("candidate")["count"].transform("sum")
     role_counts["percentage"] = (role_counts["count"] / total_counts * 100).round(1)
 
-    # Chart with % in tooltip
     chart = alt.Chart(role_counts).mark_bar().encode(
         x=alt.X("candidate:N", sort="-y"),
         y="count:Q",
@@ -104,7 +100,6 @@ with tabs[0]:
         ]
     )
     st.altair_chart(chart, use_container_width=True)
-
 
 # --- Tab 1: Frames ---
 with tabs[1]:
@@ -127,15 +122,15 @@ with tabs[1]:
         return g
 
     if not frame_df.empty:
-        norm = frame_df.groupby("candidate").apply(safe_normalize).reset_index(drop=True)
+        norm = frame_df.groupby("candidate", group_keys=False).apply(safe_normalize).reset_index(drop=True)
         norm = norm[norm["norm_score"].notnull() & ~norm["norm_score"].isin([float("inf"), float("-inf")])]
         chart = alt.Chart(norm).mark_rect().encode(
             x="frame:N", y="candidate:N",
             color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens")),
             tooltip=[
                 alt.Tooltip("candidate:N"),
-                alt.Tooltip("issue:N"),
-                alt.Tooltip("framing_polarity_score:Q", title="Score", format=".2f")
+                alt.Tooltip("frame:N"),
+                alt.Tooltip("norm_score:Q", title="Score", format=".2f")
             ]
         )
         st.altair_chart(chart, use_container_width=True)
