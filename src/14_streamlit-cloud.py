@@ -67,7 +67,11 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
 # --- Tabs ---
-tabs = st.tabs(["Roles", "Frames", "Topics", "Framing Polarity", "Top Issues", "Narrative Insights"])
+tabs = st.tabs([
+    "Roles", "Frames", "Topics", "Salience", 
+    "Framing Polarity", "Top Issues", "Narrative Insights"
+])
+
 candidates = sorted(df["candidate"].dropna().unique())
 
 # --- Tab 0: Roles ---
@@ -130,9 +134,9 @@ with tabs[1]:
             color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens")),
             tooltip=[
                 alt.Tooltip("candidate:N"),
-                alt.Tooltip("frame:N"),
-                alt.Tooltip("norm_score:Q", title="Score", format=".2f")
-            ],
+                alt.Tooltip("issue:N"),
+                alt.Tooltip("framing_polarity_score:Q", title="Score", format=".2f")
+            ]
             color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens"))
         )
         st.altair_chart(chart, use_container_width=True)
@@ -168,7 +172,7 @@ with tabs[2]:
         pivot["topic"] = pivot["topic"].astype(str)
 
         chart = alt.Chart(pivot).mark_rect().encode(
-            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=999)),
+            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=0,labelOverlap=False)),
             y="candidate:N",
             color=alt.Color("score:Q", scale=alt.Scale(scheme="blues")),
             tooltip=["candidate", "topic", "score"]
