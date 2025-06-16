@@ -98,10 +98,9 @@ with tabs[0]:
         )),
         tooltip=[
             alt.Tooltip("candidate:N"),
-            alt.Tooltip("issue:N"),
-            alt.Tooltip("framing_polarity_score:Q", title="Polarity", format=".2f"),
-            alt.Tooltip("positive_frame:N", title="Positive Frame"),
-            alt.Tooltip("negative_frame:N", title="Negative Frame")
+            alt.Tooltip("refined_role_label:N", title="Role"),
+            alt.Tooltip("count:Q", title="Count"),
+            alt.Tooltip("percentage:Q", title="% of Candidate", format=".1f")
         ]
     )
     st.altair_chart(chart, use_container_width=True)
