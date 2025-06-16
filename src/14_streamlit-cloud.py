@@ -27,26 +27,27 @@ def load_main():
 
 @st.cache_data
 def load_structured():
-    try:
-        with open("data/enriched_structured_insights.jsonl") as f:
-            lines = [json.loads(line) for line in f]
-        rows = []
-        for r in lines:
+    path = "data/enriched_structured_insights.jsonl"
+    if not Path(path).exists():
+        return pd.DataFrame()
+
+    rows = []
+    with open(path) as f:
+        for line in f:
             try:
-                s = json.loads(r.get("structured", "{}"))
-                if "prompt_type" not in r or "candidate" not in r:
-                    continue
+                r = json.loads(line.strip())
+                s = json.loads(r["structured"])
                 s.update({
                     "candidate": r["candidate"],
                     "issue": r.get("issue"),
                     "prompt_type": r["prompt_type"]
                 })
                 rows.append(s)
-            except:
+            except Exception as e:
+                print(f"Skipping line due to error: {e}")
                 continue
-        return pd.DataFrame(rows)
-    except FileNotFoundError:
-        return pd.DataFrame()
+
+    return pd.DataFrame(rows)
 
 @st.cache_data
 def load_framing():
@@ -106,26 +107,23 @@ with tabs[1]:
     st.header("🧠 Semantic Frames")
     frame_rows = []
     for _, row in df.iterrows():
-        try:
-            parsed = row.get("matched_frames_semantic_scores", {})
-            if isinstance(parsed, str):
-                parsed = json.loads(parsed)
-            for frame, score in parsed.items():
-                frame_rows.append({"candidate": row["candidate"], "frame": frame, "score": float(score)})
-        except:
-            continue
+        parsed = row.get("matched_frames_semantic_scores", {})
+        if isinstance(parsed, str):
+            parsed = json.loads(parsed)
+        for frame, score in parsed.items():
+            frame_rows.append({"candidate": row["candidate"], "frame": frame, "score": float(score)})
     frame_df = pd.DataFrame(frame_rows)
 
     def safe_normalize(g):
         total = g["score"].sum()
-        g["norm_score"] = (g["score"] / total * 100) if total > 0 else 0
+        g["score"] = (g["score"] / total * 100) if total > 0 else 0
         return g
 
     if not frame_df.empty:
-        norm = frame_df.groupby("candidate", group_keys=False).apply(safe_normalize).reset_index(drop=True)
-        norm = norm[norm["norm_score"].notnull() & ~norm["norm_score"].isin([float("inf"), float("-inf")])]
+        norm = frame_df.groupby("candidate", group_keys=False).apply(safe_normalize).rename(columns={"score": "norm_score"})
         chart = alt.Chart(norm).mark_rect().encode(
-            x="frame:N", y="candidate:N",
+            x=alt.X("frame:N"),
+            y=alt.Y("candidate:N"),
             color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens")),
             tooltip=[
                 alt.Tooltip("candidate:N"),
@@ -134,6 +132,7 @@ with tabs[1]:
             ]
         )
         st.altair_chart(chart, use_container_width=True)
+
 
 
 # --- Tab 2: Topics ---
