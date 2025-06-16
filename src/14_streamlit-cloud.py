@@ -136,7 +136,7 @@ with tabs[1]:
                 alt.Tooltip("candidate:N"),
                 alt.Tooltip("issue:N"),
                 alt.Tooltip("framing_polarity_score:Q", title="Score", format=".2f")
-            ]
+            ],
             color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens"))
         )
         st.altair_chart(chart, use_container_width=True)
