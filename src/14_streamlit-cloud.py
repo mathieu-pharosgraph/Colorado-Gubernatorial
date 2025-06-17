@@ -243,8 +243,8 @@ with tabs[5]:  # adjust index if needed
         st.subheader("🎯 Persuasiveness Score by Candidate & Issue")
         voter_df["persuasiveness_score"] = pd.to_numeric(voter_df["persuasiveness_score"], errors="coerce")
         pscore_chart = alt.Chart(voter_df.dropna(subset=["persuasiveness_score"])).mark_circle(size=150).encode(
-            x=alt.X("issue:N", title="Issue", sort="ascending"),
-            y=alt.Y("candidate:N", title="Candidate"),
+            x=alt.X("candidate:N", title="Candidate"),
+            y=alt.Y("issue:N", title="Issue", sort="ascending"),
             color=alt.Color("persuasiveness_score:Q", scale=alt.Scale(scheme="greens")),
             size="persuasiveness_score:Q",
             tooltip=["candidate", "issue", alt.Tooltip("persuasiveness_score:Q", format=".2f")]
@@ -254,8 +254,8 @@ with tabs[5]:  # adjust index if needed
         st.subheader("📏 Issue Clarity by Candidate & Issue")
         voter_df["issue_clarity"] = pd.to_numeric(voter_df["issue_clarity"], errors="coerce")
         clarity_chart = alt.Chart(voter_df.dropna(subset=["issue_clarity"])).mark_circle(size=150).encode(
-            x=alt.X("issue:N", title="Issue", sort="ascending"),
-            y=alt.Y("candidate:N", title="Candidate"),
+            x=alt.X("candidate:N", title="Candidate"),
+            y=alt.Y("issue:N", title="Issue", sort="ascending"),
             color=alt.Color("issue_clarity:Q", scale=alt.Scale(scheme="blues")),
             size="issue_clarity:Q",
             tooltip=["candidate", "issue", alt.Tooltip("issue_clarity:Q", format=".1f")]
