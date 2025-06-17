@@ -75,7 +75,7 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
 # --- Tabs ---
 tabs = st.tabs([
     "Roles", "Frames", "Topics",
-    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights"
+    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights", "Voter Persuasion Insights"
 ])
 
 candidates = sorted(df["candidate"].dropna().unique())
@@ -298,3 +298,55 @@ with tabs[6]:
                 st.markdown("- Differs From Party On: " + ", ".join(row.get("differs_from_party_on", [])))
                 st.markdown(f"**Contrast Score:** {row.get('contrast_score', 'N/A')}")
                 st.divider()
+
+# --- Tab X: Voter Persuasion Insights ---
+with tabs[7]:  # adjust index if needed
+    st.header("🧠 Voter Persuasion Insights")
+
+    # Filter structured voter_pov entries
+    voter_df = sdf[sdf["prompt_type"] == "voter_pov"]
+    if voter_df.empty:
+        st.info("No voter perception data available.")
+    else:
+        st.subheader("🎯 Persuasiveness Score by Candidate & Issue")
+        voter_df["persuasiveness_score"] = pd.to_numeric(voter_df["persuasiveness_score"], errors="coerce")
+        pscore_chart = alt.Chart(voter_df.dropna(subset=["persuasiveness_score"])).mark_circle(size=150).encode(
+            x=alt.X("issue:N", title="Issue", sort="ascending"),
+            y=alt.Y("candidate:N", title="Candidate"),
+            color=alt.Color("persuasiveness_score:Q", scale=alt.Scale(scheme="greens")),
+            size="persuasiveness_score:Q",
+            tooltip=["candidate", "issue", alt.Tooltip("persuasiveness_score:Q", format=".2f")]
+        ).properties(height=400)
+        st.altair_chart(pscore_chart, use_container_width=True)
+
+        st.subheader("📏 Issue Clarity by Candidate & Issue")
+        voter_df["issue_clarity"] = pd.to_numeric(voter_df["issue_clarity"], errors="coerce")
+        clarity_chart = alt.Chart(voter_df.dropna(subset=["issue_clarity"])).mark_circle(size=150).encode(
+            x=alt.X("issue:N", title="Issue", sort="ascending"),
+            y=alt.Y("candidate:N", title="Candidate"),
+            color=alt.Color("issue_clarity:Q", scale=alt.Scale(scheme="blues")),
+            size="issue_clarity:Q",
+            tooltip=["candidate", "issue", alt.Tooltip("issue_clarity:Q", format=".1f")]
+        ).properties(height=400)
+        st.altair_chart(clarity_chart, use_container_width=True)
+
+        st.subheader("👥 Demographic Appeal Word Cloud")
+        selected_candidate = st.selectbox("Select candidate", sorted(voter_df["candidate"].dropna().unique()), key="demo_wc_cand")
+        issues_for_cand = voter_df[voter_df["candidate"] == selected_candidate]["issue"].dropna().unique().tolist()
+        selected_issues = st.multiselect("Optional: Filter by issue(s)", issues_for_cand, default=issues_for_cand)
+
+        demo_df = voter_df[
+            (voter_df["candidate"] == selected_candidate) &
+            (voter_df["issue"].isin(selected_issues))
+        ]
+
+        tokens = []
+        for appeal in demo_df["demographic_appeal"].dropna():
+            if isinstance(appeal, list):
+                tokens.extend(appeal)
+
+        if tokens:
+            wc = WordCloud(width=800, height=300, background_color="white").generate(" ".join(tokens))
+            st.image(wc.to_image())
+        else:
+            st.info("No demographic appeal data available.")
