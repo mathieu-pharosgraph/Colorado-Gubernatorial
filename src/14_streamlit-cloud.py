@@ -74,8 +74,8 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
 
 # --- Tabs ---
 tabs = st.tabs([
-    "Roles", "Frames", "Topics",
-    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights", "Voter Persuasion Insights"
+    "Roles", 
+    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights", "Voter Persuasion Insights", "Frames", "Topics"
 ])
 
 candidates = sorted(df["candidate"].dropna().unique())
@@ -105,81 +105,13 @@ with tabs[0]:
     )
     st.altair_chart(chart, use_container_width=True)
 
-# --- Tab 1: Frames ---
+
+
+
+
+
+# --- Tab 1: Framing Polarity ---
 with tabs[1]:
-    st.header("🧠 Semantic Frames")
-    frame_rows = []
-    for _, row in df.iterrows():
-        parsed = row.get("matched_frames_semantic_scores", {})
-        if isinstance(parsed, str):
-            parsed = json.loads(parsed)
-        for frame, score in parsed.items():
-            frame_rows.append({"candidate": row["candidate"], "frame": frame, "score": float(score)})
-    frame_df = pd.DataFrame(frame_rows)
-
-    def safe_normalize(g):
-        total = g["score"].sum()
-        g["score"] = (g["score"] / total * 100) if total > 0 else 0
-        return g
-
-    if not frame_df.empty:
-        norm = frame_df.groupby("candidate", group_keys=False).apply(safe_normalize).rename(columns={"score": "norm_score"})
-        chart = alt.Chart(norm).mark_rect().encode(
-            x=alt.X("frame:N"),
-            y=alt.Y("candidate:N"),
-            color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens")),
-            tooltip=[
-                alt.Tooltip("candidate:N"),
-                alt.Tooltip("frame:N"),
-                alt.Tooltip("norm_score:Q", title="Score", format=".2f")
-            ]
-        )
-        st.altair_chart(chart, use_container_width=True)
-
-
-
-# --- Tab 2: Topics ---
-with tabs[2]:
-    st.header("🧭 Issue Topic Affinities")
-    topic_rows = []
-    for _, row in df.iterrows():
-        for topic_obj, score in row.get("issue_topic_affinities", {}).items():
-            try:
-                if isinstance(topic_obj, dict):
-                    topic_label = topic_obj.get("label") or topic_obj.get("name") or str(topic_obj)
-                elif isinstance(topic_obj, (list, tuple)):
-                    topic_label = ", ".join(map(str, topic_obj))
-                else:
-                    topic_label = str(topic_obj)
-            except Exception:
-                topic_label = "Unlabeled Topic"
-
-            topic_rows.append({
-                "candidate": row["candidate"],
-                "topic": topic_label.strip(),
-                "score": score
-            })
-
-
-    topic_df = pd.DataFrame(topic_rows)
-    if not topic_df.empty:
-        pivot = topic_df.groupby(["candidate", "topic"])["score"].mean().reset_index()
-        pivot = pivot[pivot["score"].notnull() & ~pivot["score"].isin([float("inf"), float("-inf")])]
-        pivot["topic"] = pivot["topic"].astype(str)
-
-        chart = alt.Chart(pivot).mark_rect().encode(
-            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=0,labelOverlap=False)),
-            y="candidate:N",
-            color=alt.Color("score:Q", scale=alt.Scale(scheme="blues")),
-            tooltip=["candidate", "topic", "score"]
-        )
-        st.altair_chart(chart, use_container_width=True)
-
-
-
-
-# --- Tab 3: Framing Polarity ---
-with tabs[3]:
     st.header("🪞 Framing Polarity")
     framing_df = fdf[fdf["prompt_type"] == "framing"]
     framing_df["framing_polarity_score"] = pd.to_numeric(framing_df["framing_polarity_score"], errors="coerce")
@@ -197,8 +129,8 @@ with tabs[3]:
     )
     st.altair_chart(chart, use_container_width=True)
 
-# --- Tab 4: Top Issues ---
-with tabs[4]:
+# --- Tab 2: Top Issues ---
+with tabs[2]:
     st.header("📋 Top Issues by Candidate")
 
     issue_map = {}
@@ -219,8 +151,8 @@ with tabs[4]:
             cleaned = re.sub(r"^\d+\.\s*", "", issue).strip()
             cols[i].markdown(f"{j}. {cleaned}")
 
-# --- Tab 5: Framing Wordclouds ---
-with tabs[5]:
+# --- Tab 3: Framing Wordclouds ---
+with tabs[3]:
     st.header("🧩 Narrative Tags & Wordclouds")
 
     @st.cache_data
@@ -257,8 +189,8 @@ with tabs[5]:
     display_wordcloud("Archetypes", "archetypes")
     display_wordcloud("Alignments", "alignments")
 
-# --- Tab 6: Structured Narrative Insights ---
-with tabs[6]:
+# --- Tab 4: Structured Narrative Insights ---
+with tabs[4]:
     st.header("🔍 Narrative Insights (LLM Extracted)")
 
     if sdf.empty:
@@ -300,7 +232,7 @@ with tabs[6]:
                 st.divider()
 
 # --- Tab X: Voter Persuasion Insights ---
-with tabs[7]:  # adjust index if needed
+with tabs[5]:  # adjust index if needed
     st.header("🧠 Voter Persuasion Insights")
 
     # Filter structured voter_pov entries
@@ -350,3 +282,73 @@ with tabs[7]:  # adjust index if needed
             st.image(wc.to_image())
         else:
             st.info("No demographic appeal data available.")
+
+# --- Tab 6: Frames ---
+with tabs[6]:
+    st.header("🧠 Semantic Frames")
+    frame_rows = []
+    for _, row in df.iterrows():
+        parsed = row.get("matched_frames_semantic_scores", {})
+        if isinstance(parsed, str):
+            parsed = json.loads(parsed)
+        for frame, score in parsed.items():
+            frame_rows.append({"candidate": row["candidate"], "frame": frame, "score": float(score)})
+    frame_df = pd.DataFrame(frame_rows)
+
+    def safe_normalize(g):
+        total = g["score"].sum()
+        g["score"] = (g["score"] / total * 100) if total > 0 else 0
+        return g
+
+    if not frame_df.empty:
+        norm = frame_df.groupby("candidate", group_keys=False).apply(safe_normalize).rename(columns={"score": "norm_score"})
+        chart = alt.Chart(norm).mark_rect().encode(
+            x=alt.X("frame:N"),
+            y=alt.Y("candidate:N"),
+            color=alt.Color("norm_score:Q", scale=alt.Scale(scheme="greens")),
+            tooltip=[
+                alt.Tooltip("candidate:N"),
+                alt.Tooltip("frame:N"),
+                alt.Tooltip("norm_score:Q", title="Score", format=".2f")
+            ]
+        )
+        st.altair_chart(chart, use_container_width=True)
+
+
+
+# --- Tab 7: Topics ---
+with tabs[7]:
+    st.header("🧭 Issue Topic Affinities")
+    topic_rows = []
+    for _, row in df.iterrows():
+        for topic_obj, score in row.get("issue_topic_affinities", {}).items():
+            try:
+                if isinstance(topic_obj, dict):
+                    topic_label = topic_obj.get("label") or topic_obj.get("name") or str(topic_obj)
+                elif isinstance(topic_obj, (list, tuple)):
+                    topic_label = ", ".join(map(str, topic_obj))
+                else:
+                    topic_label = str(topic_obj)
+            except Exception:
+                topic_label = "Unlabeled Topic"
+
+            topic_rows.append({
+                "candidate": row["candidate"],
+                "topic": topic_label.strip(),
+                "score": score
+            })
+
+
+    topic_df = pd.DataFrame(topic_rows)
+    if not topic_df.empty:
+        pivot = topic_df.groupby(["candidate", "topic"])["score"].mean().reset_index()
+        pivot = pivot[pivot["score"].notnull() & ~pivot["score"].isin([float("inf"), float("-inf")])]
+        pivot["topic"] = pivot["topic"].astype(str)
+
+        chart = alt.Chart(pivot).mark_rect().encode(
+            x=alt.X("topic:N", sort="-y", axis=alt.Axis(labelAngle=-45, labelLimit=0,labelOverlap=False)),
+            y="candidate:N",
+            color=alt.Color("score:Q", scale=alt.Scale(scheme="blues")),
+            tooltip=["candidate", "topic", "score"]
+        )
+        st.altair_chart(chart, use_container_width=True)
