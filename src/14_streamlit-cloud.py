@@ -127,7 +127,7 @@ def load_precinct_data():
     return gpd.GeoDataFrame(merged, geometry="geometry", crs=shapes.crs), shapes
 
 gdf, shapes = load_precinct_data()
-shapes = shapes[["county_name", "precinct_code", "geometry"]].simplify(0.001, preserve_topology=True)
+shapes["geometry"] = shapes["geometry"].simplify(0.001, preserve_topology=True)
 
 def name_to_rgb(name):
     h = md5(name.encode()).hexdigest()
