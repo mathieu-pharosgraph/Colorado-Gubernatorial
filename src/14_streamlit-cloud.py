@@ -377,6 +377,7 @@ with tabs[5]:  # adjust index if needed
 with tabs[6]:
     st.header("🗺️ Precinct Score Maps")
     gdf, shapes = load_precinct_data()
+    shapes = shapes.simplify(0.001, preserve_topology=True)
     candidates = sorted(gdf["candidate"].dropna().unique())
     cand1 = st.selectbox("Map Candidate A", ["All"] + candidates, index=candidates.index("Michael Bennet") + 1)
     cand2 = st.selectbox("Map Candidate B", ["All"] + candidates, index=candidates.index("Phil Weiser") + 1)
