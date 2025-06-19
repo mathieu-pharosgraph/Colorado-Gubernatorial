@@ -11,6 +11,7 @@ import pydeck as pdk
 from hashlib import md5
 import os
 import warnings
+import time
 
 warnings.filterwarnings("ignore", category=pd.errors.SettingWithCopyWarning)
 
@@ -109,6 +110,8 @@ def load_precinct_data():
     shapes["county_name"] = shapes["county_fips"].map(fips_to_name)
     shapes["precinct_num"] = shapes["VTDST20"].astype(str).str.zfill(6)
     shapes["precinct_code"] = shapes["precinct_num"].str[-3:]
+    shapes["geometry"] = shapes["geometry"].simplify(0.001, preserve_topology=True)
+
     shapes = shapes[["county_name", "precinct_code", "geometry"]]
 
     scores = pd.read_csv("data/precinct_candidate_scores_with_confidence.csv")
@@ -126,8 +129,13 @@ def load_precinct_data():
                           on=["county_name", "precinct_code"], how="left")
     return gpd.GeoDataFrame(merged, geometry="geometry", crs=shapes.crs), shapes
 
+start = time.time()
+st.write("Starting precinct load...")
+
 gdf, shapes = load_precinct_data()
-shapes["geometry"] = shapes["geometry"].simplify(0.001, preserve_topology=True)
+
+st.write(f"Precincts loaded in {time.time() - start:.2f} seconds.")
+
 
 def name_to_rgb(name):
     h = md5(name.encode()).hexdigest()
