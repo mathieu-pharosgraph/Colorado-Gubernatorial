@@ -417,6 +417,30 @@ with tabs[6]:
         st.subheader(f"Net Support: {cand1} – {cand2}")
         show_pydeck_map(geo_net, "net_score", candidate_name=cand1, second_name=cand2)
 
+    # --- 🏆 Winner Map ---
+    st.subheader("🏆 Winner Map (Top Score)")
+    winner_df = gdf.copy()
+    pivot = winner_df.pivot_table(index=["county_name", "precinct_code"], columns="candidate", values="score")
+    pivot["winner"] = pivot.idxmax(axis=1)
+    pivot["max_score"] = pivot.max(axis=1).round(2)
+
+    winner_geo = shapes.merge(pivot.reset_index(), on=["county_name", "precinct_code"], how="inner")
+    winner_geo["rgb"] = winner_geo["winner"].apply(name_to_rgb)
+    winner_geo[["r", "g", "b", "a"]] = pd.DataFrame(winner_geo["rgb"].tolist(), index=winner_geo.index)
+
+    show_pydeck_map(winner_geo, "max_score", candidate_name="Winner")
+
+    st.markdown("### 🎨 Winner Legend")
+    for cand in sorted(winner_geo["winner"].dropna().unique()):
+        rgb = name_to_rgb(cand)
+        color_hex = f"#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}"
+        st.markdown(
+            f"<div style='display:flex;align-items:center;gap:8px;'>"
+            f"<div style='width:20px;height:20px;background-color:{color_hex};border-radius:3px;'></div>"
+            f"{cand.title()}</div>", unsafe_allow_html=True
+        )
+
+
 with tabs[7]:
     st.header("📊 Precinct Tables")
     gdf["priority"] = (gdf["normalized_score"] * gdf["totalvoters"] * gdf["totalvoterturnout1"]).round(0)
