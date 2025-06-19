@@ -11,3 +11,4 @@ fiona
 pyproj
 rtree
 fiona
+pyogrio

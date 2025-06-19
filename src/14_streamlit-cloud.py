@@ -9,9 +9,12 @@ from pathlib import Path
 import geopandas as gpd
 import pydeck as pdk
 from hashlib import md5
-st.set_page_config(layout="wide")
 import os
-st.write("Shapefile components:", os.listdir("data"))
+import warnings
+
+warnings.filterwarnings("ignore", category=pd.errors.SettingWithCopyWarning)
+
+st.set_page_config(layout="wide")
 
 # --- Logo and Header ---
 st.image("src/pharos_logo.png", width=180)
@@ -52,9 +55,8 @@ def load_structured():
                 })
                 rows.append(s)
             except Exception as e:
-                continue  # optional: log error if needed
+                continue
     return pd.DataFrame(rows)
-
 
 @st.cache_data
 def load_framing():
@@ -75,6 +77,7 @@ top_issues_raw = load_top_issues()
 for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
     if col in df.columns:
         df[col] = pd.to_numeric(df[col], errors="coerce")
+
 
 # --- Tabs ---
 tabs = st.tabs([
@@ -135,13 +138,15 @@ def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=Non
         st.info("No data to show on map.")
         return
 
-    gdf_map = gdf_map.copy()
+    gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
     gdf_map[value_col] = gdf_map[value_col].round(2)
+
     if "rgb" not in gdf_map.columns:
         gdf_map["score_norm"] = (gdf_map[value_col] - gdf_map[value_col].min()) / (gdf_map[value_col].max() - gdf_map[value_col].min())
         gdf_map["rgb"] = gdf_map["score_norm"].apply(lambda x: [int(255 * (1 - x)), int(255 * x), 50, 200])
     gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
     gdf_map = gdf_map.to_crs(epsg=4326)
+
     geojson = to_geojson_cached(gdf_map, key=f"{value_col}_{gdf_map.shape[0]}")
 
     tooltip = f"""
@@ -166,7 +171,6 @@ def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=Non
 
     st.pydeck_chart(pdk.Deck(map_style="mapbox://styles/mapbox/light-v9", initial_view_state=view_state,
                              layers=[layer], tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}))
-
 # --- Tab 0: Roles ---
 with tabs[0]:
     st.header("🦸 Narrative Roles")
