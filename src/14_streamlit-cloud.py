@@ -78,8 +78,6 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
     if col in df.columns:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
-gdf, shapes = load_precinct_data()
-shapes = shapes[["county_name", "precinct_code", "geometry"]].simplify(0.001, preserve_topology=True)
 
 
 # --- Tabs ---
@@ -127,6 +125,9 @@ def load_precinct_data():
     merged = merged.merge(turnout[["county_name", "precinct_code", "totalvoters", "totalvoterturnout1"]],
                           on=["county_name", "precinct_code"], how="left")
     return gpd.GeoDataFrame(merged, geometry="geometry", crs=shapes.crs), shapes
+
+gdf, shapes = load_precinct_data()
+shapes = shapes[["county_name", "precinct_code", "geometry"]].simplify(0.001, preserve_topology=True)
 
 def name_to_rgb(name):
     h = md5(name.encode()).hexdigest()
