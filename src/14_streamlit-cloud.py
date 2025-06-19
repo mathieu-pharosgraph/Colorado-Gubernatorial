@@ -11,7 +11,7 @@ import pydeck as pdk
 from hashlib import md5
 st.set_page_config(layout="wide")
 import os
-
+st.write("Shapefile components:", os.listdir("data"))
 
 # --- Logo and Header ---
 st.image("src/pharos_logo.png", width=180)
@@ -86,7 +86,7 @@ candidates = sorted(df["candidate"].dropna().unique())
 
 @st.cache_data
 def load_precinct_data():
-    shapes = gpd.read_file("data/tl_2020_08_vtd20/tl_2020_08_vtd20.shp", engine="fiona")
+    shapes = gpd.read_file("data/tl_2020_08_vtd20.shp", engine="fiona")
 
     fips_to_name = {
         "001": "adams", "003": "alamosa", "005": "arapahoe", "007": "archuleta", "009": "baca", "011": "bent",
