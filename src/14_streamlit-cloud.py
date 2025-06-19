@@ -84,7 +84,7 @@ candidates = sorted(df["candidate"].dropna().unique())
 
 @st.cache_data
 def load_precinct_data():
-    shapes = gpd.read_file("Precinct_to_census_blocks/tl_2020_08_vtd20/tl_2020_08_vtd20.shp")
+    shapes = gpd.read_file("data/tl_2020_08_vtd20.shp")
     fips_to_name = {...}  # insert your full FIPS dict here
     shapes["county_fips"] = shapes["COUNTYFP20"].astype(str).str.zfill(3)
     shapes["county_name"] = shapes["county_fips"].map(fips_to_name)
@@ -92,12 +92,12 @@ def load_precinct_data():
     shapes["precinct_code"] = shapes["precinct_num"].str[-3:]
     shapes = shapes[["county_name", "precinct_code", "geometry"]]
 
-    scores = pd.read_csv("output/precinct_candidate_scores_with_confidence.csv")
+    scores = pd.read_csv("data/precinct_candidate_scores_with_confidence.csv")
     scores["precinct_num"] = scores["precinct_num"].astype(str).str.zfill(3)
     scores["county_name"] = scores["county_name"].str.strip().str.lower()
     scores["precinct_code"] = scores["precinct_num"]
 
-    turnout = pd.read_stata("socio_demo_politics_precinct_final.dta")
+    turnout = pd.read_stata("data/socio_demo_politics_precinct_final.dta")
     turnout["precinct_num"] = turnout["precinct_num"].astype(str).str.zfill(3)
     turnout["county_name"] = turnout["county_name"].str.strip().str.lower()
     turnout["precinct_code"] = turnout["precinct_num"]
