@@ -3,3 +3,10 @@ pandas
 altair
 matplotlib
 wordcloud
+geopandas
+pydeck
+pandas
+shapely
+fiona
+pyproj
+rtree
