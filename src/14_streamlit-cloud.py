@@ -87,7 +87,19 @@ candidates = sorted(df["candidate"].dropna().unique())
 @st.cache_data
 def load_precinct_data():
     shapes = gpd.read_file("data/tl_2020_08_vtd20.shp")
-    fips_to_name = {...}  # insert your full FIPS dict here
+    fips_to_name = {
+        "001": "adams", "003": "alamosa", "005": "arapahoe", "007": "archuleta", "009": "baca", "011": "bent",
+        "013": "boulder", "014": "broomfield", "015": "chaffee", "017": "cheyenne", "019": "clear creek",
+        "021": "conejos", "023": "costilla", "025": "crowley", "027": "custer", "029": "delta", "031": "denver",
+        "033": "dolores", "035": "douglas", "037": "eagle", "039": "elbert", "041": "el paso", "043": "fremont",
+        "045": "garfield", "047": "gilpin", "049": "grand", "051": "gunnison", "053": "hinsdale", "055": "huerfano",
+        "057": "jackson", "059": "jefferson", "061": "kiowa", "063": "kit carson", "065": "lake", "067": "la plata",
+        "069": "larimer", "071": "las animas", "073": "lincoln", "075": "logan", "077": "mesa", "079": "mineral",
+        "081": "moffat", "083": "montezuma", "085": "montrose", "087": "morgan", "089": "otero", "091": "ouray",
+        "093": "park", "095": "phillips", "097": "pitkin", "099": "prowers", "101": "pueblo", "103": "rio blanco",
+        "105": "rio grande", "107": "routt", "109": "saguache", "111": "san juan", "113": "san miguel",
+        "115": "sedgwick", "117": "summit", "119": "teller", "121": "washington", "123": "weld", "125": "yuma"
+    }
     shapes["county_fips"] = shapes["COUNTYFP20"].astype(str).str.zfill(3)
     shapes["county_name"] = shapes["county_fips"].map(fips_to_name)
     shapes["precinct_num"] = shapes["VTDST20"].astype(str).str.zfill(6)
