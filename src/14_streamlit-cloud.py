@@ -86,7 +86,8 @@ candidates = sorted(df["candidate"].dropna().unique())
 
 @st.cache_data
 def load_precinct_data():
-    shapes = gpd.read_file("data/tl_2020_08_vtd20.shp")
+    shapes = gpd.read_file("data/tl_2020_08_vtd20/tl_2020_08_vtd20.shp", engine="fiona")
+
     fips_to_name = {
         "001": "adams", "003": "alamosa", "005": "arapahoe", "007": "archuleta", "009": "baca", "011": "bent",
         "013": "boulder", "014": "broomfield", "015": "chaffee", "017": "cheyenne", "019": "clear creek",
