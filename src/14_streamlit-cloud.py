@@ -129,12 +129,10 @@ def load_precinct_data():
                           on=["county_name", "precinct_code"], how="left")
     return gpd.GeoDataFrame(merged, geometry="geometry", crs=shapes.crs), shapes
 
-start = time.time()
-st.write("Starting precinct load...")
+
 
 gdf, shapes = load_precinct_data()
 
-st.write(f"Precincts loaded in {time.time() - start:.2f} seconds.")
 
 
 def name_to_rgb(name):
