@@ -10,6 +10,8 @@ import geopandas as gpd
 import pydeck as pdk
 from hashlib import md5
 st.set_page_config(layout="wide")
+import os
+st.write("Deployed files:", os.listdir("Precinct_to_census_blocks/tl_2020_08_vtd20"))
 
 # --- Logo and Header ---
 st.image("src/pharos_logo.png", width=180)
