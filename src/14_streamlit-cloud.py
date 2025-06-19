@@ -6,7 +6,9 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import re
 from pathlib import Path
-
+import geopandas as gpd
+import pydeck as pdk
+from hashlib import md5
 st.set_page_config(layout="wide")
 
 # --- Logo and Header ---
@@ -75,10 +77,80 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
 # --- Tabs ---
 tabs = st.tabs([
     "Roles", 
-    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights", "Voter Persuasion Insights", "Frames", "Topics"
+    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights", "Voter Persuasion Insights", "Precinct Maps", "Precinct Tables",  "Frames", "Topics"
 ])
 
 candidates = sorted(df["candidate"].dropna().unique())
+
+@st.cache_data
+def load_precinct_data():
+    shapes = gpd.read_file("Precinct_to_census_blocks/tl_2020_08_vtd20/tl_2020_08_vtd20.shp")
+    fips_to_name = {...}  # insert your full FIPS dict here
+    shapes["county_fips"] = shapes["COUNTYFP20"].astype(str).str.zfill(3)
+    shapes["county_name"] = shapes["county_fips"].map(fips_to_name)
+    shapes["precinct_num"] = shapes["VTDST20"].astype(str).str.zfill(6)
+    shapes["precinct_code"] = shapes["precinct_num"].str[-3:]
+    shapes = shapes[["county_name", "precinct_code", "geometry"]]
+
+    scores = pd.read_csv("output/precinct_candidate_scores_with_confidence.csv")
+    scores["precinct_num"] = scores["precinct_num"].astype(str).str.zfill(3)
+    scores["county_name"] = scores["county_name"].str.strip().str.lower()
+    scores["precinct_code"] = scores["precinct_num"]
+
+    turnout = pd.read_stata("socio_demo_politics_precinct_final.dta")
+    turnout["precinct_num"] = turnout["precinct_num"].astype(str).str.zfill(3)
+    turnout["county_name"] = turnout["county_name"].str.strip().str.lower()
+    turnout["precinct_code"] = turnout["precinct_num"]
+
+    merged = shapes.merge(scores, on=["county_name", "precinct_code"], how="inner")
+    merged = merged.merge(turnout[["county_name", "precinct_code", "totalvoters", "totalvoterturnout1"]],
+                          on=["county_name", "precinct_code"], how="left")
+    return gpd.GeoDataFrame(merged, geometry="geometry", crs=shapes.crs), shapes
+
+def name_to_rgb(name):
+    h = md5(name.encode()).hexdigest()
+    return [int(h[:2], 16), int(h[2:4], 16), int(h[4:6], 16), 200]
+
+@st.cache_data
+def to_geojson_cached(_df, key: str):
+    return json.loads(_df.to_json())
+
+def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=None, second_name=None):
+    if gdf_map.empty:
+        st.info("No data to show on map.")
+        return
+
+    gdf_map = gdf_map.copy()
+    gdf_map[value_col] = gdf_map[value_col].round(2)
+    if "rgb" not in gdf_map.columns:
+        gdf_map["score_norm"] = (gdf_map[value_col] - gdf_map[value_col].min()) / (gdf_map[value_col].max() - gdf_map[value_col].min())
+        gdf_map["rgb"] = gdf_map["score_norm"].apply(lambda x: [int(255 * (1 - x)), int(255 * x), 50, 200])
+    gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
+    gdf_map = gdf_map.to_crs(epsg=4326)
+    geojson = to_geojson_cached(gdf_map, key=f"{value_col}_{gdf_map.shape[0]}")
+
+    tooltip = f"""
+        <b>Candidate:</b> {candidate_name if candidate_name else 'N/A'}<br>
+        <b>County:</b> {{county_name}}<br>
+        <b>Precinct:</b> {{precinct_code}}<br>
+        <b>{value_col.title()}:</b> {{{value_col}}}
+    """
+    if value_col == "net_score" and second_name:
+        tooltip = f"""
+            <b>{candidate_name}:</b> {{cand1_score}}<br>
+            <b>{second_name}:</b> {{cand2_score}}<br>
+            <b>Net Score:</b> {{net_score}}<br>
+            <b>County:</b> {{county_name}}<br>
+            <b>Precinct:</b> {{precinct_code}}
+        """
+
+    view_state = pdk.ViewState(latitude=39.0, longitude=-105.5, zoom=7.5)
+    layer = pdk.Layer("GeoJsonLayer", data=geojson,
+                      get_fill_color="[properties.r, properties.g, properties.b, properties.a]",
+                      get_line_color=[0, 0, 0, 160], pickable=True, auto_highlight=True)
+
+    st.pydeck_chart(pdk.Deck(map_style="mapbox://styles/mapbox/light-v9", initial_view_state=view_state,
+                             layers=[layer], tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}))
 
 # --- Tab 0: Roles ---
 with tabs[0]:
@@ -283,8 +355,66 @@ with tabs[5]:  # adjust index if needed
         else:
             st.info("No demographic appeal data available.")
 
-# --- Tab 6: Frames ---
 with tabs[6]:
+    st.header("🗺️ Precinct Score Maps")
+    gdf, shapes = load_precinct_data()
+    candidates = sorted(gdf["candidate"].dropna().unique())
+    cand1 = st.selectbox("Map Candidate A", ["All"] + candidates, index=candidates.index("Michael Bennet") + 1)
+    cand2 = st.selectbox("Map Candidate B", ["All"] + candidates, index=candidates.index("Phil Weiser") + 1)
+    filtered = gdf.copy()
+
+    if cand1 != "All":
+        df1 = gdf[gdf["candidate"] == cand1].copy()
+        show_pydeck_map(df1, "score", candidate_name=cand1)
+
+    if cand2 != "All":
+        df2 = gdf[gdf["candidate"] == cand2].copy()
+        show_pydeck_map(df2, "score", candidate_name=cand2)
+
+    if cand1 != "All" and cand2 != "All" and cand1 != cand2:
+        wide = filtered.pivot(index=["county_name", "precinct_code"], columns="candidate", values="score").reset_index()
+        wide = wide.dropna(subset=[cand1, cand2])
+        wide["net_score"] = (wide[cand1] - wide[cand2]).round(2)
+        wide["cand1_score"] = wide[cand1].round(2)
+        wide["cand2_score"] = wide[cand2].round(2)
+        geo_net = shapes.merge(wide, on=["county_name", "precinct_code"], how="inner")
+        st.subheader(f"Net Support: {cand1} – {cand2}")
+        show_pydeck_map(geo_net, "net_score", candidate_name=cand1, second_name=cand2)
+
+with tabs[7]:
+    st.header("📊 Precinct Tables")
+    gdf, _ = load_precinct_data()
+    gdf["priority"] = (gdf["normalized_score"] * gdf["totalvoters"] * gdf["totalvoterturnout1"]).round(0)
+    gdf["score"] = gdf["score"].round(2)
+    gdf["normalized_score"] = gdf["normalized_score"].round(2)
+    gdf["voter turnout"] = gdf["totalvoterturnout1"].apply(lambda x: f"{int(round(x))}%" if pd.notnull(x) else "N/A")
+
+    table_cand1 = st.selectbox("Table Candidate A", ["All"] + candidates, index=candidates.index("Michael Bennet") + 1)
+    filtered_table = gdf if table_cand1 == "All" else gdf[gdf["candidate"] == table_cand1]
+
+    display_df = filtered_table.rename(columns={"totalvoters": "number of voters"})[[
+        "county_name", "precinct_code", "candidate", "score", "normalized_score", "number of voters", "voter turnout", "priority"
+    ]]
+    st.dataframe(display_df.sort_values("priority", ascending=False), use_container_width=True)
+
+    st.subheader("🆚 Net Score Table")
+    cand_x = st.selectbox("Compare A", candidates, index=candidates.index("Michael Bennet"))
+    cand_y = st.selectbox("Compare B", candidates, index=candidates.index("Phil Weiser"))
+    if cand_x != cand_y:
+        net_df = gdf[gdf["candidate"].isin([cand_x, cand_y])].pivot_table(
+            index=["county_name", "precinct_code", "totalvoters", "totalvoterturnout1"],
+            columns="candidate", values="score"
+        ).dropna().reset_index()
+        net_df["net_score"] = (net_df[cand_x] - net_df[cand_y]).round(2)
+        net_df["number of voters"] = net_df["totalvoters"]
+        net_df["voter turnout"] = net_df["totalvoterturnout1"].apply(lambda x: f"{int(round(x))}%" if pd.notnull(x) else "N/A")
+        net_display = net_df.rename(columns={cand_x: f"{cand_x} Score", cand_y: f"{cand_y} Score"})[[
+            "county_name", "precinct_code", f"{cand_x} Score", f"{cand_y} Score", "net_score", "number of voters", "voter turnout"
+        ]]
+        st.dataframe(net_display.sort_values("net_score", ascending=False), use_container_width=True)
+
+# --- Tab 8: Frames ---
+with tabs[8]:
     st.header("🧠 Semantic Frames")
     frame_rows = []
     for _, row in df.iterrows():
@@ -316,8 +446,8 @@ with tabs[6]:
 
 
 
-# --- Tab 7: Topics ---
-with tabs[7]:
+# --- Tab 9: Topics ---
+with tabs[9]:
     st.header("🧭 Issue Topic Affinities")
     topic_rows = []
     for _, row in df.iterrows():
