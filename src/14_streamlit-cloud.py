@@ -421,8 +421,10 @@ with tabs[6]:
     st.subheader("🏆 Winner Map (Top Score)")
     winner_df = gdf.copy()
     pivot = winner_df.pivot_table(index=["county_name", "precinct_code"], columns="candidate", values="score")
-    pivot["winner"] = pivot.idxmax(axis=1)
-    pivot["max_score"] = pivot.max(axis=1).round(2)
+    score_only = pivot[candidates]  # restrict to candidate score columns
+    pivot["winner"] = score_only.idxmax(axis=1)
+    pivot["max_score"] = score_only.max(axis=1).round(2)
+
 
     winner_geo = shapes.merge(pivot.reset_index(), on=["county_name", "precinct_code"], how="inner")
     winner_geo["rgb"] = winner_geo["winner"].apply(name_to_rgb)
