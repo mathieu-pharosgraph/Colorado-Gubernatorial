@@ -11,7 +11,7 @@ import pydeck as pdk
 from hashlib import md5
 st.set_page_config(layout="wide")
 import os
-st.write("Deployed files:", os.listdir("data"))
+
 
 # --- Logo and Header ---
 st.image("src/pharos_logo.png", width=180)
