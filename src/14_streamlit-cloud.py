@@ -78,6 +78,9 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
     if col in df.columns:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
+gdf, shapes = load_precinct_data()
+shapes = shapes[["county_name", "precinct_code", "geometry"]].simplify(0.001, preserve_topology=True)
+
 
 # --- Tabs ---
 tabs = st.tabs([
@@ -147,7 +150,8 @@ def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=Non
     gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
     gdf_map = gdf_map.to_crs(epsg=4326)
 
-    geojson = to_geojson_cached(gdf_map, key=f"{value_col}_{gdf_map.shape[0]}")
+    geojson = to_geojson_cached(gdf_map, key=f"{value_col}_geo")
+
 
     tooltip = f"""
         <b>Candidate:</b> {candidate_name if candidate_name else 'N/A'}<br>
@@ -171,6 +175,8 @@ def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=Non
 
     st.pydeck_chart(pdk.Deck(map_style="mapbox://styles/mapbox/light-v9", initial_view_state=view_state,
                              layers=[layer], tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}))
+
+
 # --- Tab 0: Roles ---
 with tabs[0]:
     st.header("🦸 Narrative Roles")
@@ -376,8 +382,6 @@ with tabs[5]:  # adjust index if needed
 
 with tabs[6]:
     st.header("🗺️ Precinct Score Maps")
-    gdf, shapes = load_precinct_data()
-    shapes = shapes.simplify(0.001, preserve_topology=True)
     candidates = sorted(gdf["candidate"].dropna().unique())
     cand1 = st.selectbox("Map Candidate A", ["All"] + candidates, index=candidates.index("Michael Bennet") + 1)
     cand2 = st.selectbox("Map Candidate B", ["All"] + candidates, index=candidates.index("Phil Weiser") + 1)
@@ -397,13 +401,17 @@ with tabs[6]:
         wide["net_score"] = (wide[cand1] - wide[cand2]).round(2)
         wide["cand1_score"] = wide[cand1].round(2)
         wide["cand2_score"] = wide[cand2].round(2)
-        geo_net = shapes.merge(wide, on=["county_name", "precinct_code"], how="inner")
+        geo_net = shapes[["county_name", "precinct_code", "geometry"]].merge(
+            wide[["county_name", "precinct_code", "net_score", "cand1_score", "cand2_score"]],
+            on=["county_name", "precinct_code"],
+            how="inner"
+        )
+
         st.subheader(f"Net Support: {cand1} – {cand2}")
         show_pydeck_map(geo_net, "net_score", candidate_name=cand1, second_name=cand2)
 
 with tabs[7]:
     st.header("📊 Precinct Tables")
-    gdf, _ = load_precinct_data()
     gdf["priority"] = (gdf["normalized_score"] * gdf["totalvoters"] * gdf["totalvoterturnout1"]).round(0)
     gdf["score"] = gdf["score"].round(2)
     gdf["normalized_score"] = gdf["normalized_score"].round(2)
