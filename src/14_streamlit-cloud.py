@@ -409,14 +409,15 @@ with tabs[6]:
     if cand1 != "All":
         st.subheader(f"🗺️ Precinct Scores for {cand1}")
         pivot1 = gdf[gdf["candidate"] == cand1][["county_name", "precinct_code", "score"]].copy()
-        df1 = shapes.merge(pivot1, on=["county_name", "precinct_code"], how="inner")
+        df1 = shapes.copy().merge(pivot1, on=["county_name", "precinct_code"], how="inner")
         show_pydeck_map(df1, "score", candidate_name=cand1)
 
     if cand2 != "All":
         st.subheader(f"🗺️ Precinct Scores for {cand2}")
         pivot2 = gdf[gdf["candidate"] == cand2][["county_name", "precinct_code", "score"]].copy()
-        df2 = shapes.merge(pivot2, on=["county_name", "precinct_code"], how="inner")
+        df2 = shapes.copy().merge(pivot2, on=["county_name", "precinct_code"], how="inner")
         show_pydeck_map(df2, "score", candidate_name=cand2)
+
 
 
     if cand1 != "All" and cand2 != "All" and cand1 != cand2:
