@@ -489,11 +489,17 @@ with tabs[7]:
     gdf["normalized_score"] = gdf["normalized_score"].round(2)
     gdf["voter turnout"] = gdf["totalvoterturnout1"].apply(lambda x: f"{int(round(x))}%" if pd.notnull(x) else "N/A")
 
-    # Compute winner and score per precinct
+    
     pivot = gdf.pivot_table(index=["county_name", "precinct_code"], columns="candidate", values="score")
-    pivot["precinct_winner"] = pivot.idxmax(axis=1)
+
+    # Compute winner score (numeric) first
     pivot["winner_score"] = pivot.max(axis=1).round(2)
-    winner_lookup = pivot[["precinct_winner", "winner_score"]].reset_index()
+
+    # Then compute winner name (string)
+    pivot["precinct_winner"] = pivot.idxmax(axis=1)
+
+    # Merge into main gdf
+    winner_lookup = pivot[["winner_score", "precinct_winner"]].reset_index()
     gdf = gdf.merge(winner_lookup, on=["county_name", "precinct_code"], how="left")
 
     table_cand1 = st.selectbox("Table Candidate A", ["All"] + candidates, index=candidates.index("Michael Bennet") + 1)
