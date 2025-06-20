@@ -404,23 +404,27 @@ with tabs[6]:
     cand2 = st.selectbox("Map Candidate B", ["All"] + candidates, index=candidates.index("Phil Weiser") + 1)
     filtered = gdf.copy()
 
+    # Pivot table with all candidate scores for winner map later
     pivot_all = gdf.pivot(index=["county_name", "precinct_code"], columns="candidate", values="score").reset_index()
 
+    # --- Map for Candidate A ---
     if cand1 != "All":
         st.subheader(f"🗺️ Precinct Scores for {cand1}")
         pivot1 = gdf[gdf["candidate"] == cand1][["county_name", "precinct_code", "score"]].copy()
         pivot1 = pivot1.rename(columns={"score": "cand1_score"})
         df1 = shapes.copy().merge(pivot1, on=["county_name", "precinct_code"], how="inner")
-        df1 = df1.rename(columns={"cand1_score": "score"})  # rename back only for the map
+        df1 = df1.rename(columns={"cand1_score": "score"})
         show_pydeck_map(df1, "score", candidate_name=cand1)
 
+    # --- Map for Candidate B ---
     if cand2 != "All":
         st.subheader(f"🗺️ Precinct Scores for {cand2}")
         pivot2 = gdf[gdf["candidate"] == cand2][["county_name", "precinct_code", "score"]].copy()
         pivot2 = pivot2.rename(columns={"score": "cand2_score"})
         df2 = shapes.copy().merge(pivot2, on=["county_name", "precinct_code"], how="inner")
-        df2 = df2.rename(columns={"cand2_score": "score"})  # rename back only for the map
+        df2 = df2.rename(columns={"cand2_score": "score"})
         show_pydeck_map(df2, "score", candidate_name=cand2)
+
 
 
 
