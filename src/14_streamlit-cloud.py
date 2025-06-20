@@ -485,6 +485,12 @@ with tabs[7]:
     > These scores are based on AI analysis of how each candidate is framed in the news — as a **hero or villain**, with specific **traits, archetypes, issue framing**, and alignment with **socio-demographic and political preferences**.
     """)
     gdf["priority"] = (gdf["normalized_score"] * gdf["totalvoters"] * gdf["totalvoterturnout1"]).round(0)
+    # Compute precinct winners across all candidates
+    pivot_winner = gdf.pivot_table(index=["county_name", "precinct_code"], columns="candidate", values="score")
+    pivot_winner["precinct_winner"] = pivot_winner.idxmax(axis=1)
+    pivot_winner["winner_score"] = pivot_winner.max(axis=1).round(2)
+    winner_lookup = pivot_winner.reset_index()[["county_name", "precinct_code", "precinct_winner", "winner_score"]]
+
     gdf["score"] = gdf["score"].round(2)
     gdf["normalized_score"] = gdf["normalized_score"].round(2)
     gdf["voter turnout"] = gdf["totalvoterturnout1"].apply(lambda x: f"{int(round(x))}%" if pd.notnull(x) else "N/A")
@@ -523,10 +529,20 @@ with tabs[7]:
         net_df["net_score"] = (net_df[cand_x] - net_df[cand_y]).round(2)
         net_df["number of voters"] = net_df["totalvoters"]
         net_df["voter turnout"] = net_df["totalvoterturnout1"].apply(lambda x: f"{int(round(x))}%" if pd.notnull(x) else "N/A")
-        net_display = net_df.rename(columns={cand_x: f"{cand_x} Score", cand_y: f"{cand_y} Score"})[[
-            "county_name", "precinct_code", f"{cand_x} Score", f"{cand_y} Score", "net_score", "number of voters", "voter turnout"
+        # Winner info from earlier merge
+        net_df = net_df.merge(winner_lookup, on=["county_name", "precinct_code"], how="left")
+
+        net_display = net_df.rename(columns={
+            cand_x: f"{cand_x} Score",
+            cand_y: f"{cand_y} Score",
+            "winner_score": "Winner Score",
+            "precinct_winner": "Precinct Winner"
+        })[[
+            "county_name", "precinct_code", f"{cand_x} Score", f"{cand_y} Score",
+            "net_score", "Winner Score", "Precinct Winner", "number of voters", "voter turnout"
         ]]
         st.dataframe(net_display.sort_values("net_score", ascending=False), use_container_width=True)
+
 
 # --- Tab 8: Frames ---
 with tabs[8]:
