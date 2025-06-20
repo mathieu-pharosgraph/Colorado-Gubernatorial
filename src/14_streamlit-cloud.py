@@ -388,6 +388,16 @@ with tabs[5]:  # adjust index if needed
             st.info("No demographic appeal data available.")
 
 with tabs[6]:
+    with st.expander("ℹ️ What do the scores mean?"):
+        st.markdown("""
+    **🧠 Raw Score** – AI-detected narrative alignment in this precinct for the selected candidate  
+    **📉 Normalized Score** – Relative strength of support (0–100) within the candidate’s precinct footprint  
+    **⚖️ Net Score** – The difference in narrative strength between two candidates in a given precinct  
+    **🎯 Priority Score** – Weighted opportunity metric based on:  
+    **Normalized Score × Voter Base × Turnout**
+
+    > These scores are based on AI analysis of how each candidate is framed in the news — as a **hero or villain**, with specific **traits, archetypes, issue framing**, and alignment with **socio-demographic and political preferences**.
+    """)
     st.header("🗺️ Precinct Score Maps")
     candidates = sorted(gdf["candidate"].dropna().unique())
     cand1 = st.selectbox("Map Candidate A", ["All"] + candidates, index=candidates.index("Michael Bennet") + 1)
@@ -395,12 +405,16 @@ with tabs[6]:
     filtered = gdf.copy()
 
     if cand1 != "All":
+        st.subheader(f"🗺️ Precinct Scores for {cand1}")
         df1 = gdf[gdf["candidate"] == cand1].copy()
         show_pydeck_map(df1, "score", candidate_name=cand1)
 
+
     if cand2 != "All":
+        st.subheader(f"🗺️ Precinct Scores for {cand2}")
         df2 = gdf[gdf["candidate"] == cand2].copy()
         show_pydeck_map(df2, "score", candidate_name=cand2)
+
 
     if cand1 != "All" and cand2 != "All" and cand1 != cand2:
         wide = filtered.pivot(index=["county_name", "precinct_code"], columns="candidate", values="score").reset_index()
@@ -419,6 +433,8 @@ with tabs[6]:
 
     # --- 🏆 Winner Map ---
     st.subheader("🏆 Winner Map (Top Score)")
+
+
     winner_df = gdf.copy()
     pivot = winner_df.pivot_table(index=["county_name", "precinct_code"], columns="candidate", values="score")
     score_only = pivot[candidates]  # restrict to candidate score columns
@@ -445,6 +461,16 @@ with tabs[6]:
 
 with tabs[7]:
     st.header("📊 Precinct Tables")
+    with st.expander("ℹ️ What do the scores mean?"):
+        st.markdown("""
+    **🧠 Raw Score** – AI-detected narrative alignment in this precinct for the selected candidate  
+    **📉 Normalized Score** – Relative strength of support (0–100) within the candidate’s precinct footprint  
+    **⚖️ Net Score** – The difference in narrative strength between two candidates in a given precinct  
+    **🎯 Priority Score** – Weighted opportunity metric based on:  
+    **Normalized Score × Voter Base × Turnout**
+
+    > These scores are based on AI analysis of how each candidate is framed in the news — as a **hero or villain**, with specific **traits, archetypes, issue framing**, and alignment with **socio-demographic and political preferences**.
+    """)
     gdf["priority"] = (gdf["normalized_score"] * gdf["totalvoters"] * gdf["totalvoterturnout1"]).round(0)
     gdf["score"] = gdf["score"].round(2)
     gdf["normalized_score"] = gdf["normalized_score"].round(2)
