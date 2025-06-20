@@ -84,7 +84,7 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
 # --- Tabs ---
 tabs = st.tabs([
     "Roles", 
-    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights", "Voter Persuasion Insights", "Precinct Maps", "Precinct Tables",  "Frames", "Topics"
+    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights", "Voter Persuasion Insights", "State Tables", "Precinct Maps", "Precinct Tables",  "Frames", "Topics"
 ])
 
 candidates = sorted(df["candidate"].dropna().unique())
@@ -388,6 +388,67 @@ with tabs[5]:  # adjust index if needed
             st.info("No demographic appeal data available.")
 
 with tabs[6]:
+    st.header("📈 State Narrative Scores and Head-to-Head Matchups")
+
+    with st.expander("ℹ️ What do the state-level scores mean?"):
+        st.markdown("""
+        **📊 State Score** – Weighted average narrative strength of each candidate, where each precinct contributes:  
+        **Raw Score × Number of Voters × Turnout**  
+        normalized by total **Voters × Turnout** across precincts with scores.
+
+        This reflects **narrative alignment scaled by potential electoral impact**.
+        """)
+
+    # Calculate state-level weighted scores
+    gdf_valid = gdf[gdf["score"].notnull()]
+    gdf_valid["weight"] = gdf_valid["totalvoters"] * gdf_valid["totalvoterturnout1"]
+
+    state_scores = gdf_valid.groupby("candidate").apply(
+        lambda g: (g["score"] * g["weight"]).sum() / g["weight"].sum()
+    ).round(2).reset_index(name="State Score")
+
+    st.subheader("🏅 State Score Rankings")
+    st.dataframe(state_scores.sort_values("State Score", ascending=False), use_container_width=True)
+
+    # Head-to-head filters
+    st.subheader("🤜 Head-to-Head Analysis")
+    col1, col2 = st.columns(2)
+    cand1 = col1.selectbox("Candidate A", candidates, index=candidates.index("Michael Bennet"))
+    cand2 = col2.selectbox("Candidate B", candidates, index=candidates.index("Phil Weiser"))
+
+    if cand1 != cand2:
+        pivot = gdf[gdf["candidate"].isin([cand1, cand2])].pivot_table(
+            index=["county_name", "precinct_code", "totalvoters", "totalvoterturnout1"],
+            columns="candidate", values="score"
+        ).dropna().reset_index()
+
+        # Compute protection and opportunity scores
+        pivot["weight"] = pivot["totalvoters"] * pivot["totalvoterturnout1"]
+        pivot["protect_score"] = ((pivot[cand1] > pivot[cand2]).astype(int)) * pivot["weight"]
+        pivot["opportunity_score"] = ((pivot[cand1] < pivot[cand2]).astype(int)) * (1 / (1 + (pivot[cand2] - pivot[cand1]).abs())) * pivot["weight"]
+
+        # Protect table
+        st.subheader(f"🛡️ Precincts to Protect for {cand1}")
+        protect_table = pivot[pivot["protect_score"] > 0][[
+            "county_name", "precinct_code", cand1, cand2, "protect_score"
+        ]].rename(columns={
+            cand1: f"{cand1} Score",
+            cand2: f"{cand2} Score"
+        }).sort_values("protect_score", ascending=False)
+        st.dataframe(protect_table, use_container_width=True)
+
+        # Opportunity table
+        st.subheader(f"🚀 Opportunity Precincts for {cand1}")
+        opportunity_table = pivot[pivot["opportunity_score"] > 0][[
+            "county_name", "precinct_code", cand1, cand2, "opportunity_score"
+        ]].rename(columns={
+            cand1: f"{cand1} Score",
+            cand2: f"{cand2} Score"
+        }).sort_values("opportunity_score", ascending=False)
+        st.dataframe(opportunity_table, use_container_width=True)
+
+
+with tabs[7]:
     with st.expander("ℹ️ What do the scores mean?"):
         st.markdown("""
     **🧠 Raw Score** – AI-detected narrative alignment in this precinct for the selected candidate  
@@ -472,7 +533,7 @@ with tabs[6]:
         )
 
 
-with tabs[7]:
+with tabs[8]:
     st.header("📊 Precinct Tables")
     with st.expander("ℹ️ What do the scores mean?"):
         st.markdown("""
@@ -543,8 +604,8 @@ with tabs[7]:
         st.dataframe(net_display.sort_values("net_score", ascending=False), use_container_width=True)
 
 
-# --- Tab 8: Frames ---
-with tabs[8]:
+# --- Tab 9: Frames ---
+with tabs[9]:
     st.header("🧠 Semantic Frames")
     frame_rows = []
     for _, row in df.iterrows():
@@ -576,8 +637,8 @@ with tabs[8]:
 
 
 
-# --- Tab 9: Topics ---
-with tabs[9]:
+# --- Tab 10: Topics ---
+with tabs[10]:
     st.header("🧭 Issue Topic Affinities")
     topic_rows = []
     for _, row in df.iterrows():
