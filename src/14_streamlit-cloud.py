@@ -431,7 +431,7 @@ with tabs[6]:
         st.subheader(f"🛡️ Precincts to Protect for {cand1}")
         with st.expander("ℹ️ What do the precincts to protect scores mean?"):
             st.markdown("""
-            **📊 Protect Score** – Considers only the precinct where the first candidate LEADS the second candidates. Score then based on number of voters * turnout  
+            **📊 Protect Score** – Considers only the precinct where the first candidate LEADS the second candidates. Score then based on number of voters * turnout.  
 
             """)
         protect_table = pivot[pivot["protect_score"] > 0][[
@@ -446,7 +446,7 @@ with tabs[6]:
         st.subheader(f"🚀 Opportunity Precincts for {cand1}")
         with st.expander("ℹ️ What do the opportinity precincts scores mean?"):
             st.markdown("""
-            **📊 Opportunity Score** – Considers only the precinct where the first candidate LAGS the second candidates. Score then based on number of voters * turnout weighted penalized by how much the first candidate lags in that county (i.e., precinct where the first candidate lags by only a small margin will show higher scores (for the same voters * turnout)) 
+            **📊 Opportunity Score** – Considers only the precinct where the first candidate LAGS the second candidates. Score then based on number of voters * turnout weighted penalized by how much the first candidate lags in that county (i.e., precinct where the first candidate lags by only a small margin will show higher scores (for the same voters * turnout)). 
 
             """)
         opportunity_table = pivot[pivot["opportunity_score"] > 0][[
