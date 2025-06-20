@@ -157,7 +157,7 @@ def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=Non
     gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
     gdf_map = gdf_map.to_crs(epsg=4326)
 
-    geojson = to_geojson_cached(gdf_map, key=f"{value_col}_geo")
+    geojson = to_geojson_cached(gdf_map, key=f"{value_col}_{candidate_name}_{gdf_map.shape[0]}")
 
 
     tooltip = f"""
