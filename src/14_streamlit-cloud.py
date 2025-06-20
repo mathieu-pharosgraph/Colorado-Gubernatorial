@@ -19,7 +19,7 @@ st.set_page_config(layout="wide")
 
 # --- Logo and Header ---
 st.image("src/pharos_logo.png", width=180)
-st.markdown("# Share of Model: Colorado Narrative Intelligence Dashboard")
+st.markdown("# Model Share: Colorado Narrative Intelligence Dashboard")
 
 # --- Load Data Functions ---
 @st.cache_data
