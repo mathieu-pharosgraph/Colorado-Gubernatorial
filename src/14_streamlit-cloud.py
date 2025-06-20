@@ -489,12 +489,21 @@ with tabs[7]:
     gdf["normalized_score"] = gdf["normalized_score"].round(2)
     gdf["voter turnout"] = gdf["totalvoterturnout1"].apply(lambda x: f"{int(round(x))}%" if pd.notnull(x) else "N/A")
 
+    # Compute winner and score per precinct
+    pivot = gdf.pivot_table(index=["county_name", "precinct_code"], columns="candidate", values="score")
+    pivot["precinct_winner"] = pivot.idxmax(axis=1)
+    pivot["winner_score"] = pivot.max(axis=1).round(2)
+    winner_lookup = pivot[["precinct_winner", "winner_score"]].reset_index()
+    gdf = gdf.merge(winner_lookup, on=["county_name", "precinct_code"], how="left")
+
     table_cand1 = st.selectbox("Table Candidate A", ["All"] + candidates, index=candidates.index("Michael Bennet") + 1)
     filtered_table = gdf if table_cand1 == "All" else gdf[gdf["candidate"] == table_cand1]
 
     display_df = filtered_table.rename(columns={"totalvoters": "number of voters"})[[
-        "county_name", "precinct_code", "candidate", "score", "normalized_score", "number of voters", "voter turnout", "priority"
+        "county_name", "precinct_code", "candidate", "score", "normalized_score",
+        "number of voters", "voter turnout", "priority", "precinct_winner", "winner_score"
     ]]
+
     st.dataframe(display_df.sort_values("priority", ascending=False), use_container_width=True)
 
     st.subheader("🆚 Net Score Table")
