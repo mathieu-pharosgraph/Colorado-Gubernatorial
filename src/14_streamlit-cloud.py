@@ -404,16 +404,20 @@ with tabs[6]:
     cand2 = st.selectbox("Map Candidate B", ["All"] + candidates, index=candidates.index("Phil Weiser") + 1)
     filtered = gdf.copy()
 
+    pivot_all = gdf.pivot(index=["county_name", "precinct_code"], columns="candidate", values="score").reset_index()
+
     if cand1 != "All":
         st.subheader(f"🗺️ Precinct Scores for {cand1}")
-        df1 = gdf[gdf["candidate"] == cand1].copy()
+        df1 = shapes.merge(pivot_all[["county_name", "precinct_code", cand1]], on=["county_name", "precinct_code"], how="inner")
+        df1 = df1.rename(columns={cand1: "score"})
         show_pydeck_map(df1, "score", candidate_name=cand1)
-
 
     if cand2 != "All":
         st.subheader(f"🗺️ Precinct Scores for {cand2}")
-        df2 = gdf[gdf["candidate"] == cand2].copy()
+        df2 = shapes.merge(pivot_all[["county_name", "precinct_code", cand2]], on=["county_name", "precinct_code"], how="inner")
+        df2 = df2.rename(columns={cand2: "score"})
         show_pydeck_map(df2, "score", candidate_name=cand2)
+
 
 
     if cand1 != "All" and cand2 != "All" and cand1 != cand2:
