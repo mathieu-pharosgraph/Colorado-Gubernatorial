@@ -636,7 +636,32 @@ with tabs[9]:
         - **Use Case**: Identify which issues dominate attention in different regions.
         """)
 
+    @st.cache_data
+    def load_opposition_data():
+        with open("data/precinct_issue_alignment.json") as f1, \
+             open("data/candidate_position_scores.json") as f2, \
+             open("data/opposition_attack_lines.json") as f3, \
+             open("data/issue_position_clusters.json") as f4:
+            alignment_data = json.load(f1)
+            candidate_scores = json.load(f2)
+            attack_lines = json.load(f3)
+            issue_position_map_raw = json.load(f4)
+
+            normalized = {}
+            for issue, clusters in issue_position_map_raw.items():
+                if isinstance(clusters, list):
+                    normalized[issue] = {
+                        c["cluster_label"]: c.get("cluster_summary", "") for c in clusters if "cluster_label" in c
+                    }
+                elif isinstance(clusters, dict):
+                    normalized[issue] = clusters
+                else:
+                    normalized[issue] = {}
+            return alignment_data, candidate_scores, attack_lines, normalized
+
+    # 🧠 Load data here after function is defined
     alignment_data, candidate_scores, attack_lines, issue_position_map = load_opposition_data()
+
     candidate_list = sorted(candidate_scores.keys())
 
     st.subheader("📍 Dominant Issue by Precinct")
