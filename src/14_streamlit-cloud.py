@@ -631,12 +631,15 @@ with tabs[9]:
     @st.cache_data
     def load_opposition_data():
         with open("data/precinct_issue_alignment.json") as f1, \
-             open("data/candidate_position_scores.json") as f2, \
-             open("data/opposition_attack_lines.json") as f3, \
-             open("data/issue_position_clusters.json") as f4:
-            return json.load(f1), json.load(f2), json.load(f3), json.load(f4)
+            open("data/candidate_position_scores.json") as f2, \
+            open("data/opposition_attack_lines.json") as f3, \
+            open("data/issue_position_clusters.json") as f4:
+            alignment_data = json.load(f1)
+            candidate_scores = json.load(f2)
+            attack_lines = json.load(f3)
+            issue_position_map = json.load(f4)
+        return alignment_data, candidate_scores, attack_lines, issue_position_map
 
-        issue_position_map = json.load(f4)
 
     alignment_data, candidate_scores, attack_lines, issue_position_map = load_opposition_data()
 
