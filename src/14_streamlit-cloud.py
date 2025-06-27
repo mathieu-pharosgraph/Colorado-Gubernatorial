@@ -662,37 +662,32 @@ with tabs[9]:
     # Replace this entire block starting from `st.subheader("\ud83d\udccd Dominant Issue by Precinct")`
 
     st.subheader("📍 Dominant Issue by Precinct")
-    top_n = st.selectbox("Number of top issues to display per precinct", [1, 2, 3, 4, 5], index=0)
-    pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
-    # Build top-N issue records
-    issue_records = []
-    pos_records = []
-    for row in alignment_data:
-        position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
-        
-        # Get valid cluster summaries
-        clusters_dict = issue_position_map.get(pos_issue, {})
-        filtered_scores = {k: v for k, v in position_scores.items() if k in clusters_dict}
+top_n = st.selectbox("Number of top issues to display per precinct", [1, 2, 3, 4, 5], index=0)
 
-        if filtered_scores:
-            dominant_position = max(filtered_scores, key=filtered_scores.get)
-            summary = clusters_dict.get(dominant_position, "No summary available")
-            pos_records.append({
-                "county_name": row["county"],
-                "precinct_code": row["precinct"],
-                "dominant_position": dominant_position,
-                "cluster_summary": summary
-            })
+# Build top-N issue salience records
+issue_records = []
+for row in alignment_data:
+    salience_dict = row.get("issue_salience", {})
+    top_issues = sorted(salience_dict.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    for rank, (issue, sal_score) in enumerate(top_issues, 1):
+        issue_records.append({
+            "county_name": row["county"],
+            "precinct_code": row["precinct"],
+            "issue": issue,
+            "salience": sal_score,
+            "top_issue_rank": f"Top {rank}"
+        })
 
+df_issue = pd.DataFrame(issue_records)
+if not df_issue.empty:
+    max_sal = df_issue["salience"].max()
+    df_issue["salience"] = (df_issue["salience"] / (max_sal + 1e-6)) * 100
+    df_issue["rgb"] = df_issue["issue"].apply(name_to_rgb)
+    df_issue[["r", "g", "b", "a"]] = pd.DataFrame(df_issue["rgb"].tolist(), index=df_issue.index)
 
-    df_dominant = pd.DataFrame(pos_records)
-
-    df_dominant["rgb"] = df_dominant["dominant_position"].apply(name_to_rgb)
-    df_dominant[["r", "g", "b", "a"]] = pd.DataFrame(df_dominant["rgb"].tolist(), index=df_dominant.index)
-
-    # Merge and show
-    map_df = shapes.merge(df_dominant, on=["county_name", "precinct_code"], how="inner")
+    map_df = shapes.merge(df_issue, on=["county_name", "precinct_code"], how="inner")
     show_pydeck_map(map_df, "issue", candidate_name="Top Issue")
+
 
     # Fix tooltip in show_pydeck_map()
     def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=None, second_name=None):
@@ -748,23 +743,17 @@ with tabs[9]:
     st.subheader("📌 Issue Position Map")
     pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
 
-    # Build position-level records
     pos_records = []
     for row in alignment_data:
         position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
-        
-        # Validate cluster labels
-        issue_clusters_dict = issue_position_map.get(pos_issue)
-        if not isinstance(issue_clusters_dict, dict):
-            st.warning(f"⚠️ Cluster definitions missing or malformed for: {pos_issue}")
+        cluster_defs = issue_position_map.get(pos_issue)
+        if not isinstance(cluster_defs, dict):
             continue
 
-        valid_clusters = set(issue_clusters_dict.keys())
-        filtered_scores = {k: v for k, v in position_scores.items() if k in valid_clusters}
-
+        filtered_scores = {k: v for k, v in position_scores.items() if k in cluster_defs}
         if filtered_scores:
             dominant_position = max(filtered_scores, key=filtered_scores.get)
-            summary = issue_clusters_dict.get(dominant_position, "No summary available")
+            summary = cluster_defs.get(dominant_position, "")
             pos_records.append({
                 "county_name": row["county"],
                 "precinct_code": row["precinct"],
@@ -772,49 +761,13 @@ with tabs[9]:
                 "cluster_summary": summary
             })
 
-    # Convert to DataFrame and merge
     pos_df = pd.DataFrame(pos_records)
     if not pos_df.empty:
         pos_df["rgb"] = pos_df["dominant_position"].apply(name_to_rgb)
         pos_df[["r", "g", "b", "a"]] = pd.DataFrame(pos_df["rgb"].tolist(), index=pos_df.index)
         pos_geo = shapes.merge(pos_df, on=["county_name", "precinct_code"], how="inner")
+        show_pydeck_map(pos_geo, "dominant_position", candidate_name=pos_issue)
 
-        # Use updated map function with summary
-        def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=None, second_name=None):
-            if gdf_map.empty:
-                st.info("No data to show on map.")
-                return
-
-            gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
-
-            if pd.api.types.is_numeric_dtype(gdf_map[value_col]):
-                gdf_map[value_col] = gdf_map[value_col].round(2)
-                gdf_map["score_norm"] = gdf_map[value_col] / (gdf_map[value_col].max() + 1e-6)
-                gdf_map["rgb"] = gdf_map["score_norm"].apply(lambda x: [int(255 * (1 - x)), int(255 * x), 50, 200])
-            else:
-                gdf_map["rgb"] = gdf_map[value_col].apply(name_to_rgb)
-
-            gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
-            gdf_map = gdf_map.to_crs(epsg=4326)
-
-            geojson = to_geojson_cached(gdf_map, key=f"{value_col}_{candidate_name}_{gdf_map.shape[0]}")
-
-            tooltip = f"""
-                <b>County:</b> {{county_name}}<br>
-                <b>Precinct:</b> {{precinct_code}}<br>
-                <b>Position:</b> {{{value_col}}}<br>
-                <b>Summary:</b> {{{{cluster_summary}}}}
-            """
-
-            view_state = pdk.ViewState(latitude=39.0, longitude=-105.5, zoom=7.5)
-            layer = pdk.Layer("GeoJsonLayer", data=geojson,
-                            get_fill_color="[properties.r, properties.g, properties.b, properties.a]",
-                            get_line_color=[0, 0, 0, 160], pickable=True, auto_highlight=True)
-
-            st.pydeck_chart(pdk.Deck(map_style="mapbox://styles/mapbox/light-v9", initial_view_state=view_state,
-                                    layers=[layer], tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}))
-
-        show_pydeck_map(pos_geo, "dominant_position")
     else:
         st.info("No valid position data available for this issue.")
 
