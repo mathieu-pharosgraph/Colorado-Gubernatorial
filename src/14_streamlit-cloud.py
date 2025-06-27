@@ -12,6 +12,7 @@ from hashlib import md5
 import os
 import warnings
 import time
+import ast
 
 warnings.filterwarnings("ignore", category=pd.errors.SettingWithCopyWarning)
 
@@ -631,36 +632,95 @@ with tabs[9]:
     def load_opposition_data():
         with open("data/precinct_issue_alignment.json") as f1, \
              open("data/candidate_position_scores.json") as f2, \
-             open("data/opposition_attack_lines.json") as f3:
-            return json.load(f1), json.load(f2), json.load(f3)
+             open("data/opposition_attack_lines.json") as f3, \
+             open("data/issue_position_clusters.json") as f4:
+            return json.load(f1), json.load(f2), json.load(f3), json.load(f4)
+
+        issue_position_map = json.load(f4)
 
     alignment_data, candidate_scores, attack_lines = load_opposition_data()
     candidate_list = sorted(candidate_scores.keys())
 
-    st.subheader("📍 Dominant Issue by Precinct")
-    df_dominant = pd.DataFrame([
-        {
-            "county_name": row["county"],
-            "precinct_code": row["precinct"],
-            "dominant_issue": max(row["issue_salience"], key=row["issue_salience"].get)
-        } for row in alignment_data if row["issue_salience"]
-    ])
-    df_dominant["rgb"] = df_dominant["dominant_issue"].apply(name_to_rgb)
-    df_dominant[["r", "g", "b", "a"]] = pd.DataFrame(df_dominant["rgb"].tolist(), index=df_dominant.index)
-    map_df = shapes.merge(df_dominant, on=["county_name", "precinct_code"], how="inner")
-    show_pydeck_map(map_df, "dominant_issue")
+    # Replace this entire block starting from `st.subheader("\ud83d\udccd Dominant Issue by Precinct")`
 
-    st.subheader("🔥 Issue Salience Heatmap")
-    selected_issue = st.selectbox("Select issue", sorted(alignment_data[0]["issue_salience"].keys()), key="salient_map")
-    salience_df = pd.DataFrame([
-        {
-            "county_name": row["county"],
-            "precinct_code": row["precinct"],
-            "salience": row["issue_salience"].get(selected_issue, 0)
-        } for row in alignment_data
-    ])
-    salience_map = shapes.merge(salience_df, on=["county_name", "precinct_code"], how="inner")
-    show_pydeck_map(salience_map, "salience")
+    st.subheader("\ud83d\udccd Dominant Issue by Precinct")
+    top_n = st.selectbox("Number of top issues to display per precinct", [1, 2, 3], index=0)
+
+    # Build top-N issue records
+    issue_records = []
+    for row in alignment_data:
+        county = row["county"]
+        precinct = row["precinct"]
+        salience_dict = row.get("issue_salience", {})
+        top_issues = sorted(salience_dict.items(), key=lambda x: x[1], reverse=True)[:top_n]
+        for rank, (issue, score) in enumerate(top_issues, 1):
+            issue_records.append({
+                "county_name": county,
+                "precinct_code": precinct,
+                "top_issue_rank": f"Top {rank}",
+                "issue": issue,
+                "salience": score
+            })
+
+    df_dominant = pd.DataFrame(issue_records)
+    if not df_dominant.empty:
+        max_sal = df_dominant["salience"].max()
+        df_dominant["salience"] = (df_dominant["salience"] / (max_sal + 1e-6)) * 100
+    df_dominant["rgb"] = df_dominant["issue"].apply(name_to_rgb)
+    df_dominant[["r", "g", "b", "a"]] = pd.DataFrame(df_dominant["rgb"].tolist(), index=df_dominant.index)
+
+    # Merge and show
+    map_df = shapes.merge(df_dominant, on=["county_name", "precinct_code"], how="inner")
+    show_pydeck_map(map_df, "issue", candidate_name="Top Issue")
+
+    # Fix tooltip in show_pydeck_map()
+    def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=None, second_name=None):
+        if gdf_map.empty:
+            st.info("No data to show on map.")
+            return
+
+        gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
+
+        if pd.api.types.is_numeric_dtype(gdf_map[value_col]):
+            gdf_map[value_col] = gdf_map[value_col].round(2)
+            gdf_map["score_norm"] = gdf_map[value_col] / (gdf_map[value_col].max() + 1e-6)
+            gdf_map["rgb"] = gdf_map["score_norm"].apply(lambda x: [int(255 * (1 - x)), int(255 * x), 50, 200])
+        else:
+            gdf_map["rgb"] = gdf_map[value_col].apply(name_to_rgb)
+
+        gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
+        gdf_map = gdf_map.to_crs(epsg=4326)
+        geojson = to_geojson_cached(gdf_map, key=f"{value_col}_{candidate_name}_{gdf_map.shape[0]}")
+
+        if "issue" in gdf_map.columns and "salience" in gdf_map.columns:
+            tooltip = f"""
+                <b>County:</b> {{county_name}}<br>
+                <b>Precinct:</b> {{precinct_code}}<br>
+                <b>Top Issue:</b> {{issue}}<br>
+                <b>Salience:</b> {{salience:.1f}}
+            """
+        elif value_col in ["dominant_issue", "dominant_position"]:
+            tooltip = f"""
+                <b>County:</b> {{county_name}}<br>
+                <b>Precinct:</b> {{precinct_code}}<br>
+                <b>{value_col.replace('_', ' ').title()}:</b> {{{value_col}}}
+            """
+        else:
+            tooltip = f"""
+                <b>County:</b> {{county_name}}<br>
+                <b>Precinct:</b> {{precinct_code}}<br>
+                <b>{value_col.title()}:</b> {{{value_col}}}
+            """
+
+
+        view_state = pdk.ViewState(latitude=39.0, longitude=-105.5, zoom=7.5)
+        layer = pdk.Layer("GeoJsonLayer", data=geojson,
+                        get_fill_color="[properties.r, properties.g, properties.b, properties.a]",
+                        get_line_color=[0, 0, 0, 160], pickable=True, auto_highlight=True)
+
+        st.pydeck_chart(pdk.Deck(map_style="mapbox://styles/mapbox/light-v9", initial_view_state=view_state,
+                                layers=[layer], tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}))
+
 
     st.subheader("📌 Issue Position Map")
     pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
@@ -697,19 +757,19 @@ with tabs[9]:
 
         def find_attack_line(attacks, a, b, issue):
             for row in attacks:
-                if not isinstance(row, dict):
-                    continue
-                if row.get("attacker") == a and row.get("target") == b and row.get("issue") == issue:
-                    response = row.get("response")
-                    if isinstance(response, dict):
-                        return response.get("attack_line", "—")
-                    else:
+                if row["attacker"] == a and row["target"] == b and row["issue"] == issue:
+                    try:
+                        parsed = ast.literal_eval(row["response"]) if isinstance(row["response"], str) else row["response"]
+                        return parsed.get("attack_line", "—")
+                    except Exception:
                         return "—"
             return "—"
 
 
 
         records = []
+
+
         for row in alignment_data:
             salience = row["issue_salience"]
             positions = row["issue_position_support"]
@@ -719,9 +779,18 @@ with tabs[9]:
                 clusters = positions.get(issue, {})
                 if not clusters:
                     continue
-                dom_cluster = max(clusters, key=clusters.get)
+
+                # ✅ Filter to valid cluster labels for this issue
+                valid_clusters = set(issue_position_map.get(issue, {}).keys())
+                filtered_clusters = {k: v for k, v in clusters.items() if k in valid_clusters}
+                if not filtered_clusters:
+                    continue
+
+                dom_cluster = max(filtered_clusters, key=filtered_clusters.get)
+
                 score_a = cluster_similarity(candidate_scores.get(cand1, {}).get(issue, {}), dom_cluster)
                 score_b = cluster_similarity(candidate_scores.get(cand2, {}).get(issue, {}), dom_cluster)
+
                 advantage = round(score_a - score_b, 2)
                 if (mode == "protect" and advantage > 0) or (mode == "opportunity" and advantage < 0):
                     records.append({
