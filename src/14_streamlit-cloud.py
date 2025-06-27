@@ -638,7 +638,8 @@ with tabs[9]:
 
         issue_position_map = json.load(f4)
 
-    alignment_data, candidate_scores, attack_lines = load_opposition_data()
+    alignment_data, candidate_scores, attack_lines, issue_position_map = load_opposition_data()
+
     candidate_list = sorted(candidate_scores.keys())
 
     # Replace this entire block starting from `st.subheader("\ud83d\udccd Dominant Issue by Precinct")`
