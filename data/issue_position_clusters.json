@@ -1,0 +1,632 @@
+{
+  "Immigration": [
+    {
+      "cluster_label": "Progressive/Liberal Immigration Policies",
+      "cluster_summary": "These positions advocate for more lenient, inclusive, and compassionate immigration policies, emphasizing the human rights of immigrants and pathways to citizenship for undocumented immigrants. They also argue for more generous refugee and asylum policies.",
+      "includes": [
+        "Comprehensive Immigration Reform",
+        "Immigrant Rights Advocacy",
+        "Progressive Immigration Policy",
+        "Liberal Immigration Policies"
+      ]
+    },
+    {
+      "cluster_label": "Pragmatic/Moderate Immigration Policies",
+      "cluster_summary": "These positions seek a balanced approach to immigration reform, advocating for both enhanced border security and providing pathways to citizenship for undocumented immigrants. They emphasize the need for secure borders while also advocating for a fair and efficient system for legal immigration.",
+      "includes": [
+        "Pragmatic Immigration Reform",
+        "Balanced Immigration Approach",
+        "Moderate Immigration Policies"
+      ]
+    },
+    {
+      "cluster_label": "Conservative/Strict Immigration Policies",
+      "cluster_summary": "These positions generally support stricter immigration policies, stronger border security, and tougher enforcement of immigration laws. They express skepticism of amnesty programs for undocumented immigrants and opposition to sanctuary city policies.",
+      "includes": [
+        "Stricter Immigration Policies",
+        "Conservative Immigration Policy",
+        "Strict Immigration Enforcement",
+        "Conservative Immigration Stance",
+        "Republican Immigration Stance",
+        "Conservative Immigration Policies"
+      ]
+    }
+  ],
+  "Inflation and Economy": [
+    {
+      "cluster_label": "Progressive Economic Policies",
+      "cluster_summary": "This cluster focuses on policies that aim to reduce economic inequality and improve opportunities for all, with a particular emphasis on supporting small businesses, working families, and consumers. It advocates for affordable healthcare, quality education, fair wages, and economic fairness.",
+      "includes": [
+        "Support for Small Business Relief and Working Families",
+        "Consumer Protection and Economic Fairness",
+        "Balancing Economic Growth with Environmental Sustainability"
+      ]
+    },
+    {
+      "cluster_label": "Conservative Economic Policies",
+      "cluster_summary": "This cluster advocates for limited government intervention in the economy, lower taxes, and fewer regulations on businesses. It supports measures to control inflation and stimulate economic growth through private sector growth, deregulation, and fiscal responsibility.",
+      "includes": [
+        "Conservative Approach to Economic Issues",
+        "Fiscal Conservatism and Private Sector Growth",
+        "Pro-Business, Fiscal Conservatism",
+        "Fiscal Responsibility and State-Level Control",
+        "Fiscal Conservatism and Free Markets",
+        "Balanced Budgets and Responsible Fiscal Policy",
+        "Fiscal Conservatism and Economic Growth"
+      ]
+    }
+  ],
+  "Crime and Policing": [
+    {
+      "cluster_label": "Conservative",
+      "cluster_summary": "These positions emphasize the importance of law and order, advocating for strong supportive actions towards law enforcement agencies, and opposing measures perceived as weakening the police's ability to do their job effectively. They support more resources for police departments and stricter punishments for criminals.",
+      "includes": [
+        "Conservative approach emphasizing law and order",
+        "Traditional conservative stance emphasizing law and order",
+        "Strong advocate for law enforcement with a tough stance on crime",
+        "Strong advocate for law enforcement and strict law enforcement policies"
+      ]
+    },
+    {
+      "cluster_label": "Moderate",
+      "cluster_summary": "These positions take a balanced approach to crime and policing, focusing on both punitive measures for offenders and preventive policies that address root causes of crime. They support police reform measures like increased accountability and transparency, while also emphasizing the importance of resources for law enforcement.",
+      "includes": [
+        "Balanced approach with emphasis on law and order and systemic reform",
+        "Moderate approach focusing on punitive measures and preventive policies",
+        "Balanced approach emphasizing law and order and police reform"
+      ]
+    },
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "These positions lean towards a modern approach to law enforcement, combining traditional policing with social justice reforms. They support police reform measures like accountability, transparency, and banning certain practices. They also focus on crime prevention and rehabilitation, addressing root causes of crime like mental health issues and lack of education.",
+      "includes": [
+        "Progressive approach combining traditional policing with social justice reforms",
+        "Moderately progressive stance advocating police reform and maintaining law enforcement"
+      ]
+    }
+  ],
+  "Climate and Energy": [
+    {
+      "cluster_label": "Strong Environmental Advocacy",
+      "cluster_summary": "This cluster strongly advocates for environmental protection and renewable energy, supporting aggressive policies for a rapid transition to a clean energy economy.",
+      "includes": [
+        "Strong Advocacy for Environmental Protection and Clean Energy",
+        "Strong Advocacy for Environmental Sustainability and Renewable Energy"
+      ]
+    },
+    {
+      "cluster_label": "Balanced Approach",
+      "cluster_summary": "This cluster supports a balanced approach that considers both environmental sustainability and economic growth, advocating for energy efficiency and renewable energy while also supporting traditional energy sources.",
+      "includes": [
+        "Balancing Environmental Protection and Economic Growth",
+        "Balancing Renewable Energy and Traditional Energy Sources",
+        "Balancing Energy Production with Environmental Conservation",
+        "Pro-Business Approach to Climate and Energy"
+      ]
+    },
+    {
+      "cluster_label": "Economic Prioritization",
+      "cluster_summary": "This cluster prioritizes economic growth and job creation over aggressive environmental policies, advocating for the oil and gas industry and opposing stricter regulations due to economic concerns.",
+      "includes": [
+        "Prioritizing Economic Growth over Environmental Concerns",
+        "Advocacy for Oil and Gas Industry"
+      ]
+    }
+  ],
+  "Abortion and Reproductive Rights": [
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "This cluster includes positions that strongly support abortion and reproductive rights, emphasizing personal freedom, privacy, and access to comprehensive reproductive healthcare services.",
+      "includes": [
+        "Strong Proponent of Abortion and Reproductive Rights",
+        "Supporter of Reproductive Rights and Access to Abortion",
+        "Supporter of Abortion Rights with Personal Discomfort"
+      ]
+    },
+    {
+      "cluster_label": "Moderate",
+      "cluster_summary": "This cluster includes positions that balance the right to choose with moral and ethical considerations. It supports comprehensive sex education, access to contraception, and may involve restrictions on late-term abortions.",
+      "includes": [
+        "Moderate Stance on Abortion and Reproductive Rights"
+      ]
+    },
+    {
+      "cluster_label": "Conservative",
+      "cluster_summary": "This cluster includes positions that lean towards conservative beliefs, advocating for pro-life policies and supporting measures that increase regulation of abortion clinics and limit the circumstances under which an abortion can be legally obtained.",
+      "includes": [
+        "Conservative Beliefs with No Specific Stance on Abortion",
+        "Conservative Stance Based on Known Values",
+        "Pro-life Stance Based on Conservative Values",
+        "Conservative Pro-life Stance"
+      ]
+    },
+    {
+      "cluster_label": "Unclear/Speculative",
+      "cluster_summary": "This cluster includes positions that are unclear or speculative, often based on a candidate's political party affiliation or past political affiliations. The actual stance may lean either towards supporting or restricting abortion and reproductive rights.",
+      "includes": [
+        "Pro-life Stance with Potential Nuances",
+        "Hypothetical Stance Based on Party Affiliation",
+        "Speculative Stance Based on Past Political Affiliations",
+        "Hypothetical Stance Based on Political Affiliation"
+      ]
+    }
+  ],
+  "Education": [
+    {
+      "cluster_label": "Advocates for Public Education and Equal Access",
+      "cluster_summary": "This cluster focuses on increasing funding for public schools, ensuring equal access to quality education for all students, and improving teacher salaries. It also supports the integration of technology in classrooms and may argue for reducing the emphasis on standardized testing.",
+      "includes": [
+        "Proponent of Equal Access to Quality Education",
+        "Supporter of Public Education and Educational Equity",
+        "Champion for Public Education and Equal Access",
+        "Proponent of Increased School Funding and Curriculum Reform"
+      ]
+    },
+    {
+      "cluster_label": "Proponents of School Choice and Decentralization",
+      "cluster_summary": "This cluster supports giving parents the power to decide the best educational path for their children, whether that be public, private, or home schooling. It advocates for decentralization of educational control and may include support for competition among schools to drive improvements in educational quality and innovation.",
+      "includes": [
+        "Advocate for School Choice and Decentralization",
+        "Supporter of Parental Rights and School Choice",
+        "Advocate for School Choice and Local Control",
+        "Advocate for Education Reform and School Choice"
+      ]
+    },
+    {
+      "cluster_label": "Advocates for Local Control and Fiscal Responsibility",
+      "cluster_summary": "This cluster supports allowing individual districts and schools to make decisions that suit their specific needs and circumstances. It may also advocate for increased funding for education, particularly in areas like teacher salaries, school infrastructure, or programs for disadvantaged students. It argues against federal overreach in education policy and for more efficient use of resources and accountability in how education funds are spent.",
+      "includes": [
+        "Proponent of Local Control and School Funding",
+        "Supporter of Local Control and Fiscal Responsibility"
+      ]
+    },
+    {
+      "cluster_label": "Proponents of Education Reform and Teacher Salary Increases",
+      "cluster_summary": "This cluster supports innovative ideas to restructure the education system and bridge the achievement gap. It includes a commitment to increasing teachers' salaries to attract top talent to the education sector. It may also advocate for integrating modern technology into classrooms to better equip students for the digital age.",
+      "includes": [
+        "Proponent of Education Reform and Teacher Salary Increases",
+        "Advocate for Education Reform and School Choice"
+      ]
+    },
+    {
+      "cluster_label": "Advocates for Standardized Testing and Accountability Measures",
+      "cluster_summary": "This cluster supports the use of standardized testing to measure student achievement and hold schools accountable for performance. It also emphasizes the need for reforms aimed at improving educational outcomes, particularly for underserved communities, and may include measures such as increased funding for public schools, expanded access to early childhood education, and improved college affordability.",
+      "includes": [
+        "Advocate for Standardized Testing and Accountability Measures"
+      ]
+    }
+  ],
+  "Foreign Policy": [
+    {
+      "cluster_label": "Diplomatic Approach",
+      "cluster_summary": "These positions advocate for diplomacy, international cooperation, and a balanced approach to foreign policy, focusing on maintaining strong alliances, supporting fair trade practices, and promoting humane international relations.",
+      "includes": [
+        "Balanced approach with diplomacy and force",
+        "Support for Iran Nuclear Agreement",
+        "Commitment to rule of law and humane international relations",
+        "Advocacy for fair trade and digital diplomacy",
+        "Pragmatic and measured approach"
+      ]
+    },
+    {
+      "cluster_label": "Assertive Approach",
+      "cluster_summary": "These positions favor a strong national defense, assertive action against international threats, and a tough stance on unfair trade practices, while promoting free trade agreements beneficial to the U.S.",
+      "includes": [
+        "Tough stance on China",
+        "Strong national defense and assertive action",
+        "Strong defense, free trade, and cautious diplomacy",
+        "Conservative principles in foreign policy"
+      ]
+    },
+    {
+      "cluster_label": "Rule of Law Approach",
+      "cluster_summary": "These positions show a strong commitment to the rule of law and order, likely extending to international law, and suggest a more inclusive and humane approach to international relations.",
+      "includes": [
+        "Law and order approach",
+        "Commitment to rule of law and humane international relations"
+      ]
+    },
+    {
+      "cluster_label": "Peaceful Resolution Approach",
+      "cluster_summary": "This position supports peaceful resolution of conflicts, advocating for a two-state solution to the Israeli-Palestinian conflict, while ensuring the security of the involved parties is not compromised.",
+      "includes": [
+        "Support for Israel and two-state solution"
+      ]
+    }
+  ],
+  "Gun Rights and Gun Control": [
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "This cluster is characterized by strong support for gun control measures, including universal background checks, banning assault weapons, and implementing red flag laws.",
+      "includes": [
+        "Strong Advocate for Gun Control"
+      ]
+    },
+    {
+      "cluster_label": "Centrist",
+      "cluster_summary": "This cluster represents a balanced approach to gun rights and control, advocating for some measures to strengthen gun control while also respecting the rights of law-abiding gun owners.",
+      "includes": [
+        "Moderate on Gun Rights and Control"
+      ]
+    },
+    {
+      "cluster_label": "Conservative",
+      "cluster_summary": "This cluster strongly supports the Second Amendment and opposes most forms of gun control, arguing that these laws infringe on the rights of law-abiding citizens and do not effectively address the root causes of gun violence.",
+      "includes": [
+        "Staunch Advocate for Gun Rights",
+        "Gun Rights Advocate Focusing on Mental Health",
+        "Strong Proponent of Gun Rights",
+        "Unrestricted Approach to Gun Ownership"
+      ]
+    }
+  ],
+  "Health Care": [
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "This cluster supports strengthening the Affordable Care Act (ACA), introducing a public option, and expanding coverage. It advocates for comprehensive healthcare reform and universal healthcare.",
+      "includes": [
+        "Strengthening ACA and Introducing Public Option",
+        "Defending ACA and Reducing Prescription Costs",
+        "Expanding Coverage and Improving Quality",
+        "Expanding Access to Affordable Healthcare"
+      ]
+    },
+    {
+      "cluster_label": "Conservative",
+      "cluster_summary": "This cluster advocates for limited government interference in the health care sector, focusing on free market solutions. It emphasizes personal choice, individual responsibility, and fiscal responsibility.",
+      "includes": [
+        "Limited Government Interference and Free Market Solutions",
+        "Free Market Solutions and Less Government Intervention",
+        "Individual Responsibility and Private Sector Solutions",
+        "Limited Government Intervention and Free Market Competition"
+      ]
+    },
+    {
+      "cluster_label": "Mixed",
+      "cluster_summary": "This cluster includes positions that could either support universal healthcare and comprehensive reform or free-market solutions. It emphasizes either expanding coverage and protecting the ACA or promoting competition and reducing government involvement.",
+      "includes": [
+        "Universal Healthcare or Free Market Solutions",
+        "Support for Universal Healthcare or Market-Based Solutions",
+        "Comprehensive Health Care Reform or Market-Based Solutions"
+      ]
+    }
+  ],
+  "AI and Technology Regulation": [
+    {
+      "cluster_label": "Balanced Regulation",
+      "cluster_summary": "These positions advocate for a balanced approach to AI and technology regulation, emphasizing the need to protect consumers and society while also encouraging innovation and technological progress. They support increased transparency and accountability among tech companies, and a regulatory environment that fosters innovation while ensuring public safety and privacy.",
+      "includes": [
+        "Balanced Regulation to Protect Consumers and Encourage Innovation",
+        "Thoughtful and Balanced Approach Despite Lack of Tech Background",
+        "Balanced AI Regulation Promoting Innovation and Protecting Privacy",
+        "Regulatory Environment Fostering Innovation and Ensuring Public Safety"
+      ]
+    },
+    {
+      "cluster_label": "Consumer Protection",
+      "cluster_summary": "These positions focus on strong AI and technology regulation with an emphasis on consumer protection. They call for more transparency from technology companies, stronger data privacy laws, and robust competition in the digital economy.",
+      "includes": [
+        "Comprehensive Regulation for Consumer Protection"
+      ]
+    },
+    {
+      "cluster_label": "Limited Government Interference",
+      "cluster_summary": "These positions align with conservative principles of limited government interference, advocating for a laissez-faire approach to AI and technology regulation. They argue for the free market to dictate the evolution and regulation of AI and technology, and stress the importance of limiting government interference in private sector innovation.",
+      "includes": [
+        "Limited Government Interference Favoring Free Market",
+        "Limited Government Interference in Private Sector Innovation",
+        "Laissez-Faire Approach Favoring Free Market and Innovation"
+      ]
+    },
+    {
+      "cluster_label": "Self-Regulation",
+      "cluster_summary": "These positions support a hands-off approach towards AI and tech, arguing that self-regulation by the industry would encourage innovation and economic growth. They emphasize the need for light-touch regulations that protect consumers without stifling innovation.",
+      "includes": [
+        "Light-Touch Regulations Protecting Consumers Without Stifling Innovation",
+        "Hands-Off Approach Favoring Self-Regulation"
+      ]
+    }
+  ],
+  "Housing": [
+    {
+      "cluster_label": "Progressive Policies",
+      "cluster_summary": "These policies focus on advocating for affordable housing, consumer protection, and inclusive zoning. They aim to increase transparency, diversify housing options, and utilize government intervention to address housing issues.",
+      "includes": [
+        "Advocacy for Affordable Housing",
+        "Consumer Protection and Transparency",
+        "Inclusive Zoning and Subsidized Housing",
+        "Progressive Focus on Affordable Housing"
+      ]
+    },
+    {
+      "cluster_label": "Conservative Policies",
+      "cluster_summary": "These policies emphasize less government regulation, free-market solutions, and private sector involvement. They advocate for policies that stimulate private investment in housing and reduce regulatory barriers to housing construction.",
+      "includes": [
+        "Conservative Emphasis on Less Regulation",
+        "Private Sector Solutions and Reduced Regulation",
+        "Free-Market Solutions and Reduced Regulations",
+        "Limited Government Intervention",
+        "Conservative Emphasis on Free-Market Solutions"
+      ]
+    },
+    {
+      "cluster_label": "Balanced Approaches",
+      "cluster_summary": "These policies aim to leverage experience for comprehensive solutions and balance housing development with preservation of natural beauty and resources. They propose both short-term and long-term strategies to address housing problems.",
+      "includes": [
+        "Leveraging Experience for Comprehensive Solutions",
+        "Pro-Growth and Pro-Business"
+      ]
+    }
+  ],
+  "Affordability": [
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "These positions advocate for government intervention to ensure affordability, either through direct financial support, expansion of social services, or regulatory measures to protect consumers.",
+      "includes": [
+        "Increase Child Tax Credit and Essential Services Affordability",
+        "Consumer Protection and Regulatory Approach",
+        "Affordability through Social Services Expansion"
+      ]
+    },
+    {
+      "cluster_label": "Conservative",
+      "cluster_summary": "These positions emphasize the role of the private sector, fiscal responsibility, and limited government intervention in promoting affordability. They advocate for measures such as deregulation, tax cuts, and economic growth.",
+      "includes": [
+        "Affordability through Economic Freedom",
+        "Fiscal Responsibility and Limited Government Intervention",
+        "Affordability through Deregulation and Economic Growth"
+      ]
+    },
+    {
+      "cluster_label": "Centrist",
+      "cluster_summary": "This position advocates for a balanced approach to affordability, combining elements of both government intervention and free-market principles.",
+      "includes": [
+        "Balanced Approach to Affordability"
+      ]
+    }
+  ],
+  "Infrastructure": [
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "These positions emphasize the need for comprehensive and modern infrastructure investment, with a focus on sustainability, digital infrastructure, and environmental conservation. They advocate for heavy government spending and may face criticism for potential tax increases and neglect of traditional infrastructure.",
+      "includes": [
+        "Advocate for Comprehensive Infrastructure Investment",
+        "Emphasis on Sustainable and Digital Infrastructure",
+        "Sustainable Infrastructure Aligned with Environmental Conservation",
+        "Forward-Thinking and Environmentally Conscious Infrastructure Plan",
+        "Modernizing Infrastructure for 21st-Century Economy"
+      ]
+    },
+    {
+      "cluster_label": "Centrist",
+      "cluster_summary": "These positions focus on the need for infrastructure investment for economic growth and community development, including both urban and rural areas. They may face criticism for potentially favoring business interests over environmental or community concerns.",
+      "includes": [
+        "Infrastructure Investment for Economic Growth and Community Development",
+        "Pragmatic Focus on Rural Infrastructure Needs"
+      ]
+    },
+    {
+      "cluster_label": "Conservative",
+      "cluster_summary": "These positions favor limited government intervention, fiscal responsibility, and private-sector solutions for infrastructure development. They may face challenges in balancing the typical conservative aversion to government spending with the needs of a rapidly growing state.",
+      "includes": [
+        "Support for Private-Sector Solutions and Limited Public Spending",
+        "Fiscal Responsibility and Limited Government Intervention"
+      ]
+    }
+  ],
+  "Mental health": [
+    {
+      "cluster_label": "Policy and Systemic Reforms",
+      "cluster_summary": "This cluster focuses on the need for policy changes and addressing systemic issues in mental health care, including the intersection with other societal problems.",
+      "includes": [
+        "Mental health policy reform",
+        "Addressing systemic issues in mental health care",
+        "Addressing the intersection of mental health and other societal issues"
+      ]
+    },
+    {
+      "cluster_label": "Funding and Accessibility",
+      "cluster_summary": "This cluster advocates for increased funding for mental health services and expanded access to mental health resources for all individuals.",
+      "includes": [
+        "Increased funding for mental health services",
+        "Expanded access to mental health resources"
+      ]
+    },
+    {
+      "cluster_label": "Prevention and Youth Focus",
+      "cluster_summary": "This cluster emphasizes on prevention and early intervention of mental health issues, with a particular focus on children and adolescents.",
+      "includes": [
+        "Emphasis on prevention and early intervention",
+        "Addressing mental health crisis among children and adolescents"
+      ]
+    },
+    {
+      "cluster_label": "Stigma Reduction and Individual Responsibility",
+      "cluster_summary": "This cluster highlights the need to reduce stigma associated with mental health and emphasizes individual responsibility and private solutions.",
+      "includes": [
+        "Reducing stigma associated with mental health",
+        "Emphasis on individual responsibility and private solutions"
+      ]
+    },
+    {
+      "cluster_label": "No Specific Stance",
+      "cluster_summary": "This cluster includes positions that do not articulate a clear stance on mental health issues.",
+      "includes": [
+        "Lack of specific stance on mental health"
+      ]
+    }
+  ],
+  "Democracy": [
+    {
+      "cluster_label": "Traditional/Centrist Democracy",
+      "cluster_summary": "This cluster emphasizes the importance of democratic norms, checks and balances, rule of law, dialogue, collaboration, and bipartisan cooperation. It values stability, consensus-building, and education in a functioning democracy.",
+      "includes": [
+        "Traditional Democratic Norms and Bipartisan Cooperation",
+        "Centrist Democracy with Emphasis on Dialogue and Collaboration",
+        "Hypothetical Democratic Stance Based on Candidate's Actions"
+      ]
+    },
+    {
+      "cluster_label": "Progressive Democracy",
+      "cluster_summary": "This cluster focuses on civil liberties, transparency, and the rule of law. It advocates for the protection of voting rights, the fight against gerrymandering, and campaign finance reform.",
+      "includes": [
+        "Progressive Democracy with Emphasis on Civil Liberties and Transparency"
+      ]
+    },
+    {
+      "cluster_label": "Conservative Democracy",
+      "cluster_summary": "This cluster supports policies that reduce government intervention, uphold individual freedoms, and champion states' rights. It argues for the importance of election security, integrity, and fiscal responsibility.",
+      "includes": [
+        "Conservative Democracy with Emphasis on Limited Government",
+        "Conservative Democracy with Emphasis on States' Rights",
+        "Limited Government Intervention and Decentralized Power",
+        "Limited Government with Fiscal Responsibility and Transparency",
+        "Hypothetical Conservative Stance Based on Candidate's Actions"
+      ]
+    },
+    {
+      "cluster_label": "Law-and-Order Democracy",
+      "cluster_summary": "This cluster emphasizes public safety and law enforcement. It is seen as appealing to conservative voters due to its tough stance on crime and its focus on maintaining law and order.",
+      "includes": [
+        "Law-and-Order Approach to Democracy"
+      ]
+    }
+  ],
+  "Broadband": [
+    {
+      "cluster_label": "Government Intervention",
+      "cluster_summary": "These positions advocate for government intervention at various levels to expand broadband access, particularly in rural areas, and address the digital divide. They emphasize the importance of broadband for economic growth, education, and healthcare.",
+      "includes": [
+        "Advocacy for Broadband Expansion with Federal Intervention",
+        "Statewide Strategies for Broadband Infrastructure Improvement",
+        "Rural Advocacy for Broadband Access Through Government Intervention",
+        "Potential Advocacy for Broadband Access Based on Government Investment or Market Solutions"
+      ]
+    },
+    {
+      "cluster_label": "Private Sector Solutions",
+      "cluster_summary": "These positions advocate for less government intervention and more private sector involvement in the broadband industry. They argue that market competition and pro-business policies are the best means to improve broadband services and reduce prices.",
+      "includes": [
+        "Potential Advocacy for Private Sector Solutions to Broadband Expansion",
+        "Potential Advocacy for Broadband Access with Pro-Business Orientation",
+        "Potential Advocacy for Broadband Access from a Public Safety Perspective",
+        "Advocacy for Rural Broadband Expansion Through Public-Private Partnerships"
+      ]
+    },
+    {
+      "cluster_label": "Broadband as a Public Utility",
+      "cluster_summary": "This position argues that broadband should be considered a public utility, similar to water or electricity, and emphasizes the need for high-speed internet access across all areas. It faces criticism for being too focused on tech at the expense of other key issues.",
+      "includes": [
+        "Potential Advocacy for Broadband as a Public Utility"
+      ]
+    },
+    {
+      "cluster_label": "Party Affiliation",
+      "cluster_summary": "These positions vary based on party affiliation, with conservative stances favoring market-based solutions and skepticism of government intervention, while liberal stances argue for increased government involvement to ensure access to high-speed internet for all citizens.",
+      "includes": [
+        "Potential Advocacy for Broadband Expansion Based on Party Affiliation"
+      ]
+    },
+    {
+      "cluster_label": "Equal Access and Digital Equity",
+      "cluster_summary": "These positions advocate for increasing broadband access, especially in rural areas, and champion equal access to information and digital equity. They may argue for a variety of solutions, including government investment, private sector solutions, or public-private partnerships.",
+      "includes": [
+        "Potential Advocacy for Equal Access to Broadband",
+        "Potential Advocacy for Broadband Expansion Based on Rural Rights"
+      ]
+    }
+  ],
+  "Water": [
+    {
+      "cluster_label": "Sustainable Management and Conservation",
+      "cluster_summary": "This cluster focuses on sustainable water management, conservation, and infrastructure improvement. It emphasizes the importance of preserving water resources and improving water infrastructure, and advocates for strong regulations to protect water sources.",
+      "includes": [
+        "Water Conservation and Infrastructure Improvement",
+        "Legal Approach to Water Rights and Conservation",
+        "Responsible Water Management",
+        "Sustainable Water Management and Conservation",
+        "Strong Regulations for Water Protection"
+      ]
+    },
+    {
+      "cluster_label": "Local Control and Private Sector Involvement",
+      "cluster_summary": "This cluster advocates for local control and private sector involvement in water management. It supports the rights of farmers and businesses, and emphasizes the need for economic growth and deregulation.",
+      "includes": [
+        "Local Control Over Water Resources",
+        "Deregulation and Private Sector Involvement in Water Management"
+      ]
+    },
+    {
+      "cluster_label": "Balancing Conservation and Economic Development",
+      "cluster_summary": "This cluster aims to balance environmental conservation with economic development. It prioritizes water rights for industries and agriculture, and supports policies that protect farmers' access to water.",
+      "includes": [
+        "Balancing Environmental Conservation and Economic Development",
+        "Advocacy for Agricultural Water Rights",
+        "Prioritizing Water Rights for Industries and Agriculture"
+      ]
+    }
+  ],
+  "Student debt": [
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "This cluster focuses on making college more affordable through expanding financial aid, reducing interest rates, and implementing income-based repayment plans. It also advocates for stronger consumer protections and accountability for loan servicers.",
+      "includes": [
+        "Incremental Reforms and Income-Based Repayment",
+        "Consumer Protections and Accountability",
+        "Expanding Financial Aid and Reducing Interest Rates"
+      ]
+    },
+    {
+      "cluster_label": "Conservative",
+      "cluster_summary": "This cluster emphasizes personal responsibility, economic freedom, and market-based solutions to student debt. It opposes large-scale student debt forgiveness and advocates for alternative education paths and improved financial literacy.",
+      "includes": [
+        "Personal Responsibility and Market-Based Solutions",
+        "Fiscal Responsibility and Limited Government Intervention",
+        "Economic Freedom and Personal Responsibility"
+      ]
+    },
+    {
+      "cluster_label": "Alternative Education Advocacy",
+      "cluster_summary": "This cluster emphasizes the importance of alternative education paths and improving financial literacy as a means to reduce dependency on student loans.",
+      "includes": [
+        "Improving Financial Literacy and Promoting Alternative Education"
+      ]
+    }
+  ],
+  "Broadband access": [
+    {
+      "cluster_label": "Government-led Broadband Expansion",
+      "cluster_summary": "This cluster advocates for broadband access as a necessity and an essential utility, emphasizing the role of government in financing and leading the expansion, particularly in underserved areas.",
+      "includes": [
+        "Expanding Broadband Access Through Federal Financing",
+        "Broadband Access as a Necessity",
+        "Universal Broadband Access",
+        "Broadband Access for Public Safety and Equity",
+        "Broadband Access as an Essential Utility"
+      ]
+    },
+    {
+      "cluster_label": "Private Sector-led Broadband Expansion",
+      "cluster_summary": "This cluster emphasizes the role of the private sector in expanding broadband access, advocating for market-based solutions, deregulation, and competition among providers.",
+      "includes": [
+        "Broadband Access Through Private Sector Innovation",
+        "Free-Market Solutions for Broadband Access"
+      ]
+    },
+    {
+      "cluster_label": "Broadband Access as Infrastructure and Economic Development",
+      "cluster_summary": "This cluster views broadband access as a key part of infrastructure development and economic growth, supporting both government-led initiatives and market-based solutions.",
+      "includes": [
+        "Broadband Access as Part of Infrastructure Development",
+        "Promoting Digital Inclusivity"
+      ]
+    },
+    {
+      "cluster_label": "Rural Broadband Access",
+      "cluster_summary": "This cluster focuses on the importance of broadband access in rural areas, advocating for partnerships between governments and private companies to address the issue.",
+      "includes": [
+        "Rural Broadband Access"
+      ]
+    }
+  ]
+}

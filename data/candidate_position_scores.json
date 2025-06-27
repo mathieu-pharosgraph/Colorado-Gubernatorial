@@ -1,0 +1,1321 @@
+{
+  "Michael Bennet": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.6,
+      "Pragmatic/Moderate Immigration Policies": 0.9,
+      "Conservative/Strict Immigration Policies": 0.2
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.85,
+      "Conservative Economic Policies": 0.25
+    },
+    "Crime and Policing": {
+      "Conservative": 0.6,
+      "Moderate": 0.85,
+      "Progressive": 0.7
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.85,
+      "Balanced Approach": 0.65,
+      "Economic Prioritization": 0.2
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 1,
+      "Moderate": 0.2,
+      "Conservative": 0,
+      "Unclear/Speculative": 0
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.8,
+      "Proponents of School Choice and Decentralization": 0.2,
+      "Advocates for Local Control and Fiscal Responsibility": 0.5,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.7,
+      "Advocates for Standardized Testing and Accountability Measures": 0.9
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0.9,
+      "Assertive Approach": 0.8,
+      "Rule of Law Approach": 0.7,
+      "Peaceful Resolution Approach": 0.8
+    },
+    "Gun Rights and Gun Control": {
+      "Progressive": 1,
+      "Centrist": 0.2,
+      "Conservative": 0
+    },
+    "Health Care": {
+      "Progressive": 0.6,
+      "Conservative": 0.2,
+      "Mixed": 0.8
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.9,
+      "Consumer Protection": 0.7,
+      "Limited Government Interference": 0.3,
+      "Self-Regulation": 0.2
+    },
+    "Housing": {
+      "Progressive Policies": 0.85,
+      "Conservative Policies": 0.25,
+      "Balanced Approaches": 0.7
+    },
+    "Affordability": {
+      "progressive": 0.8,
+      "conservative": 0.2,
+      "centrist": 0.5
+    },
+    "Infrastructure": {
+      "progressive": 0.8,
+      "centrist": 0.85,
+      "conservative": 0.3
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0.6,
+      "Funding and Accessibility": 0.9,
+      "Prevention and Youth Focus": 0.8,
+      "Stigma Reduction and Individual Responsibility": 0.4,
+      "No Specific Stance": 0.0
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.9,
+      "Progressive Democracy": 0.4,
+      "Conservative Democracy": 0.2,
+      "Law-and-Order Democracy": 0.2
+    },
+    "Broadband": {
+      "Government Intervention": 0.9,
+      "Private Sector Solutions": 0.2,
+      "Broadband as a Public Utility": 0.8,
+      "Party Affiliation": 0.8,
+      "Equal Access and Digital Equity": 1.0
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.9,
+      "Local Control and Private Sector Involvement": 0.3,
+      "Balancing Conservation and Economic Development": 0.6
+    },
+    "Student debt": {
+      "Progressive": 0.6,
+      "Conservative": 0.4,
+      "Alternative Education Advocacy": 0.2
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.8,
+      "Private Sector-led Broadband Expansion": 0.2,
+      "Broadband Access as Infrastructure and Economic Development": 0.9,
+      "Rural Broadband Access": 1.0
+    }
+  },
+  "Phil Weiser": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.9,
+      "Pragmatic/Moderate Immigration Policies": 0.5,
+      "Conservative/Strict Immigration Policies": 0.1
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.85,
+      "Conservative Economic Policies": 0.2
+    },
+    "Crime and Policing": {
+      "Conservative": 0.2,
+      "Moderate": 0.6,
+      "Progressive": 0.9
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.9,
+      "Balanced Approach": 0.6,
+      "Economic Prioritization": 0.3
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 1.0,
+      "Moderate": 0.1,
+      "Conservative": 0.0,
+      "Unclear/Speculative": 0.0
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.8,
+      "Proponents of School Choice and Decentralization": 0.2,
+      "Advocates for Local Control and Fiscal Responsibility": 0.5,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.7,
+      "Advocates for Standardized Testing and Accountability Measures": 0.4
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0.7,
+      "Assertive Approach": 0.3,
+      "Rule of Law Approach": 0.8,
+      "Peaceful Resolution Approach": 0.5
+    },
+    "Gun Rights and Gun Control": {
+      "Progressive": 0.85,
+      "Centrist": 0.35,
+      "Conservative": 0.1
+    },
+    "Health Care": {
+      "Progressive": 0.85,
+      "Conservative": 0.2,
+      "Mixed": 0.5
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.9,
+      "Consumer Protection": 0.85,
+      "Limited Government Interference": 0.2,
+      "Self-Regulation": 0.3
+    },
+    "Housing": {
+      "Progressive Policies": 0.85,
+      "Conservative Policies": 0.2,
+      "Balanced Approaches": 0.5
+    },
+    "Affordability": {
+      "progressive": 0.85,
+      "conservative": 0.2,
+      "centrist": 0.6
+    },
+    "Infrastructure": {
+      "progressive": 0.85,
+      "centrist": 0.65,
+      "conservative": 0.15
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0.7,
+      "Funding and Accessibility": 0.9,
+      "Prevention and Youth Focus": 0.5,
+      "Stigma Reduction and Individual Responsibility": 0.2,
+      "No Specific Stance": 0.0
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.6,
+      "Progressive Democracy": 0.9,
+      "Conservative Democracy": 0.2,
+      "Law-and-Order Democracy": 0.3
+    },
+    "Broadband": {
+      "Government Intervention": 0.9,
+      "Private Sector Solutions": 0.2,
+      "Broadband as a Public Utility": 0.7,
+      "Party Affiliation": 0.1,
+      "Equal Access and Digital Equity": 1.0
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.85,
+      "Local Control and Private Sector Involvement": 0.35,
+      "Balancing Conservation and Economic Development": 0.75
+    },
+    "Student debt": {
+      "Progressive": 0.85,
+      "Conservative": 0.2,
+      "Alternative Education Advocacy": 0.35
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.7,
+      "Private Sector-led Broadband Expansion": 0.3,
+      "Broadband Access as Infrastructure and Economic Development": 0.8,
+      "Rural Broadband Access": 1.0
+    }
+  },
+  "Ken Salazar": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.6,
+      "Pragmatic/Moderate Immigration Policies": 0.9,
+      "Conservative/Strict Immigration Policies": 0.3
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.65,
+      "Conservative Economic Policies": 0.4
+    },
+    "Crime and Policing": {
+      "Conservative": 0.4,
+      "Moderate": 0.8,
+      "Progressive": 0.5
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.6,
+      "Balanced Approach": 0.85,
+      "Economic Prioritization": 0.4
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0.7,
+      "Moderate": 0.85,
+      "Conservative": 0.2,
+      "Unclear/Speculative": 0.1
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.9,
+      "Proponents of School Choice and Decentralization": 0.1,
+      "Advocates for Local Control and Fiscal Responsibility": 0.4,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.7,
+      "Advocates for Standardized Testing and Accountability Measures": 0.5
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0.7,
+      "Assertive Approach": 0.4,
+      "Rule of Law Approach": 0.6,
+      "Peaceful Resolution Approach": 0.5
+    },
+    "Gun Rights and Gun Control": {
+      "Progressive": 0.4,
+      "Centrist": 0.8,
+      "Conservative": 0.5
+    },
+    "Health Care": {
+      "Progressive": 0.7,
+      "Conservative": 0.2,
+      "Mixed": 0.6
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.8,
+      "Consumer Protection": 0.6,
+      "Limited Government Interference": 0.3,
+      "Self-Regulation": 0.2
+    },
+    "Housing": {
+      "Progressive Policies": 0.8,
+      "Conservative Policies": 0.2,
+      "Balanced Approaches": 0.9
+    },
+    "Affordability": {
+      "Progressive": 0.8,
+      "Conservative": 0.2,
+      "Centrist": 0.6
+    },
+    "Infrastructure": {
+      "progressive": 0.85,
+      "centrist": 0.4,
+      "conservative": 0.2
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0.8,
+      "Funding and Accessibility": 0.9,
+      "Prevention and Youth Focus": 0.0,
+      "Stigma Reduction and Individual Responsibility": 0.8,
+      "No Specific Stance": 0.0
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.9,
+      "Progressive Democracy": 0.6,
+      "Conservative Democracy": 0.2,
+      "Law-and-Order Democracy": 0.3
+    },
+    "Broadband": {
+      "Government Intervention": 0.9,
+      "Private Sector Solutions": 0.3,
+      "Broadband as a Public Utility": 0.7,
+      "Party Affiliation": 0.8,
+      "Equal Access and Digital Equity": 0.9
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.85,
+      "Local Control and Private Sector Involvement": 0.5,
+      "Balancing Conservation and Economic Development": 0.9
+    },
+    "Student debt": {
+      "Progressive": 0.85,
+      "Conservative": 0.2,
+      "Alternative Education Advocacy": 0.3
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.6,
+      "Private Sector-led Broadband Expansion": 0.5,
+      "Broadband Access as Infrastructure and Economic Development": 0.8,
+      "Rural Broadband Access": 1.0
+    }
+  },
+  "Mark Baisley": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.1,
+      "Pragmatic/Moderate Immigration Policies": 0.35,
+      "Conservative/Strict Immigration Policies": 0.85
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.1,
+      "Conservative Economic Policies": 0.85
+    },
+    "Crime and Policing": {
+      "Conservative": 0.9,
+      "Moderate": 0.2,
+      "Progressive": 0.1
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.1,
+      "Balanced Approach": 0.3,
+      "Economic Prioritization": 0.9
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0.1,
+      "Moderate": 0.2,
+      "Conservative": 0.7,
+      "Unclear/Speculative": 0.9
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.2,
+      "Proponents of School Choice and Decentralization": 0.9,
+      "Advocates for Local Control and Fiscal Responsibility": 0.5,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.3,
+      "Advocates for Standardized Testing and Accountability Measures": 0.4
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0.4,
+      "Assertive Approach": 0.7,
+      "Rule of Law Approach": 0.5,
+      "Peaceful Resolution Approach": 0.3
+    },
+    "Gun Rights and Gun Control": {
+      "Progressive": 0.0,
+      "Centrist": 0.1,
+      "Conservative": 0.9
+    },
+    "Health Care": {
+      "Progressive": 0.1,
+      "Conservative": 0.85,
+      "Mixed": 0.5
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.4,
+      "Consumer Protection": 0.2,
+      "Limited Government Interference": 0.8,
+      "Self-Regulation": 0.7
+    },
+    "Housing": {
+      "Progressive Policies": 0.0,
+      "Conservative Policies": 0.75,
+      "Balanced Approaches": 0.5
+    },
+    "Affordability": {
+      "progressive": 0.1,
+      "conservative": 0.9,
+      "centrist": 0.3
+    },
+    "Infrastructure": {
+      "progressive": 0.1,
+      "centrist": 0.4,
+      "conservative": 0.8
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0.2,
+      "Funding and Accessibility": 0.2,
+      "Prevention and Youth Focus": 0.2,
+      "Stigma Reduction and Individual Responsibility": 0.6,
+      "No Specific Stance": 1.0
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.5,
+      "Progressive Democracy": 0.2,
+      "Conservative Democracy": 0.8,
+      "Law-and-Order Democracy": 0.6
+    },
+    "Broadband": {
+      "Government Intervention": 0.3,
+      "Private Sector Solutions": 0.7,
+      "Broadband as a Public Utility": 0.2,
+      "Party Affiliation": 0.8,
+      "Equal Access and Digital Equity": 0.5
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.3,
+      "Local Control and Private Sector Involvement": 0.9,
+      "Balancing Conservation and Economic Development": 0.6
+    },
+    "Student debt": {
+      "Progressive": 0.1,
+      "Conservative": 0.8,
+      "Alternative Education Advocacy": 0.6
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.25,
+      "Private Sector-led Broadband Expansion": 0.85,
+      "Broadband Access as Infrastructure and Economic Development": 0.65,
+      "Rural Broadband Access": 0.7
+    }
+  },
+  "Scott Bottoms": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.5,
+      "Pragmatic/Moderate Immigration Policies": 0.5,
+      "Conservative/Strict Immigration Policies": 0.5
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.2,
+      "Conservative Economic Policies": 0.85
+    },
+    "Crime and Policing": {
+      "Conservative": 0.4,
+      "Moderate": 0.8,
+      "Progressive": 0.7
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.75,
+      "Balanced Approach": 0.5,
+      "Economic Prioritization": 0.25
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0.4,
+      "Moderate": 0.8,
+      "Conservative": 0.3,
+      "Unclear/Speculative": 0.1
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.85,
+      "Proponents of School Choice and Decentralization": 0.1,
+      "Advocates for Local Control and Fiscal Responsibility": 0.3,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.95,
+      "Advocates for Standardized Testing and Accountability Measures": 0.5
+    },
+    "Foreign Policy": {},
+    "Gun Rights and Gun Control": {
+      "Candidate's Name": "Candidate's Alignment Score"
+    },
+    "Health Care": {
+      "Progressive": 0.5,
+      "Conservative": 0.5,
+      "Mixed": 0.5
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.8,
+      "Consumer Protection": 0.6,
+      "Limited Government Interference": 0.4,
+      "Self-Regulation": 0.5
+    },
+    "Housing": {
+      "Progressive Policies": 0.9,
+      "Conservative Policies": 0.2,
+      "Balanced Approaches": 0.5
+    },
+    "Affordability": {},
+    "Infrastructure": {
+      "progressive": null,
+      "centrist": null,
+      "conservative": null
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": "Unknown",
+      "Funding and Accessibility": "Unknown",
+      "Prevention and Youth Focus": "Unknown",
+      "Stigma Reduction and Individual Responsibility": "Unknown",
+      "No Specific Stance": "Unknown"
+    },
+    "Democracy": {},
+    "Broadband": {
+      "Government Intervention": 0.8,
+      "Private Sector Solutions": 0.4,
+      "Broadband as a Public Utility": 1,
+      "Party Affiliation": 0.5,
+      "Equal Access and Digital Equity": 0.9
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.8,
+      "Local Control and Private Sector Involvement": 0.5,
+      "Balancing Conservation and Economic Development": 0.6
+    },
+    "Student debt": {
+      "Progressive": 0.75,
+      "Conservative": 0.25,
+      "Alternative Education Advocacy": 0.5
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.8,
+      "Private Sector-led Broadband Expansion": 0.5,
+      "Broadband Access as Infrastructure and Economic Development": 0.9,
+      "Rural Broadband Access": 0.9
+    }
+  },
+  "Greg Lopez": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.6,
+      "Pragmatic/Moderate Immigration Policies": 0.85,
+      "Conservative/Strict Immigration Policies": 0.5
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.2,
+      "Conservative Economic Policies": 0.9
+    },
+    "Crime and Policing": {
+      "Conservative": 0.9,
+      "Moderate": 0.3,
+      "Progressive": 0.1
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.4,
+      "Balanced Approach": 0.85,
+      "Economic Prioritization": 0.7
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0.05,
+      "Moderate": 0.25,
+      "Conservative": 0.85,
+      "Unclear/Speculative": 0.25
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.2,
+      "Proponents of School Choice and Decentralization": 0.9,
+      "Advocates for Local Control and Fiscal Responsibility": 0.8,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.3,
+      "Advocates for Standardized Testing and Accountability Measures": 0.4
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0.5,
+      "Assertive Approach": 0.7,
+      "Rule of Law Approach": 0.4,
+      "Peaceful Resolution Approach": 0.3
+    },
+    "Gun Rights and Gun Control": {
+      "Progressive": 0.1,
+      "Centrist": 0.2,
+      "Conservative": 0.9
+    },
+    "Health Care": {
+      "Progressive": 0.1,
+      "Conservative": 0.9,
+      "Mixed": 0.5
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.7,
+      "Consumer Protection": 0.5,
+      "Limited Government Interference": 0.8,
+      "Self-Regulation": 0.75
+    },
+    "Housing": {
+      "Progressive Policies": 0.6,
+      "Conservative Policies": 0.7,
+      "Balanced Approaches": 0.8
+    },
+    "Affordability": {
+      "progressive": 0.2,
+      "conservative": 0.8,
+      "centrist": 0.5
+    },
+    "Infrastructure": {
+      "Progressive": 0.2,
+      "Centrist": 0.8,
+      "Conservative": 0.3
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0.7,
+      "Funding and Accessibility": 0.6,
+      "Prevention and Youth Focus": 0.8,
+      "Stigma Reduction and Individual Responsibility": 0.7,
+      "No Specific Stance": 0.0
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.6,
+      "Progressive Democracy": 0.2,
+      "Conservative Democracy": 0.9,
+      "Law-and-Order Democracy": 0.4
+    },
+    "Broadband": {
+      "Government Intervention": 0.5,
+      "Private Sector Solutions": 0.7,
+      "Broadband as a Public Utility": 0.4,
+      "Party Affiliation": 0.6,
+      "Equal Access and Digital Equity": 0.8
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.5,
+      "Local Control and Private Sector Involvement": 0.7,
+      "Balancing Conservation and Economic Development": 0.8
+    },
+    "Student debt": {
+      "Progressive": 0.1,
+      "Conservative": 0.85,
+      "Alternative Education Advocacy": 0.8
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.4,
+      "Private Sector-led Broadband Expansion": 0.8,
+      "Broadband Access as Infrastructure and Economic Development": 0.9,
+      "Rural Broadband Access": 0.7
+    }
+  },
+  "Jason Mikesell": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.1,
+      "Pragmatic/Moderate Immigration Policies": 0.3,
+      "Conservative/Strict Immigration Policies": 0.9
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.1,
+      "Conservative Economic Policies": 0.7
+    },
+    "Crime and Policing": {
+      "Conservative": 0.9,
+      "Moderate": 0.3,
+      "Progressive": 0.1
+    },
+    "Climate and Energy": {},
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0.1,
+      "Moderate": 0.3,
+      "Conservative": 0.7,
+      "Unclear/Speculative": 0.9
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.8,
+      "Proponents of School Choice and Decentralization": 0.7,
+      "Advocates for Local Control and Fiscal Responsibility": 0.9,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.8,
+      "Advocates for Standardized Testing and Accountability Measures": 0.5
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0.4,
+      "Assertive Approach": 0.5,
+      "Rule of Law Approach": 0.8,
+      "Peaceful Resolution Approach": 0.3
+    },
+    "Gun Rights and Gun Control": {
+      "progressive": 0.0,
+      "centrist": 0.5,
+      "conservative": 0.0
+    },
+    "Health Care": {
+      "Progressive": 0.1,
+      "Conservative": 0.7,
+      "Mixed": 0.5
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0,
+      "Consumer Protection": 0,
+      "Limited Government Interference": 0,
+      "Self-Regulation": 0
+    },
+    "Housing": {
+      "Progressive Policies": 0.2,
+      "Conservative Policies": 0.85,
+      "Balanced Approaches": 0.5
+    },
+    "Affordability": {
+      "progressive": 0.1,
+      "conservative": 0.8,
+      "centrist": 0.4
+    },
+    "Infrastructure": {
+      "progressive": 0,
+      "centrist": 0,
+      "conservative": 0
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0,
+      "Funding and Accessibility": 0,
+      "Prevention and Youth Focus": 0,
+      "Stigma Reduction and Individual Responsibility": 0,
+      "No Specific Stance": 1
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.3,
+      "Progressive Democracy": 0.2,
+      "Conservative Democracy": 0.7,
+      "Law-and-Order Democracy": 0.9
+    },
+    "Broadband": {
+      "Government Intervention": 0.4,
+      "Private Sector Solutions": 0.7,
+      "Broadband as a Public Utility": 0.2,
+      "Party Affiliation": 1.0,
+      "Equal Access and Digital Equity": 0.6
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.8,
+      "Local Control and Private Sector Involvement": 0.3,
+      "Balancing Conservation and Economic Development": 0.6
+    },
+    "Student debt": {
+      "Progressive": 0.1,
+      "Conservative": 0.7,
+      "Alternative Education Advocacy": 0.6
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.5,
+      "Private Sector-led Broadband Expansion": 0.5,
+      "Broadband Access as Infrastructure and Economic Development": 0.75,
+      "Rural Broadband Access": 0.75
+    }
+  },
+  "Barbara Kirkmeyer": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.1,
+      "Pragmatic/Moderate Immigration Policies": 0.3,
+      "Conservative/Strict Immigration Policies": 0.9
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.2,
+      "Conservative Economic Policies": 0.9
+    },
+    "Crime and Policing": {
+      "Conservative": 0.9,
+      "Moderate": 0.3,
+      "Progressive": 0.1
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.1,
+      "Balanced Approach": 0.6,
+      "Economic Prioritization": 0.9
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0.0,
+      "Moderate": 0.1,
+      "Conservative": 0.9,
+      "Unclear/Speculative": 0.0
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.2,
+      "Proponents of School Choice and Decentralization": 0.8,
+      "Advocates for Local Control and Fiscal Responsibility": 0.9,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.3,
+      "Advocates for Standardized Testing and Accountability Measures": 0.4
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0.3,
+      "Assertive Approach": 0.5,
+      "Rule of Law Approach": 0.4,
+      "Peaceful Resolution Approach": 0.3
+    },
+    "Gun Rights and Gun Control": {
+      "progressive": 0.05,
+      "centrist": 0.2,
+      "conservative": 0.95
+    },
+    "Health Care": {
+      "Progressive": 0.05,
+      "Conservative": 0.9,
+      "Mixed": 0.4
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.5,
+      "Consumer Protection": 0.2,
+      "Limited Government Interference": 0.8,
+      "Self-Regulation": 0.7
+    },
+    "Housing": {
+      "Progressive Policies": 0.1,
+      "Conservative Policies": 0.85,
+      "Balanced Approaches": 0.5
+    },
+    "Affordability": {
+      "progressive": 0.2,
+      "conservative": 0.8,
+      "centrist": 0.5
+    },
+    "Infrastructure": {
+      "progressive": 0.3,
+      "centrist": 0.85,
+      "conservative": 0.6
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0.5,
+      "Funding and Accessibility": 0.9,
+      "Prevention and Youth Focus": 0.8,
+      "Stigma Reduction and Individual Responsibility": 0.7,
+      "No Specific Stance": 0.2
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.4,
+      "Progressive Democracy": 0.2,
+      "Conservative Democracy": 0.9,
+      "Law-and-Order Democracy": 0.5
+    },
+    "Broadband": {
+      "Government Intervention": 0.8,
+      "Private Sector Solutions": 0.7,
+      "Broadband as a Public Utility": 0.5,
+      "Party Affiliation": 0.5,
+      "Equal Access and Digital Equity": 0.9
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.4,
+      "Local Control and Private Sector Involvement": 0.8,
+      "Balancing Conservation and Economic Development": 0.7
+    },
+    "Student debt": {
+      "Progressive": 0.1,
+      "Conservative": 0.8,
+      "Alternative Education Advocacy": 0.7
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.5,
+      "Private Sector-led Broadband Expansion": 0.5,
+      "Broadband Access as Infrastructure and Economic Development": 0.7,
+      "Rural Broadband Access": 1.0
+    }
+  },
+  "Paul Lundeen Green": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.0,
+      "Pragmatic/Moderate Immigration Policies": 0.5,
+      "Conservative/Strict Immigration Policies": 1.0
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.2,
+      "Conservative Economic Policies": 0.85
+    },
+    "Crime and Policing": {
+      "Conservative": 0.75,
+      "Moderate": 0.5,
+      "Progressive": 0.25
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.2,
+      "Balanced Approach": 0.7,
+      "Economic Prioritization": 0.8
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0.0,
+      "Moderate": 0.1,
+      "Conservative": 0.9,
+      "Unclear/Speculative": 0.0
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.2,
+      "Proponents of School Choice and Decentralization": 0.9,
+      "Advocates for Local Control and Fiscal Responsibility": 0.8,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.5,
+      "Advocates for Standardized Testing and Accountability Measures": 0.7
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0.3,
+      "Assertive Approach": 0.7,
+      "Rule of Law Approach": 0.5,
+      "Peaceful Resolution Approach": 0.3
+    },
+    "Gun Rights and Gun Control": {
+      "progressive": 0.1,
+      "centrist": 0.2,
+      "conservative": 0.9
+    },
+    "Health Care": {
+      "Progressive": 0.75,
+      "Conservative": 0.25,
+      "Mixed": 0.5
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.0,
+      "Consumer Protection": 0.0,
+      "Limited Government Interference": 0.5,
+      "Self-Regulation": 0.0
+    },
+    "Housing": {
+      "Progressive Policies": 0.2,
+      "Conservative Policies": 0.8,
+      "Balanced Approaches": 0.6
+    },
+    "Affordability": {
+      "progressive": 0.1,
+      "conservative": 0.85,
+      "centrist": 0.4
+    },
+    "Infrastructure": {
+      "Progressive": 0.1,
+      "Centrist": 0.3,
+      "Conservative": 0.9
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0.3,
+      "Funding and Accessibility": 0.4,
+      "Prevention and Youth Focus": 0.5,
+      "Stigma Reduction and Individual Responsibility": 0.6,
+      "No Specific Stance": 1.0
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.4,
+      "Progressive Democracy": 0.2,
+      "Conservative Democracy": 0.85,
+      "Law-and-Order Democracy": 0.5
+    },
+    "Broadband": {
+      "Government Intervention": 0.5,
+      "Private Sector Solutions": 0.5,
+      "Broadband as a Public Utility": 0.5,
+      "Party Affiliation": 1,
+      "Equal Access and Digital Equity": 1
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.8,
+      "Local Control and Private Sector Involvement": 0.6,
+      "Balancing Conservation and Economic Development": 0.7
+    },
+    "Student debt": {
+      "Progressive": 0.1,
+      "Conservative": 0.9,
+      "Alternative Education Advocacy": 0.8
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.2,
+      "Private Sector-led Broadband Expansion": 0.9,
+      "Broadband Access as Infrastructure and Economic Development": 0.7,
+      "Rural Broadband Access": 0.5
+    }
+  },
+  "Stephen Hamilton": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": null,
+      "Pragmatic/Moderate Immigration Policies": null,
+      "Conservative/Strict Immigration Policies": null
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.6,
+      "Conservative Economic Policies": 0.4
+    },
+    "Crime and Policing": {
+      "Conservative": 0.5,
+      "Moderate": 0.5,
+      "Progressive": 0.5
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.75,
+      "Balanced Approach": 0.5,
+      "Economic Prioritization": 0.25
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": null,
+      "Moderate": null,
+      "Conservative": null,
+      "Unclear/Speculative": null
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.75,
+      "Proponents of School Choice and Decentralization": 0.5,
+      "Advocates for Local Control and Fiscal Responsibility": 0.5,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.75,
+      "Advocates for Standardized Testing and Accountability Measures": 0.5
+    },
+    "Foreign Policy": {},
+    "Gun Rights and Gun Control": {
+      "progressive": 0,
+      "centrist": 0,
+      "conservative": 0
+    },
+    "Health Care": {
+      "Progressive": 0.75,
+      "Conservative": 0.2,
+      "Mixed": 0.5
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.8,
+      "Consumer Protection": 0.7,
+      "Limited Government Interference": 0.4,
+      "Self-Regulation": 0.5
+    },
+    "Housing": {
+      "Progressive Policies": 0.5,
+      "Conservative Policies": 0.5,
+      "Balanced Approaches": 0
+    },
+    "Affordability": {
+      "Progressive": 0.5,
+      "Conservative": 0.5,
+      "Centrist": 0.5
+    },
+    "Infrastructure": {
+      "progressive": 0.85,
+      "centrist": 0.6,
+      "conservative": 0.2
+    },
+    "Mental health": {},
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.75,
+      "Progressive Democracy": 0.5,
+      "Conservative Democracy": 0.25,
+      "Law-and-Order Democracy": 0.3
+    },
+    "Broadband": {
+      "Government Intervention": 0.5,
+      "Private Sector Solutions": 0.5,
+      "Broadband as a Public Utility": 0.5,
+      "Party Affiliation": 0.5,
+      "Equal Access and Digital Equity": 0.5
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.5,
+      "Local Control and Private Sector Involvement": 0.5,
+      "Balancing Conservation and Economic Development": 0.5
+    },
+    "Student debt": {
+      "Progressive": null,
+      "Conservative": null,
+      "Alternative Education Advocacy": null
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.8,
+      "Private Sector-led Broadband Expansion": 0.3,
+      "Broadband Access as Infrastructure and Economic Development": 0.7,
+      "Rural Broadband Access": 0.9
+    }
+  },
+  "Willow Collamer": {
+    "Immigration": {},
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.5,
+      "Conservative Economic Policies": 0.5
+    },
+    "Crime and Policing": {
+      "Conservative": 0.3,
+      "Moderate": 0.7,
+      "Progressive": 0.6
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.95,
+      "Balanced Approach": 0.6,
+      "Economic Prioritization": 0.2
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0.5,
+      "Moderate": 0.5,
+      "Conservative": 0.5,
+      "Unclear/Speculative": 1
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.9,
+      "Proponents of School Choice and Decentralization": 0.4,
+      "Advocates for Local Control and Fiscal Responsibility": 0.5,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.85,
+      "Advocates for Standardized Testing and Accountability Measures": 0.6
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0,
+      "Assertive Approach": 0,
+      "Rule of Law Approach": 0,
+      "Peaceful Resolution Approach": 0
+    },
+    "Gun Rights and Gun Control": {
+      "progressive": 0.5,
+      "centrist": 0.5,
+      "conservative": 0.5
+    },
+    "Health Care": {
+      "Progressive": 0.0,
+      "Conservative": 0.0,
+      "Mixed": 0.0
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": null,
+      "Consumer Protection": null,
+      "Limited Government Interference": null,
+      "Self-Regulation": null
+    },
+    "Housing": {
+      "Progressive Policies": 0.5,
+      "Conservative Policies": 0.5,
+      "Balanced Approaches": 0.5
+    },
+    "Affordability": {
+      "Collamer": 0.3
+    },
+    "Infrastructure": {
+      "Progressive": 0.85,
+      "Centrist": 0.5,
+      "Conservative": 0.1
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0.8,
+      "Funding and Accessibility": 0.85,
+      "Prevention and Youth Focus": 0.7,
+      "Stigma Reduction and Individual Responsibility": 0.75,
+      "No Specific Stance": 0.5
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": null,
+      "Progressive Democracy": null,
+      "Conservative Democracy": null,
+      "Law-and-Order Democracy": null
+    },
+    "Broadband": {
+      "Government Intervention": 0.6,
+      "Private Sector Solutions": 0.3,
+      "Broadband as a Public Utility": 0.5,
+      "Party Affiliation": 0.4,
+      "Equal Access and Digital Equity": 0.8
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.33,
+      "Local Control and Private Sector Involvement": 0.33,
+      "Balancing Conservation and Economic Development": 0.33
+    },
+    "Student debt": {},
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.9,
+      "Private Sector-led Broadband Expansion": 0.2,
+      "Broadband Access as Infrastructure and Economic Development": 0.7,
+      "Rural Broadband Access": 0.9
+    }
+  },
+  "Willian Will McBride": {
+    "Immigration": {},
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.2,
+      "Conservative Economic Policies": 0.8
+    },
+    "Crime and Policing": {},
+    "Climate and Energy": {},
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0.0,
+      "Moderate": 0.0,
+      "Conservative": 0.0,
+      "Unclear/Speculative": 1.0
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.9,
+      "Proponents of School Choice and Decentralization": 0.7,
+      "Advocates for Local Control and Fiscal Responsibility": 0.5,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.85,
+      "Advocates for Standardized Testing and Accountability Measures": 0.3
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0,
+      "Assertive Approach": 0,
+      "Rule of Law Approach": 0,
+      "Peaceful Resolution Approach": 0
+    },
+    "Gun Rights and Gun Control": {
+      "Progressive": 0.0,
+      "Centrist": 0.0,
+      "Conservative": 0.0
+    },
+    "Health Care": {
+      "Progressive": 0,
+      "Conservative": 0,
+      "Mixed": 0
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.9,
+      "Consumer Protection": 0.7,
+      "Limited Government Interference": 0.3,
+      "Self-Regulation": 0.4
+    },
+    "Housing": {
+      "Progressive Policies": 0.2,
+      "Conservative Policies": 0.8,
+      "Balanced Approaches": 0.5
+    },
+    "Affordability": {},
+    "Infrastructure": {
+      "McBride": 0.25
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": "N/A",
+      "Funding and Accessibility": "N/A",
+      "Prevention and Youth Focus": "N/A",
+      "Stigma Reduction and Individual Responsibility": "N/A",
+      "No Specific Stance": "N/A"
+    },
+    "Democracy": {},
+    "Broadband": {
+      "Government Intervention": null,
+      "Private Sector Solutions": null,
+      "Broadband as a Public Utility": null,
+      "Party Affiliation": null,
+      "Equal Access and Digital Equity": null
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.5,
+      "Local Control and Private Sector Involvement": 0.5,
+      "Balancing Conservation and Economic Development": 0.5
+    },
+    "Student debt": {},
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.85,
+      "Private Sector-led Broadband Expansion": 0.5,
+      "Broadband Access as Infrastructure and Economic Development": 0.9,
+      "Rural Broadband Access": 1
+    }
+  },
+  "Bradley Wall": {
+    "Immigration": {
+      "Progressive/Liberal Immigration Policies": 0.5,
+      "Pragmatic/Moderate Immigration Policies": 0.5,
+      "Conservative/Strict Immigration Policies": 0.5
+    },
+    "Inflation and Economy": {
+      "Progressive Economic Policies": 0.5,
+      "Conservative Economic Policies": 0.5
+    },
+    "Crime and Policing": {
+      "Conservative": 0.1,
+      "Moderate": 0.5,
+      "Progressive": 0.9
+    },
+    "Climate and Energy": {
+      "Strong Environmental Advocacy": 0.5,
+      "Balanced Approach": 0.5,
+      "Economic Prioritization": 0.5
+    },
+    "Abortion and Reproductive Rights": {
+      "Progressive": 0,
+      "Moderate": 0,
+      "Conservative": 0,
+      "Unclear/Speculative": 1
+    },
+    "Education": {
+      "Advocates for Public Education and Equal Access": 0.5,
+      "Proponents of School Choice and Decentralization": 0.5,
+      "Advocates for Local Control and Fiscal Responsibility": 0.5,
+      "Proponents of Education Reform and Teacher Salary Increases": 0.5,
+      "Advocates for Standardized Testing and Accountability Measures": 0.5
+    },
+    "Foreign Policy": {
+      "Diplomatic Approach": 0.5,
+      "Assertive Approach": 0.5,
+      "Rule of Law Approach": 0.5,
+      "Peaceful Resolution Approach": 0.5
+    },
+    "Gun Rights and Gun Control": {},
+    "Health Care": {
+      "Progressive": 0.9,
+      "Conservative": 0.1,
+      "Mixed": 0.6
+    },
+    "AI and Technology Regulation": {
+      "Balanced Regulation": 0.75,
+      "Consumer Protection": 0.65,
+      "Limited Government Interference": 0.25,
+      "Self-Regulation": 0.15
+    },
+    "Housing": {
+      "Progressive Policies": 0.9,
+      "Conservative Policies": 0.1,
+      "Balanced Approaches": 0.5
+    },
+    "Affordability": {
+      "progressive": 0.33,
+      "conservative": 0.33,
+      "centrist": 0.33
+    },
+    "Infrastructure": {
+      "progressive": 0.85,
+      "centrist": 0.55,
+      "conservative": 0.2
+    },
+    "Mental health": {
+      "Policy and Systemic Reforms": 0.8,
+      "Funding and Accessibility": 0.8,
+      "Prevention and Youth Focus": 0.7,
+      "Stigma Reduction and Individual Responsibility": 0.7,
+      "No Specific Stance": 0.0
+    },
+    "Democracy": {
+      "Traditional/Centrist Democracy": 0.7,
+      "Progressive Democracy": 0.6,
+      "Conservative Democracy": 0.5,
+      "Law-and-Order Democracy": 0.3
+    },
+    "Broadband": {
+      "Government Intervention": 0.0,
+      "Private Sector Solutions": 0.0,
+      "Broadband as a Public Utility": 0.0,
+      "Party Affiliation": 0.0,
+      "Equal Access and Digital Equity": 0.0
+    },
+    "Water": {
+      "Sustainable Management and Conservation": 0.7,
+      "Local Control and Private Sector Involvement": 0.6,
+      "Balancing Conservation and Economic Development": 0.8
+    },
+    "Student debt": {
+      "Progressive": 0.5,
+      "Conservative": 0.5,
+      "Alternative Education Advocacy": 0
+    },
+    "Broadband access": {
+      "Government-led Broadband Expansion": 0.7,
+      "Private Sector-led Broadband Expansion": 0.3,
+      "Broadband Access as Infrastructure and Economic Development": 0.9,
+      "Rural Broadband Access": 1.0
+    }
+  }
+}

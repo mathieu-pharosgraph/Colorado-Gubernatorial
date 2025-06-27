@@ -1,0 +1,11 @@
+# Ignore large raw data
+Census/
+MIT Election Lab/
+Precinct_to_census_blocks/
+
+# OS/System files
+.DS_Store
+
+# Python cache
+__pycache__/
+*.pyc
