@@ -663,7 +663,7 @@ with tabs[9]:
 
     st.subheader("📍 Dominant Issue by Precinct")
     top_n = st.selectbox("Number of top issues to display per precinct", [1, 2, 3, 4, 5], index=0)
-
+    pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
     # Build top-N issue records
     issue_records = []
     for row in alignment_data:
@@ -747,7 +747,7 @@ with tabs[9]:
 
 
     st.subheader("📌 Issue Position Map")
-    pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
+    
     pos_records = []
     for row in alignment_data:
         position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
