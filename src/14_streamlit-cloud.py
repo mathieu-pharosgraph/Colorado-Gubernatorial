@@ -624,13 +624,14 @@ with tabs[8]:
         ]]
         st.dataframe(net_display.sort_values("net_score", ascending=False), use_container_width=True)
 
+
 with tabs[9]:
     st.header("🧠 Opposition Research: Precinct Alignment & Attack Angles")
 
     with st.expander("ℹ️ What does the dominant issue map show?"):
         st.markdown("""
         This map shows the **top 1–5 most salient issues** per precinct, based on estimated voter concern levels.
-
+        
         - **Color**: Encodes the selected top issue (e.g., "Inflation and Economy").
         - **Tooltip**: Shows the issue label and salience score (normalized to 100).
         - **Use Case**: Identify which issues dominate attention in different regions.
@@ -645,23 +646,21 @@ with tabs[9]:
             alignment_data = json.load(f1)
             candidate_scores = json.load(f2)
             attack_lines = json.load(f3)
-            issue_position_map_raw = json.load(f4)
-
-            normalized = {}
-            for issue, clusters in issue_position_map_raw.items():
+            issue_position_map = json.load(f4)
+            normalized_clusters = {}
+            for issue, clusters in issue_position_map.items():
                 if isinstance(clusters, list):
-                    normalized[issue] = {
+                    normalized_clusters[issue] = {
                         c["cluster_label"]: c.get("cluster_summary", "") for c in clusters if "cluster_label" in c
                     }
                 elif isinstance(clusters, dict):
-                    normalized[issue] = clusters
+                    normalized_clusters[issue] = clusters
                 else:
-                    normalized[issue] = {}
-            return alignment_data, candidate_scores, attack_lines, normalized
+                    normalized_clusters[issue] = {}
+            issue_position_map = normalized_clusters
+        return alignment_data, candidate_scores, attack_lines, issue_position_map
 
-    # 🧠 Load data here after function is defined
     alignment_data, candidate_scores, attack_lines, issue_position_map = load_opposition_data()
-
     candidate_list = sorted(candidate_scores.keys())
 
     st.subheader("📍 Dominant Issue by Precinct")
@@ -693,14 +692,13 @@ with tabs[9]:
     with st.expander("ℹ️ What does the position map show?"):
         st.markdown("""
         This map displays the **dominant ideological position** on a selected issue in each precinct.
-
+        
         - **Color**: Encodes the dominant stance (e.g., "Progressive", "Moderate").
         - **Tooltip**: Shows the position and a brief summary.
         - **Use Case**: Understand how the public's issue-level ideology varies by precinct.
         """)
 
     pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
-
     pos_records = []
     for row in alignment_data:
         position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
@@ -724,8 +722,6 @@ with tabs[9]:
         pos_df[["r", "g", "b", "a"]] = pd.DataFrame(pos_df["rgb"].tolist(), index=pos_df.index)
         pos_geo = shapes.merge(pos_df, on=["county_name", "precinct_code"], how="inner")
         show_pydeck_map(pos_geo, "dominant_position", candidate_name=pos_issue)
-    else:
-        st.info("No valid position data available for this issue.")
 
     st.subheader("🆚 A vs B Opportunity/Protect Tables")
     with st.expander("ℹ️ How to interpret Protect and Opportunity precincts"):
@@ -733,16 +729,23 @@ with tabs[9]:
         These tables highlight **high-impact precincts** based on issue alignment and position contrast between two candidates.
 
         - **Issue**: One of the top 3 most salient issues in the precinct based on voter concern.
-        - **Candidate Position Score**: How closely each candidate's stated positions align with the **dominant ideological stance** in the precinct for that issue. Ranges from **0.0 to 1.0**.
-        - **Advantage**: The numeric **gap in alignment** between Candidate A and Candidate B.
-        - **Protect Score**: Importance of defending a precinct where A leads.
-        - **Opportunity Score**: Importance of flipping a precinct where A trails.
-        - **Attack Line**: Suggested argument Candidate A could use to contrast with Candidate B.
+        - **Candidate Position Score**: How closely each candidate's positions align with the **dominant stance** in the precinct.
+        - **Advantage**: Gap in alignment — positive means Candidate A has edge.
+        - **Protect Score**: Priority score where Candidate A leads but must defend.
+        - **Opportunity Score**: Priority score where Candidate A trails but has opening.
+        - **Attack Line**: Suggested argument for Candidate A to contrast against B.
         """)
 
     c1, c2 = st.columns(2)
     cand1 = c1.selectbox("Candidate A (attacker)", candidate_list, index=0, key="ab_attack_c1")
     cand2 = c2.selectbox("Candidate B (target)", candidate_list, index=1, key="ab_attack_c2")
+
+    # Compute protect/opportunity scores
+    score_df = gdf.pivot(index=["county_name", "precinct_code"], columns="candidate", values="score").reset_index()
+    score_df["totalvoters"] = gdf.groupby(["county_name", "precinct_code"])["totalvoters"].first().values
+    score_df["totalvoterturnout1"] = gdf.groupby(["county_name", "precinct_code"])["totalvoterturnout1"].first().values
+    score_df["weight"] = score_df["totalvoters"] * score_df["totalvoterturnout1"]
+    score_df = score_df.fillna(0)
 
     def display_enriched_table(mode):
         from difflib import SequenceMatcher
@@ -760,32 +763,15 @@ with tabs[9]:
                         return "—"
             return "—"
 
-        pivot_df = pd.DataFrame([
-            {
-                "county_name": r["county"],
-                "precinct_code": r["precinct"],
-                cand1: candidate_scores.get(cand1, {}).get("precinct_scores", {}).get(f"{r['county']}_{r['precinct']}", 0),
-                cand2: candidate_scores.get(cand2, {}).get("precinct_scores", {}).get(f"{r['county']}_{r['precinct']}", 0),
-                "weight": r.get("totalvoters", 1) * r.get("totalvoterturnout1", 1)
-            } for r in alignment_data
-        ])
-
-        pivot_df["margin"] = (pivot_df[cand1] - pivot_df[cand2]).clip(lower=0.01)
-        pivot_df["protect_score"] = ((pivot_df[cand1] > pivot_df[cand2]).astype(int)) * (pivot_df["weight"] / (1 + pivot_df["margin"]))
-        pivot_df["opportunity_score"] = ((pivot_df[cand1] < pivot_df[cand2]).astype(int)) * (1 / (1 + (pivot_df[cand2] - pivot_df[cand1]).abs())) * pivot_df["weight"]
-        score_lookup = pivot_df.set_index(["county_name", "precinct_code"])[["protect_score", "opportunity_score"]].to_dict(orient="index")
-
         records = []
         for row in alignment_data:
-            salience = row["issue_salience"]
-            positions = row["issue_position_support"]
+            salience = row.get("issue_salience", {})
+            positions = row.get("issue_position_support", {})
             top_issues = sorted(salience.items(), key=lambda x: x[1], reverse=True)[:3]
-
             for issue, sal_score in top_issues:
                 clusters = positions.get(issue, {})
                 if not clusters:
                     continue
-
                 clusters_dict = issue_position_map.get(issue)
                 if not isinstance(clusters_dict, dict):
                     continue
@@ -793,41 +779,44 @@ with tabs[9]:
                 filtered_clusters = {k: v for k, v in clusters.items() if k in valid_clusters}
                 if not filtered_clusters:
                     continue
-
                 dom_cluster = max(filtered_clusters, key=filtered_clusters.get)
                 score_a = cluster_similarity(candidate_scores.get(cand1, {}).get(issue, {}), dom_cluster)
                 score_b = cluster_similarity(candidate_scores.get(cand2, {}).get(issue, {}), dom_cluster)
                 advantage = round(score_a - score_b, 2)
-                scores = score_lookup.get((row["county"], row["precinct"]), {"protect_score": 0, "opportunity_score": 0})
 
-                if (mode == "protect" and advantage > 0):
-                    records.append({
-                        "county": row["county"],
-                        "precinct": row["precinct"],
-                        "issue": issue,
-                        "salience": round(sal_score, 2),
-                        f"{cand1}_pos": round(score_a, 2),
-                        f"{cand2}_pos": round(score_b, 2),
-                        "dominant_position": dom_cluster,
-                        "advantage": advantage,
-                        "protect_score": round(scores["protect_score"], 1),
-                        "attack_line": find_attack_line(attack_lines, cand1, cand2, issue)
-                    })
-                elif (mode == "opportunity" and advantage < 0):
-                    records.append({
-                        "county": row["county"],
-                        "precinct": row["precinct"],
-                        "issue": issue,
-                        "salience": round(sal_score, 2),
-                        f"{cand1}_pos": round(score_a, 2),
-                        f"{cand2}_pos": round(score_b, 2),
-                        "dominant_position": dom_cluster,
-                        "advantage": advantage,
-                        "opportunity_score": round(scores["opportunity_score"], 1),
-                        "attack_line": find_attack_line(attack_lines, cand1, cand2, issue)
-                    })
+                # Lookup score from pivot table
+                match = score_df[(score_df["county_name"] == row["county"]) & (score_df["precinct_code"] == row["precinct"])]
+                if not match.empty:
+                    s1 = match.iloc[0].get(cand1, 0)
+                    s2 = match.iloc[0].get(cand2, 0)
+                    w = match.iloc[0]["weight"]
+                    margin = max(abs(s1 - s2), 0.01)
+                    protect_score = round(w / (1 + margin), 2) if s1 > s2 else 0.0
+                    opportunity_score = round((1 / (1 + margin)) * w, 2) if s1 < s2 else 0.0
+                else:
+                    protect_score = 0.0
+                    opportunity_score = 0.0
+
+                records.append({
+                    "county": row["county"],
+                    "precinct": row["precinct"],
+                    "issue": issue,
+                    "salience": round(sal_score, 2),
+                    f"{cand1}_pos": round(score_a, 2),
+                    f"{cand2}_pos": round(score_b, 2),
+                    "dominant_position": dom_cluster,
+                    "advantage": advantage,
+                    "protect_score": protect_score,
+                    "opportunity_score": opportunity_score,
+                    "attack_line": find_attack_line(attack_lines, cand1, cand2, issue)
+                })
 
         df = pd.DataFrame(records)
+        if mode == "protect":
+            df = df[df["protect_score"] > 0]
+        else:
+            df = df[df["opportunity_score"] > 0]
+
         st.dataframe(df.sort_values("advantage", ascending=(mode == "opportunity")), use_container_width=True)
         st.download_button(f"Download {mode} table", df.to_csv(index=False), file_name=f"{cand1}_vs_{cand2}_{mode}_table.csv")
 
@@ -836,6 +825,7 @@ with tabs[9]:
 
     st.markdown("### 🚀 Opportunity Precincts")
     display_enriched_table("opportunity")
+
 
 # --- Tab 10: Frames ---
 with tabs[10]:
