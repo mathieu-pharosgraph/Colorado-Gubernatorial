@@ -666,6 +666,7 @@ with tabs[9]:
     pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
     # Build top-N issue records
     issue_records = []
+    pos_records = []
     for row in alignment_data:
         position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
         
