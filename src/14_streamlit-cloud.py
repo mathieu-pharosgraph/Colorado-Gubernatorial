@@ -697,9 +697,12 @@ with tabs[9]:
 
         def find_attack_line(attacks, a, b, issue):
             for row in attacks:
-                if row["attacker"] == a and row["target"] == b and row["issue"] == issue:
+                if not isinstance(row, dict):
+                    continue
+                if row.get("attacker") == a and row.get("target") == b and row.get("issue") == issue:
                     return row.get("response", {}).get("attack_line", "—")
             return "—"
+
 
         records = []
         for row in alignment_data:
