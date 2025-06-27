@@ -763,11 +763,13 @@ with tabs[9]:
 
         if filtered_scores:
             dominant_position = max(filtered_scores, key=filtered_scores.get)
-            pos_records.append({
+            issue_records.append({
                 "county_name": row["county"],
                 "precinct_code": row["precinct"],
-                "dominant_position": dominant_position
+                "dominant_position": dominant_position,
+                "cluster_summary": summary
             })
+
         else:
             continue  # Skip if no valid clusters
 
