@@ -644,7 +644,7 @@ with tabs[9]:
 
     # Replace this entire block starting from `st.subheader("\ud83d\udccd Dominant Issue by Precinct")`
 
-    st.subheader("\ud83d\udccd Dominant Issue by Precinct")
+    st.subheader("📍 Dominant Issue by Precinct")
     top_n = st.selectbox("Number of top issues to display per precinct", [1, 2, 3], index=0)
 
     # Build top-N issue records
