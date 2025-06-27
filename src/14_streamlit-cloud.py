@@ -685,10 +685,8 @@ with tabs[9]:
             })
 
 
-    df_dominant = pd.DataFrame(issue_records)
-    if not df_dominant.empty:
-        max_sal = df_dominant["salience"].max()
-        df_dominant["salience"] = (df_dominant["salience"] / (max_sal + 1e-6)) * 100
+    df_dominant = pd.DataFrame(pos_records)
+
     df_dominant["rgb"] = df_dominant["dominant_position"].apply(name_to_rgb)
     df_dominant[["r", "g", "b", "a"]] = pd.DataFrame(df_dominant["rgb"].tolist(), index=df_dominant.index)
 
