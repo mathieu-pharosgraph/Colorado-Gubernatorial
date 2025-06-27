@@ -149,16 +149,24 @@ def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=Non
         return
 
     gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
-    gdf_map[value_col] = gdf_map[value_col].round(2)
+
+    # ✅ Only round if the column is numeric
+    if pd.api.types.is_numeric_dtype(gdf_map[value_col]):
+        gdf_map[value_col] = gdf_map[value_col].round(2)
 
     if "rgb" not in gdf_map.columns:
-        gdf_map["score_norm"] = (gdf_map[value_col] - gdf_map[value_col].min()) / (gdf_map[value_col].max() - gdf_map[value_col].min())
-        gdf_map["rgb"] = gdf_map["score_norm"].apply(lambda x: [int(255 * (1 - x)), int(255 * x), 50, 200])
+        if pd.api.types.is_numeric_dtype(gdf_map[value_col]):
+            gdf_map["score_norm"] = (gdf_map[value_col] - gdf_map[value_col].min()) / (
+                gdf_map[value_col].max() - gdf_map[value_col].min() + 1e-6
+            )
+            gdf_map["rgb"] = gdf_map["score_norm"].apply(lambda x: [int(255 * (1 - x)), int(255 * x), 50, 200])
+        else:
+            gdf_map["rgb"] = gdf_map[value_col].apply(name_to_rgb)
+
     gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
     gdf_map = gdf_map.to_crs(epsg=4326)
 
     geojson = to_geojson_cached(gdf_map, key=f"{value_col}_{candidate_name}_{gdf_map.shape[0]}")
-
 
     tooltip = f"""
         <b>Candidate:</b> {candidate_name if candidate_name else 'N/A'}<br>
@@ -182,6 +190,7 @@ def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=Non
 
     st.pydeck_chart(pdk.Deck(map_style="mapbox://styles/mapbox/light-v9", initial_view_state=view_state,
                              layers=[layer], tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}))
+
 
 
 # --- Tab 0: Roles ---
