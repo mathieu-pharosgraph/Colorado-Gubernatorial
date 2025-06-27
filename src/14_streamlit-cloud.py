@@ -700,8 +700,13 @@ with tabs[9]:
                 if not isinstance(row, dict):
                     continue
                 if row.get("attacker") == a and row.get("target") == b and row.get("issue") == issue:
-                    return row.get("response", {}).get("attack_line", "—")
+                    response = row.get("response")
+                    if isinstance(response, dict):
+                        return response.get("attack_line", "—")
+                    else:
+                        return "—"
             return "—"
+
 
 
         records = []
