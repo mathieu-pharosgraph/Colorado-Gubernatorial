@@ -648,7 +648,7 @@ with tabs[9]:
     # Replace this entire block starting from `st.subheader("\ud83d\udccd Dominant Issue by Precinct")`
 
     st.subheader("📍 Dominant Issue by Precinct")
-    top_n = st.selectbox("Number of top issues to display per precinct", [1, 2, 3], index=0)
+    top_n = st.selectbox("Number of top issues to display per precinct", [1, 2, 3, 4, 5], index=0)
 
     # Build top-N issue records
     issue_records = []
@@ -731,13 +731,20 @@ with tabs[9]:
     pos_records = []
     for row in alignment_data:
         position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
-        if position_scores:
-            dominant_position = max(position_scores, key=position_scores.get)
+        
+        # Validate issue-specific cluster space
+        valid_clusters = set(issue_position_map.get(pos_issue, {}).keys())
+        filtered_scores = {k: v for k, v in position_scores.items() if k in valid_clusters}
+
+        if filtered_scores:
+            dominant_position = max(filtered_scores, key=filtered_scores.get)
             pos_records.append({
                 "county_name": row["county"],
                 "precinct_code": row["precinct"],
                 "dominant_position": dominant_position
             })
+        else:
+            continue  # Skip if no valid clusters
 
     pos_df = pd.DataFrame(pos_records)
 
@@ -785,7 +792,11 @@ with tabs[9]:
                     continue
 
                 # ✅ Filter to valid cluster labels for this issue
-                valid_clusters = set(issue_position_map.get(issue, {}).keys())
+                clusters_dict = issue_position_map.get(issue)
+                if not isinstance(clusters_dict, dict):
+                    continue  # skip invalid or missing issue
+                valid_clusters = set(clusters_dict.keys())
+
                 filtered_clusters = {k: v for k, v in clusters.items() if k in valid_clusters}
                 if not filtered_clusters:
                     continue
