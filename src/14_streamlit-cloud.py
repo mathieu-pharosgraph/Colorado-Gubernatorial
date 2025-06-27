@@ -638,10 +638,24 @@ with tabs[9]:
             candidate_scores = json.load(f2)
             attack_lines = json.load(f3)
             issue_position_map = json.load(f4)
+            # Normalize structure to: issue → cluster_label → summary
+            normalized_clusters = {}
+            for issue, clusters in issue_position_map.items():
+                if isinstance(clusters, list):
+                    normalized_clusters[issue] = {
+                        c["cluster_label"]: c.get("cluster_summary", "") for c in clusters if "cluster_label" in c
+                    }
+                elif isinstance(clusters, dict):
+                    normalized_clusters[issue] = clusters
+                else:
+                    normalized_clusters[issue] = {}
+            issue_position_map = normalized_clusters
+
         return alignment_data, candidate_scores, attack_lines, issue_position_map
 
 
     alignment_data, candidate_scores, attack_lines, issue_position_map = load_opposition_data()
+  
 
     candidate_list = sorted(candidate_scores.keys())
 
@@ -653,18 +667,22 @@ with tabs[9]:
     # Build top-N issue records
     issue_records = []
     for row in alignment_data:
-        county = row["county"]
-        precinct = row["precinct"]
-        salience_dict = row.get("issue_salience", {})
-        top_issues = sorted(salience_dict.items(), key=lambda x: x[1], reverse=True)[:top_n]
-        for rank, (issue, score) in enumerate(top_issues, 1):
-            issue_records.append({
-                "county_name": county,
-                "precinct_code": precinct,
-                "top_issue_rank": f"Top {rank}",
-                "issue": issue,
-                "salience": score
+        position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
+        
+        # Get valid cluster summaries
+        clusters_dict = issue_position_map.get(pos_issue, {})
+        filtered_scores = {k: v for k, v in position_scores.items() if k in clusters_dict}
+
+        if filtered_scores:
+            dominant_position = max(filtered_scores, key=filtered_scores.get)
+            summary = clusters_dict.get(dominant_position, "No summary available")
+            pos_records.append({
+                "county_name": row["county"],
+                "precinct_code": row["precinct"],
+                "dominant_position": dominant_position,
+                "cluster_summary": summary
             })
+
 
     df_dominant = pd.DataFrame(issue_records)
     if not df_dominant.empty:
@@ -703,12 +721,14 @@ with tabs[9]:
                 <b>Top Issue:</b> {{issue}}<br>
                 <b>Salience:</b> {{salience:.1f}}
             """
-        elif value_col in ["dominant_issue", "dominant_position"]:
+        elif value_col == "dominant_position":
             tooltip = f"""
                 <b>County:</b> {{county_name}}<br>
                 <b>Precinct:</b> {{precinct_code}}<br>
-                <b>{value_col.replace('_', ' ').title()}:</b> {{{value_col}}}
+                <b>Position:</b> {{{value_col}}}<br>
+                <b>Summary:</b> {{cluster_summary}}
             """
+
         else:
             tooltip = f"""
                 <b>County:</b> {{county_name}}<br>
@@ -733,7 +753,12 @@ with tabs[9]:
         position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
         
         # Validate issue-specific cluster space
-        valid_clusters = set(issue_position_map.get(pos_issue, {}).keys())
+        issue_clusters_dict = issue_position_map.get(pos_issue)
+        if not isinstance(issue_clusters_dict, dict):
+            st.warning(f"⚠️ Cluster definitions missing or malformed for: {pos_issue}")
+            continue  # or skip rendering
+        valid_clusters = set(issue_clusters_dict.keys())
+
         filtered_scores = {k: v for k, v in position_scores.items() if k in valid_clusters}
 
         if filtered_scores:
