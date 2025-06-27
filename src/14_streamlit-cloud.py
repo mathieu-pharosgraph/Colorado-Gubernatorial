@@ -748,39 +748,78 @@ with tabs[9]:
 
 
     st.subheader("📌 Issue Position Map")
-    
+    pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
+
+    # Build position-level records
     pos_records = []
     for row in alignment_data:
         position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
         
-        # Validate issue-specific cluster space
+        # Validate cluster labels
         issue_clusters_dict = issue_position_map.get(pos_issue)
         if not isinstance(issue_clusters_dict, dict):
             st.warning(f"⚠️ Cluster definitions missing or malformed for: {pos_issue}")
-            continue  # or skip rendering
-        valid_clusters = set(issue_clusters_dict.keys())
+            continue
 
+        valid_clusters = set(issue_clusters_dict.keys())
         filtered_scores = {k: v for k, v in position_scores.items() if k in valid_clusters}
 
         if filtered_scores:
             dominant_position = max(filtered_scores, key=filtered_scores.get)
-            issue_records.append({
+            summary = issue_clusters_dict.get(dominant_position, "No summary available")
+            pos_records.append({
                 "county_name": row["county"],
                 "precinct_code": row["precinct"],
                 "dominant_position": dominant_position,
                 "cluster_summary": summary
             })
 
-        else:
-            continue  # Skip if no valid clusters
-
+    # Convert to DataFrame and merge
     pos_df = pd.DataFrame(pos_records)
+    if not pos_df.empty:
+        pos_df["rgb"] = pos_df["dominant_position"].apply(name_to_rgb)
+        pos_df[["r", "g", "b", "a"]] = pd.DataFrame(pos_df["rgb"].tolist(), index=pos_df.index)
+        pos_geo = shapes.merge(pos_df, on=["county_name", "precinct_code"], how="inner")
 
-    # Add color and merge with shapes
-    pos_df["rgb"] = pos_df["dominant_position"].apply(name_to_rgb)
-    pos_df[["r", "g", "b", "a"]] = pd.DataFrame(pos_df["rgb"].tolist(), index=pos_df.index)
-    pos_geo = shapes.merge(pos_df, on=["county_name", "precinct_code"], how="inner")
-    show_pydeck_map(pos_geo, "dominant_position")
+        # Use updated map function with summary
+        def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=None, second_name=None):
+            if gdf_map.empty:
+                st.info("No data to show on map.")
+                return
+
+            gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
+
+            if pd.api.types.is_numeric_dtype(gdf_map[value_col]):
+                gdf_map[value_col] = gdf_map[value_col].round(2)
+                gdf_map["score_norm"] = gdf_map[value_col] / (gdf_map[value_col].max() + 1e-6)
+                gdf_map["rgb"] = gdf_map["score_norm"].apply(lambda x: [int(255 * (1 - x)), int(255 * x), 50, 200])
+            else:
+                gdf_map["rgb"] = gdf_map[value_col].apply(name_to_rgb)
+
+            gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
+            gdf_map = gdf_map.to_crs(epsg=4326)
+
+            geojson = to_geojson_cached(gdf_map, key=f"{value_col}_{candidate_name}_{gdf_map.shape[0]}")
+
+            tooltip = f"""
+                <b>County:</b> {{county_name}}<br>
+                <b>Precinct:</b> {{precinct_code}}<br>
+                <b>Position:</b> {{{value_col}}}<br>
+                <b>Summary:</b> {{{{cluster_summary}}}}
+            """
+
+            view_state = pdk.ViewState(latitude=39.0, longitude=-105.5, zoom=7.5)
+            layer = pdk.Layer("GeoJsonLayer", data=geojson,
+                            get_fill_color="[properties.r, properties.g, properties.b, properties.a]",
+                            get_line_color=[0, 0, 0, 160], pickable=True, auto_highlight=True)
+
+            st.pydeck_chart(pdk.Deck(map_style="mapbox://styles/mapbox/light-v9", initial_view_state=view_state,
+                                    layers=[layer], tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}))
+
+        show_pydeck_map(pos_geo, "dominant_position")
+    else:
+        st.info("No valid position data available for this issue.")
+
 
 
     st.subheader("🆚 A vs B Opportunity/Protect Tables")
