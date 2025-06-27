@@ -664,17 +664,25 @@ with tabs[9]:
 
     st.subheader("📌 Issue Position Map")
     pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
-    pos_df = pd.DataFrame([
-        {
-            "county_name": row["county"],
-            "precinct_code": row["precinct"],
-            "dominant_position": max(row["issue_position_support"].get(pos_issue, {}), key=row["issue_position_support"].get)
-        } for row in alignment_data if row["issue_position_support"].get(pos_issue)
-    ])
+    pos_records = []
+    for row in alignment_data:
+        position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
+        if position_scores:
+            dominant_position = max(position_scores, key=position_scores.get)
+            pos_records.append({
+                "county_name": row["county"],
+                "precinct_code": row["precinct"],
+                "dominant_position": dominant_position
+            })
+
+    pos_df = pd.DataFrame(pos_records)
+
+    # Add color and merge with shapes
     pos_df["rgb"] = pos_df["dominant_position"].apply(name_to_rgb)
     pos_df[["r", "g", "b", "a"]] = pd.DataFrame(pos_df["rgb"].tolist(), index=pos_df.index)
     pos_geo = shapes.merge(pos_df, on=["county_name", "precinct_code"], how="inner")
     show_pydeck_map(pos_geo, "dominant_position")
+
 
     st.subheader("🆚 A vs B Opportunity/Protect Tables")
     c1, c2 = st.columns(2)
