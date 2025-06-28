@@ -801,7 +801,18 @@ with tabs[9]:
                 map_style="mapbox://styles/mapbox/light-v9",
                 initial_view_state=view_state,
                 layers=[layer],
-                tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}
+                tooltip={
+                    "html": tooltip,
+                    "style": {
+                        "backgroundColor": "black",
+                        "color": "white",
+                        "maxWidth": "500px",
+                        "whiteSpace": "normal",
+                        "wordWrap": "break-word",
+                        "overflowWrap": "break-word",
+                        "fontSize": "13px"
+                    }
+                }
             ))
 
         show_position_map(pos_geo)
