@@ -886,7 +886,7 @@ with tabs[9]:
                     "county": row["county"],
                     "precinct": row["precinct"],
                     "issue": issue,
-                    "salience": round(sal_score, 2),
+                    "salience": round((sal_score / (max(salience.values()) + 1e-6)) * 100, 1),
                     f"{cand1}_pos": round(score_a, 2),
                     f"{cand2}_pos": round(score_b, 2),
                     "dominant_position": dom_cluster,
