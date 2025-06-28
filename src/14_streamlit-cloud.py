@@ -624,14 +624,13 @@ with tabs[8]:
         ]]
         st.dataframe(net_display.sort_values("net_score", ascending=False), use_container_width=True)
 
-
 with tabs[9]:
-    st.header("🧐 Opposition Research: Precinct Alignment & Attack Angles")
+    st.header("🧠 Opposition Research: Precinct Alignment & Attack Angles")
 
     with st.expander("ℹ️ What does the dominant issue map show?"):
         st.markdown("""
         This map shows the **top 1–5 most salient issues** per precinct, based on estimated voter concern levels.
-
+        
         - **Color**: Encodes the selected top issue (e.g., "Inflation and Economy").
         - **Tooltip**: Shows the issue label and salience score (normalized to 100).
         - **Use Case**: Identify which issues dominate attention in different regions.
@@ -685,26 +684,77 @@ with tabs[9]:
         df_issue["salience"] = (df_issue["salience"] / (max_sal + 1e-6)) * 100
         df_issue["rgb"] = df_issue["issue"].apply(name_to_rgb)
         df_issue[["r", "g", "b", "a"]] = pd.DataFrame(df_issue["rgb"].tolist(), index=df_issue.index)
-        map_df = shapes.merge(df_issue, on=["county_name", "precinct_code"], how="inner")
-        show_pydeck_map(map_df, "issue", candidate_name="Top Issue")
 
+        map_df = shapes.merge(df_issue, on=["county_name", "precinct_code"], how="inner")
+
+        def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=None, second_name=None):
+            if gdf_map.empty:
+                st.info("No data to show on map.")
+                return
+
+            gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
+            if pd.api.types.is_numeric_dtype(gdf_map[value_col]):
+                gdf_map[value_col] = gdf_map[value_col].round(2)
+                gdf_map["score_norm"] = gdf_map[value_col] / (gdf_map[value_col].max() + 1e-6)
+                gdf_map["rgb"] = gdf_map["score_norm"].apply(lambda x: [int(255 * (1 - x)), int(255 * x), 50, 200])
+            else:
+                gdf_map["rgb"] = gdf_map[value_col].apply(name_to_rgb)
+
+            gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
+            gdf_map = gdf_map.to_crs(epsg=4326)
+            geojson = to_geojson_cached(gdf_map, key=f"{value_col}_{candidate_name}_{gdf_map.shape[0]}")
+
+            if "issue" in gdf_map.columns and "salience" in gdf_map.columns:
+                tooltip = f"""
+                    <b>County:</b> {{county_name}}<br>
+                    <b>Precinct:</b> {{precinct_code}}<br>
+                    <b>Top Issue:</b> {{issue}}<br>
+                    <b>Salience Score (0–100):</b> {{salience:.1f}}<br>
+                    <b>Rank:</b> {{top_issue_rank}}
+                """
+            else:
+                tooltip = f"""
+                    <b>County:</b> {{county_name}}<br>
+                    <b>Precinct:</b> {{precinct_code}}<br>
+                    <b>{value_col.title()}:</b> {{{value_col}}}
+                """
+
+            view_state = pdk.ViewState(latitude=39.0, longitude=-105.5, zoom=7.5)
+            layer = pdk.Layer("GeoJsonLayer", data=geojson,
+                              get_fill_color="[properties.r, properties.g, properties.b, properties.a]",
+                              get_line_color=[0, 0, 0, 160], pickable=True, auto_highlight=True)
+
+            st.pydeck_chart(pdk.Deck(
+                map_style="mapbox://styles/mapbox/light-v9",
+                initial_view_state=view_state,
+                layers=[layer],
+                tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}
+            ))
+
+        show_pydeck_map(map_df, "salience", candidate_name="Top Issue")
     st.subheader("📌 Issue Position Map")
     with st.expander("ℹ️ What does the position map show?"):
         st.markdown("""
         This map displays the **dominant ideological position** on a selected issue in each precinct.
-
+        
         - **Color**: Encodes the dominant stance (e.g., "Progressive", "Moderate").
         - **Tooltip**: Shows the position and a brief summary.
         - **Use Case**: Understand how the public's issue-level ideology varies by precinct.
         """)
 
-    pos_issue = st.selectbox("Select issue for position mapping", sorted(alignment_data[0]["issue_position_support"].keys()), key="pos_map")
+    pos_issue = st.selectbox(
+        "Select issue for position mapping",
+        sorted(issue_position_map.keys()),
+        key="pos_map"
+    )
+
     pos_records = []
     for row in alignment_data:
         position_scores = row.get("issue_position_support", {}).get(pos_issue, {})
         cluster_defs = issue_position_map.get(pos_issue)
         if not isinstance(cluster_defs, dict):
             continue
+
         filtered_scores = {k: v for k, v in position_scores.items() if k in cluster_defs}
         if filtered_scores:
             dominant_position = max(filtered_scores, key=filtered_scores.get)
@@ -721,9 +771,35 @@ with tabs[9]:
         pos_df["rgb"] = pos_df["dominant_position"].apply(name_to_rgb)
         pos_df[["r", "g", "b", "a"]] = pd.DataFrame(pos_df["rgb"].tolist(), index=pos_df.index)
         pos_geo = shapes.merge(pos_df, on=["county_name", "precinct_code"], how="inner")
-        show_pydeck_map(pos_geo, "dominant_position", candidate_name=pos_issue)
 
-    st.subheader("🎚️ A vs B Opportunity/Protect Tables")
+        def show_position_map(gdf_map):
+            gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
+            gdf_map = gdf_map.to_crs(epsg=4326)
+            geojson = to_geojson_cached(gdf_map, key=f"position_{pos_issue}_{gdf_map.shape[0]}")
+
+            tooltip = """
+                <b>County:</b> {county_name}<br>
+                <b>Precinct:</b> {precinct_code}<br>
+                <b>Position:</b> {dominant_position}<br>
+                <b>Summary:</b> {cluster_summary}
+            """
+
+            layer = pdk.Layer("GeoJsonLayer", data=geojson,
+                              get_fill_color="[properties.r, properties.g, properties.b, properties.a]",
+                              get_line_color=[0, 0, 0, 160], pickable=True, auto_highlight=True)
+
+            view_state = pdk.ViewState(latitude=39.0, longitude=-105.5, zoom=7.5)
+            st.pydeck_chart(pdk.Deck(
+                map_style="mapbox://styles/mapbox/light-v9",
+                initial_view_state=view_state,
+                layers=[layer],
+                tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}
+            ))
+
+        show_position_map(pos_geo)
+    else:
+        st.info("No valid position data available for this issue.")
+    st.subheader("🆚 A vs B Opportunity/Protect Tables")
     with st.expander("ℹ️ How to interpret Protect and Opportunity precincts"):
         st.markdown("""
         These tables highlight **high-impact precincts** based on issue alignment and position contrast between two candidates.
@@ -736,19 +812,26 @@ with tabs[9]:
         - **Attack Line**: Suggested argument for Candidate A to contrast against B.
         """)
 
+    # Defaults to Bennet vs. Weiser
     c1, c2 = st.columns(2)
-    default_a = candidate_list.index("Michael Bennet") if "Michael Bennet" in candidate_list else 0
-    default_b = candidate_list.index("Phil Weiser") if "Phil Weiser" in candidate_list else 1
-    cand1 = c1.selectbox("Candidate A (attacker)", candidate_list, index=default_a, key="ab_attack_c1")
-    cand2 = c2.selectbox("Candidate B (target)", candidate_list, index=default_b, key="ab_attack_c2")
+    cand1 = c1.selectbox("Candidate A (attacker)", candidate_list, index=candidate_list.index("Michael Bennet"), key="ab_attack_c1")
+    cand2 = c2.selectbox("Candidate B (target)", candidate_list, index=candidate_list.index("Phil Weiser"), key="ab_attack_c2")
 
-    score_df = gdf.pivot(index=["county_name", "precinct_code"], columns="candidate", values="score").reset_index()
-    score_df["totalvoters"] = gdf.groupby(["county_name", "precinct_code"])["totalvoters"].first().values
-    score_df["totalvoterturnout1"] = gdf.groupby(["county_name", "precinct_code"])["totalvoterturnout1"].first().values
-    score_df["weight"] = score_df["totalvoters"] * score_df["totalvoterturnout1"]
-    score_df = score_df.fillna(0)
+    # Recompute pivot (shared scores)
+    pivot = gdf.pivot_table(
+        index=["county_name", "precinct_code"],
+        columns="candidate",
+        values="score"
+    ).reset_index()
+
+    turnout_map = gdf.groupby(["county_name", "precinct_code"])[["totalvoters", "totalvoterturnout1"]].first().reset_index()
+    pivot = pivot.merge(turnout_map, on=["county_name", "precinct_code"], how="left")
+    pivot["weight"] = pivot["totalvoters"] * pivot["totalvoterturnout1"]
+    pivot = pivot.fillna(0)
 
     def display_enriched_table(mode):
+        import ast
+
         def cluster_similarity(score_dict, cluster):
             return score_dict.get(cluster, 0.0)
 
@@ -783,7 +866,10 @@ with tabs[9]:
                 score_b = cluster_similarity(candidate_scores.get(cand2, {}).get(issue, {}), dom_cluster)
                 advantage = round(score_a - score_b, 2)
 
-                match = score_df[(score_df["county_name"] == row["county"]) & (score_df["precinct_code"] == row["precinct"])]
+                match = pivot[
+                    (pivot["county_name"] == row["county"]) & 
+                    (pivot["precinct_code"] == row["precinct"])
+                ]
                 if not match.empty:
                     s1 = match.iloc[0].get(cand1, 0)
                     s2 = match.iloc[0].get(cand2, 0)
@@ -815,14 +901,17 @@ with tabs[9]:
         else:
             df = df[df["opportunity_score"] > 0]
 
-        st.dataframe(df.sort_values("advantage", ascending=(mode == "opportunity")), use_container_width=True)
-        st.download_button(f"Download {mode} table", df.to_csv(index=False), file_name=f"{cand1}_vs_{cand2}_{mode}_table.csv")
+        df = df.sort_values("advantage", ascending=(mode == "opportunity"))
+        st.dataframe(df, use_container_width=True)
+        st.download_button(f"Download {mode.title()} Table", df.to_csv(index=False), file_name=f"{cand1}_vs_{cand2}_{mode}.csv")
 
     st.markdown("### 🛡️ Protect Precincts")
     display_enriched_table("protect")
 
     st.markdown("### 🚀 Opportunity Precincts")
     display_enriched_table("opportunity")
+
+
 
 # --- Tab 10: Frames ---
 with tabs[10]:
