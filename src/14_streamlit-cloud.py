@@ -709,7 +709,7 @@ with tabs[9]:
                     <b>County:</b> {{county_name}}<br>
                     <b>Precinct:</b> {{precinct_code}}<br>
                     <b>Top Issue:</b> {{issue}}<br>
-                    <b>Salience Score (0–100):</b> {{salience:.1f}}<br>
+                    <b>Salience Score (0–100):</b> {{salience}}<br>
                     <b>Rank:</b> {{top_issue_rank}}
                 """
             else:
@@ -812,12 +812,12 @@ with tabs[9]:
         - **Attack Line**: Suggested argument for Candidate A to contrast against B.
         """)
 
-    # Defaults to Bennet vs. Weiser
+    # ✅ Defaults to Bennet vs. Weiser
     c1, c2 = st.columns(2)
     cand1 = c1.selectbox("Candidate A (attacker)", candidate_list, index=candidate_list.index("Michael Bennet"), key="ab_attack_c1")
     cand2 = c2.selectbox("Candidate B (target)", candidate_list, index=candidate_list.index("Phil Weiser"), key="ab_attack_c2")
 
-    # Recompute pivot (shared scores)
+    # ✅ Recompute pivot table for scores
     pivot = gdf.pivot_table(
         index=["county_name", "precinct_code"],
         columns="candidate",
@@ -849,7 +849,7 @@ with tabs[9]:
         for row in alignment_data:
             salience = row.get("issue_salience", {})
             positions = row.get("issue_position_support", {})
-            top_issues = sorted(salience.items(), key=lambda x: x[1], reverse=True)[:3]
+            top_issues = sorted(salience.items(), key=lambda x: x[1], reverse=True)[:3]  # ✅ Get top 3
             for issue, sal_score in top_issues:
                 clusters = positions.get(issue, {})
                 if not clusters:
@@ -862,6 +862,7 @@ with tabs[9]:
                 if not filtered_clusters:
                     continue
                 dom_cluster = max(filtered_clusters, key=filtered_clusters.get)
+
                 score_a = cluster_similarity(candidate_scores.get(cand1, {}).get(issue, {}), dom_cluster)
                 score_b = cluster_similarity(candidate_scores.get(cand2, {}).get(issue, {}), dom_cluster)
                 advantage = round(score_a - score_b, 2)
@@ -901,7 +902,8 @@ with tabs[9]:
         else:
             df = df[df["opportunity_score"] > 0]
 
-        df = df.sort_values("advantage", ascending=(mode == "opportunity"))
+        # ✅ SORT by county, precinct, salience descending
+        df = df.sort_values(by=["county", "precinct", "salience"], ascending=[True, True, False])
         st.dataframe(df, use_container_width=True)
         st.download_button(f"Download {mode.title()} Table", df.to_csv(index=False), file_name=f"{cand1}_vs_{cand2}_{mode}.csv")
 
@@ -910,6 +912,7 @@ with tabs[9]:
 
     st.markdown("### 🚀 Opportunity Precincts")
     display_enriched_table("opportunity")
+
 
 
 
