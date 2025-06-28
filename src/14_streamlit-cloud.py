@@ -696,11 +696,11 @@ with tabs[9]:
             gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
             if other_score_col and other_score_col in gdf_map.columns:
                 # Use base hue from issue and brightness from salience
-                base_rgb = gdf_map[value_col].apply(name_to_rgb)
-                norm = gdf_map[other_score_col] / (gdf_map[other_score_col].max() + 1e-6)
+                base_rgb = gdf_map[value_col].apply(name_to_rgb).tolist()
+                norm = gdf_map[other_score_col].values / (gdf_map[other_score_col].max() + 1e-6)
                 gdf_map["rgb"] = [
-                    [int(r * norm.iloc[i]), int(g * norm.iloc[i]), int(b * norm.iloc[i]), 200]
-                    for i, (r, g, b) in enumerate(base_rgb)
+                    [int(r * norm[i]), int(g * norm[i]), int(b * norm[i]), 200]
+                    for i, (r, g, b, _) in enumerate(base_rgb)
                 ]
             else:
                 gdf_map["rgb"] = gdf_map[value_col].apply(name_to_rgb)
