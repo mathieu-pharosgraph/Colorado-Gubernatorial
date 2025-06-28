@@ -688,17 +688,23 @@ with tabs[9]:
         map_df = shapes.merge(df_issue, on=["county_name", "precinct_code"], how="inner")
 
         def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=None, second_name=None):
+
             if gdf_map.empty:
                 st.info("No data to show on map.")
                 return
 
             gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
-            if pd.api.types.is_numeric_dtype(gdf_map[value_col]):
-                gdf_map[value_col] = gdf_map[value_col].round(2)
-                gdf_map["score_norm"] = gdf_map[value_col] / (gdf_map[value_col].max() + 1e-6)
-                gdf_map["rgb"] = gdf_map["score_norm"].apply(lambda x: [int(255 * (1 - x)), int(255 * x), 50, 200])
+            if other_score_col and other_score_col in gdf_map.columns:
+                # Use base hue from issue and brightness from salience
+                base_rgb = gdf_map[value_col].apply(name_to_rgb)
+                norm = gdf_map[other_score_col] / (gdf_map[other_score_col].max() + 1e-6)
+                gdf_map["rgb"] = [
+                    [int(r * norm.iloc[i]), int(g * norm.iloc[i]), int(b * norm.iloc[i]), 200]
+                    for i, (r, g, b) in enumerate(base_rgb)
+                ]
             else:
                 gdf_map["rgb"] = gdf_map[value_col].apply(name_to_rgb)
+
 
             gdf_map[["r", "g", "b", "a"]] = pd.DataFrame(gdf_map["rgb"].tolist(), index=gdf_map.index)
             gdf_map = gdf_map.to_crs(epsg=4326)
@@ -731,7 +737,9 @@ with tabs[9]:
                 tooltip={"html": tooltip, "style": {"backgroundColor": "black", "color": "white"}}
             ))
 
-        show_pydeck_map(map_df, "salience", candidate_name="Top Issue")
+
+        show_pydeck_map(map_df, "issue", candidate_name="Top Issue", other_score_col="salience")
+
     st.subheader("📌 Issue Position Map")
     with st.expander("ℹ️ What does the position map show?"):
         st.markdown("""
