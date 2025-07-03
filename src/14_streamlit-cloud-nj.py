@@ -293,7 +293,7 @@ with tabs[2]:
         This view lists the **top priority issues** for each candidate, based on how they present themselves to voters.
 
         - These are extracted from AI-analyzed responses to prompts like:
-        *“What are the top 10 issues this candidate is focused on?”*
+        *"What are the top 10 issues this candidate is focused on?"*
         - The ordering reflects **how prominently** each issue appears in the candidate's communication.
         
         Use this view to compare **issue priorities** across candidates and see where their agendas align or diverge.
