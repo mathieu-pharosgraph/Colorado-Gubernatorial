@@ -14,18 +14,29 @@ import warnings
 import time
 import ast
 
+def login():
+    st.title("🔐 Login")
+    password = st.text_input("Enter password", type="password")
+    if password == st.secrets["app_password_nj"]:
+        st.session_state["logged_in"] = True
+    else:
+        st.stop()
+
+if "logged_in" not in st.session_state:
+    login()
+
 warnings.filterwarnings("ignore", category=pd.errors.SettingWithCopyWarning)
 
 st.set_page_config(layout="wide")
 
 # --- Logo and Header ---
 st.image("src/pharos_logo.png", width=180)
-st.markdown("# Model Share: Colorado Narrative Intelligence Dashboard")
+st.markdown("# Model Share: New Jersey Narrative Intelligence Dashboard")
 
 # --- Load Data Functions ---
 @st.cache_data
 def load_main():
-    df = pd.read_csv("data/looker_export_colorado.csv")
+    df = pd.read_csv("data/new_jersey/looker_export_nj.csv")
     for col in [
         "issue_topic_affinities", "matched_moral_foundations_semantic_scores",
         "framing_polarity_score", "positive_frame", "negative_frame",
@@ -37,7 +48,7 @@ def load_main():
 
 @st.cache_data
 def load_structured():
-    path = Path("data/enriched_structured_insights.jsonl")
+    path = Path("data/new_jersey/enriched_structured_insights_nj.jsonl")
     if not path.exists():
         return pd.DataFrame()
 
@@ -62,12 +73,12 @@ def load_structured():
 
 @st.cache_data
 def load_framing():
-    with open("data/framing_contrast_colorado.jsonl") as f:
+    with open("data/new_jersey/framing_contrast_nj.jsonl") as f:
         return pd.DataFrame([json.loads(line) for line in f])
 
 @st.cache_data
 def load_top_issues():
-    with open("data/responses_gpt4_colorado.jsonl") as f:
+    with open("data/new_jersey/responses_gpt4_nj.jsonl") as f:
         return [json.loads(line) for line in f if json.loads(line).get("prompt_type") == "top_issues"]
 
 # --- Load Data ---
@@ -92,21 +103,32 @@ candidates = sorted(df["candidate"].dropna().unique())
 
 @st.cache_data
 def load_precinct_data():
-    shapes = gpd.read_file("data/tl_2020_08_vtd20.shp", engine="fiona")
+    shapes = gpd.read_file("data/new_jersey/tl_2020_34_vtd20.shp", engine="fiona")
 
     fips_to_name = {
-        "001": "adams", "003": "alamosa", "005": "arapahoe", "007": "archuleta", "009": "baca", "011": "bent",
-        "013": "boulder", "014": "broomfield", "015": "chaffee", "017": "cheyenne", "019": "clear creek",
-        "021": "conejos", "023": "costilla", "025": "crowley", "027": "custer", "029": "delta", "031": "denver",
-        "033": "dolores", "035": "douglas", "037": "eagle", "039": "elbert", "041": "el paso", "043": "fremont",
-        "045": "garfield", "047": "gilpin", "049": "grand", "051": "gunnison", "053": "hinsdale", "055": "huerfano",
-        "057": "jackson", "059": "jefferson", "061": "kiowa", "063": "kit carson", "065": "lake", "067": "la plata",
-        "069": "larimer", "071": "las animas", "073": "lincoln", "075": "logan", "077": "mesa", "079": "mineral",
-        "081": "moffat", "083": "montezuma", "085": "montrose", "087": "morgan", "089": "otero", "091": "ouray",
-        "093": "park", "095": "phillips", "097": "pitkin", "099": "prowers", "101": "pueblo", "103": "rio blanco",
-        "105": "rio grande", "107": "routt", "109": "saguache", "111": "san juan", "113": "san miguel",
-        "115": "sedgwick", "117": "summit", "119": "teller", "121": "washington", "123": "weld", "125": "yuma"
+        "001": "atlantic",
+        "003": "bergen",
+        "005": "burlington",
+        "007": "camden",
+        "009": "cape may",
+        "011": "cumberland",
+        "013": "essex",
+        "015": "gloucester",
+        "017": "hudson",
+        "019": "hunterdon",
+        "021": "mercer",
+        "023": "middlesex",
+        "025": "monmouth",
+        "027": "morris",
+        "029": "ocean",
+        "031": "passaic",
+        "033": "salem",
+        "035": "somerset",
+        "037": "sussex",
+        "039": "union",
+        "041": "warren"
     }
+
     shapes["county_fips"] = shapes["COUNTYFP20"].astype(str).str.zfill(3)
     shapes["county_name"] = shapes["county_fips"].map(fips_to_name)
     shapes["precinct_num"] = shapes["VTDST20"].astype(str).str.zfill(6)
@@ -115,12 +137,12 @@ def load_precinct_data():
 
     shapes = shapes[["county_name", "precinct_code", "geometry"]]
 
-    scores = pd.read_csv("data/precinct_candidate_scores_with_confidence.csv")
+    scores = pd.read_csv("data/precinct_candidate_scores_with_confidence_nj.csv")
     scores["precinct_num"] = scores["precinct_num"].astype(str).str.zfill(3)
     scores["county_name"] = scores["county_name"].str.strip().str.lower()
     scores["precinct_code"] = scores["precinct_num"]
 
-    turnout = pd.read_stata("data/socio_demo_politics_precinct_final.dta")
+    turnout = pd.read_stata("data/socio_demo_politics_precinct_final_json.dta")
     turnout["precinct_num"] = turnout["precinct_num"].astype(str).str.zfill(3)
     turnout["county_name"] = turnout["county_name"].str.strip().str.lower()
     turnout["precinct_code"] = turnout["precinct_num"]
@@ -209,6 +231,7 @@ with tabs[0]:
 
         The percentages reflect **how often each candidate was framed in that role** across the underlying media content.
         """)
+
     role_counts = filtered.groupby(["candidate", "refined_role_label"]).size().reset_index(name="count")
     total_counts = role_counts.groupby("candidate")["count"].transform("sum")
     role_counts["percentage"] = (role_counts["count"] / total_counts * 100).round(1)
@@ -250,6 +273,7 @@ with tabs[1]:
 
         The polarity score ranges from **-1 (highly negative)** to **+1 (highly positive)** and is based on AI analysis of narrative tone and implications.
         """)
+
     st.subheader("Candidate × Issue Matrix")
     chart = alt.Chart(framing_df).mark_circle(size=250).encode(
         x="issue:N", y="candidate:N",
@@ -274,6 +298,7 @@ with tabs[2]:
         
         Use this view to compare **issue priorities** across candidates and see where their agendas align or diverge.
         """)
+
     st.header("📋 Top Issues by Candidate")
 
     issue_map = {}
@@ -310,11 +335,12 @@ with tabs[3]:
 
         Use this view to explore how **framing, praise, and critique** vary across issues and candidates.
         """)
+
     st.header("🧩 Narrative Tags & Wordclouds")
 
     @st.cache_data
     def load_narratives():
-        with open("data/framing_narratives_enriched_colorado.jsonl") as f:
+        with open("data/new_jersey/framing_narratives_enriched_nj.jsonl") as f:
             return pd.DataFrame([json.loads(line) for line in f if json.loads(line).get("prompt_type") == "framing"])
 
     narratives = load_narratives()
@@ -348,7 +374,7 @@ with tabs[3]:
 
 # --- Tab 4: Structured Narrative Insights ---
 with tabs[4]:
-    st.header("🔍 Narrative Insights (LLM Extracted)")
+    st.header("🔍 Narrative Insights")
     with st.expander("ℹ️ What are Structured Narrative Insights?"):
         st.markdown("""
         This view summarizes how each **candidate frames key issues** using structured LLM prompts. Each cell reflects a **short narrative extract** generated by the model, aligned with four lenses:
@@ -360,7 +386,6 @@ with tabs[4]:
 
         Use this to compare how candidates not only state their views, but construct **meaningful narratives** around them.
         """)
-
 
     if sdf.empty:
         st.warning("Structured insights not loaded — waiting for data.")
@@ -478,8 +503,8 @@ with tabs[6]:
     # Head-to-head filters
     st.subheader("🤜 Head-to-Head Analysis")
     col1, col2 = st.columns(2)
-    cand1 = col1.selectbox("Candidate A", candidates, index=candidates.index("Michael Bennet"))
-    cand2 = col2.selectbox("Candidate B", candidates, index=candidates.index("Phil Weiser"))
+    cand1 = col1.selectbox("Candidate A", candidates, index=candidates.index("Jack Ciattarelli"))
+    cand2 = col2.selectbox("Candidate B", candidates, index=candidates.index("Mikie Sherrill"))
 
     if cand1 != cand2:
         pivot = gdf[gdf["candidate"].isin([cand1, cand2])].pivot_table(
@@ -537,8 +562,8 @@ with tabs[7]:
     """)
     st.header("🗺️ Precinct Score Maps")
     candidates = sorted(gdf["candidate"].dropna().unique())
-    cand1 = st.selectbox("Map Candidate A", ["All"] + candidates, index=candidates.index("Michael Bennet") + 1)
-    cand2 = st.selectbox("Map Candidate B", ["All"] + candidates, index=candidates.index("Phil Weiser") + 1)
+    cand1 = st.selectbox("Map Candidate A", ["All"] + candidates, index=candidates.index("Jack Ciattarelli") + 1)
+    cand2 = st.selectbox("Map Candidate B", ["All"] + candidates, index=candidates.index("Mikie Sherrill") + 1)
     filtered = gdf.copy()
 
     # Pivot table with all candidate scores for winner map later
@@ -639,7 +664,7 @@ with tabs[8]:
     )
 
     # --- Individual candidate table ---
-    table_cand1 = st.selectbox("Table Candidate A", ["All"] + candidates, index=candidates.index("Michael Bennet") + 1)
+    table_cand1 = st.selectbox("Table Candidate A", ["All"] + candidates, index=candidates.index("Jack Ciattarelli") + 1)
     filtered_table = gdf if table_cand1 == "All" else gdf[gdf["candidate"] == table_cand1]
 
     display_df = filtered_table.rename(columns={"totalvoters": "number of voters"})[[
@@ -650,8 +675,8 @@ with tabs[8]:
 
     # --- Net score comparison ---
     st.subheader("🆚 Net Score Table")
-    cand_x = st.selectbox("Compare A", candidates, index=candidates.index("Michael Bennet"))
-    cand_y = st.selectbox("Compare B", candidates, index=candidates.index("Phil Weiser"))
+    cand_x = st.selectbox("Compare A", candidates, index=candidates.index("Jack Ciattarelli"))
+    cand_y = st.selectbox("Compare B", candidates, index=candidates.index("Mikie Sherrill"))
 
     if cand_x != cand_y:
         net_df = gdf[gdf["candidate"].isin([cand_x, cand_y])].pivot_table(
@@ -693,10 +718,10 @@ with tabs[9]:
 
     @st.cache_data
     def load_opposition_data():
-        with open("data/precinct_issue_alignment.json") as f1, \
-             open("data/candidate_position_scores.json") as f2, \
-             open("data/opposition_attack_lines.json") as f3, \
-             open("data/issue_position_clusters.json") as f4:
+        with open("data/new_jersey/precinct_issue_alignment_nj.json") as f1, \
+             open("data/new_jersey/candidate_position_scores_nj.json") as f2, \
+             open("data/new_jersey/opposition_attack_lines_nj.json") as f3, \
+             open("data/new_jersey/issue_position_clusters_nj.json") as f4:
             alignment_data = json.load(f1)
             candidate_scores = json.load(f2)
             attack_lines = json.load(f3)
@@ -886,10 +911,10 @@ with tabs[9]:
         - **Attack Line**: Suggested argument for Candidate A to contrast against B.
         """)
 
-    # ✅ Defaults to Bennet vs. Weiser
+    # ✅ Defaults to Ciattarelli vs. Sherrill
     c1, c2 = st.columns(2)
-    cand1 = c1.selectbox("Candidate A (attacker)", candidate_list, index=candidate_list.index("Michael Bennet"), key="ab_attack_c1")
-    cand2 = c2.selectbox("Candidate B (target)", candidate_list, index=candidate_list.index("Phil Weiser"), key="ab_attack_c2")
+    cand1 = c1.selectbox("Candidate A (attacker)", candidate_list, index=candidate_list.index("Jack Ciattarelli"), key="ab_attack_c1")
+    cand2 = c2.selectbox("Candidate B (target)", candidate_list, index=candidate_list.index("Mikie Sherrill"), key="ab_attack_c2")
 
     # ✅ Recompute pivot table for scores
     pivot = gdf.pivot_table(
