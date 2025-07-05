@@ -129,7 +129,7 @@ def load_blockgroup_data():
         "041": "warren"
     }
 
-    shapes["county_fips"] = shapes["COUNTYFP20"].astype(str).str.zfill(3)
+    shapes["county_fips"] = shapes["COUNTYFP"].astype(str).str.zfill(3)
     shapes["county_name"] = shapes["county_fips"].map(fips_to_name)
     shapes["block_group"] = shapes["VTDST20"].astype(str).str.zfill(6)
     shapes["block_group"] = shapes["GEOID"]  
