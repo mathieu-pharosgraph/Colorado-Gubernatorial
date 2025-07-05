@@ -142,7 +142,7 @@ def load_blockgroup_data():
     scores["county_name"] = scores["county_name"].str.strip().str.lower()
     scores["block_group"] = scores["block_group"]
 
-    turnout = pd.read_csv("outputs/block_level_census_voting.csv")
+    turnout = pd.read_csv("data/new_jersey/block_level_census_voting.csv")
     turnout["block_group"] = turnout["block_group"].astype(str).str.zfill(3)
     turnout["county_name"] = turnout["county_name"].str.strip().str.lower()
     turnout["block_group"] = turnout["block_group"]
