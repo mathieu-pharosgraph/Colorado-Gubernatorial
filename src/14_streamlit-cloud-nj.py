@@ -144,7 +144,7 @@ def load_blockgroup_data():
 
     turnout = pd.read_csv("data/new_jersey/block_level_census_voting.csv")
     turnout["block_group"] = turnout["block_group"].astype(str).str.zfill(3)
-    turnout["county_name"] = turnout["county_name"].str.strip().str.lower()
+    turnout["county_name"] = turnout["county"].str.strip().str.lower()
     turnout["block_group"] = turnout["block_group"]
 
     merged = shapes.merge(scores, on=["county_name", "block_group"], how="inner")
