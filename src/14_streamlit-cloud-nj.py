@@ -148,7 +148,7 @@ def load_blockgroup_data():
     turnout["block_group"] = turnout["block_group"]
 
     merged = shapes.merge(scores, on=["county_name", "block_group"], how="inner")
-    merged = merged.merge(turnout[["county_name", "block_group", "totalvoters", "totalvoterturnout1"]],
+    merged = merged.merge(turnout[["county_name", "block_group", "totalvotes", "turnout"]],
                           on=["county_name", "block_group"], how="left")
     return gpd.GeoDataFrame(merged, geometry="geometry", crs=shapes.crs), shapes
 
