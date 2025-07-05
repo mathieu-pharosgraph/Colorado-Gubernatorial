@@ -131,8 +131,8 @@ def load_blockgroup_data():
 
     shapes["county_fips"] = shapes["COUNTYFP"].astype(str).str.zfill(3)
     shapes["county_name"] = shapes["county_fips"].map(fips_to_name)
-    shapes["block_group"] = shapes["VTDST20"].astype(str).str.zfill(6)
-    shapes["block_group"] = shapes["GEOID"]  
+    shapes["block_group"] = shapes["GEOID"].astype(str)
+
     shapes["geometry"] = shapes["geometry"].simplify(0.001, preserve_topology=True)
 
     shapes = shapes[["county_name", "block_group", "geometry"]]
