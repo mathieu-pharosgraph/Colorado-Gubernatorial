@@ -138,7 +138,7 @@ def load_blockgroup_data():
     shapes = shapes[["county_name", "block_group", "geometry"]]
 
     scores = pd.read_csv("data/new_jersey/precinct_candidate_scores_with_confidence_nj.csv")
-    scores["block_group"] = scores["block_group"].astype(str).str.zfill(3)
+    scores["block_group"] = scores["precinct_num"].astype(str).str.zfill(3)
     scores["county_name"] = scores["county_name"].str.strip().str.lower()
     scores["block_group"] = scores["block_group"]
 
