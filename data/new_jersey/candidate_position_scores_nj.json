@@ -1,0 +1,584 @@
+{
+  "jack ciattarelli": {
+    "Immigration": {
+      "Conservative": 0.7,
+      "Centrist": 0.6,
+      "Progressive": 0.2
+    },
+    "Inflation and Economy": {
+      "Conservative Economic Policies": 0.9,
+      "Balanced Economic Approach": 0.4,
+      "Radical Economic Transformation": 0.1
+    },
+    "Property taxes": {
+      "Tax Reduction": 0.9,
+      "Tax Fairness": 0.6,
+      "High Tax for Public Services": 0.2
+    },
+    "Crime, policing and public safety": {
+      "Reformist": 0.8,
+      "Systemic Change Advocates": 0.4,
+      "Law and Order": 0.85
+    },
+    "Government transparency and accountability": {
+      "Transparency Advocacy": 0.85,
+      "Integrity and Accountability": 0.7,
+      "Policy Support": 0.5,
+      "Direct Democracy": 0.4
+    },
+    "Climate and Energy": {
+      "Pragmatic": 0.85,
+      "Progressive": 0.2,
+      "Radical": 0.05
+    },
+    "Abortion and Reproductive Rights": {
+      "Pro-choice": 0.1,
+      "Pro-life": 0.85,
+      "Ambivalent": 0.2
+    },
+    "Education": {
+      "Equity and Access in Education": 0.7,
+      "Early and Higher Education": 0.0,
+      "School Choice and Local Control": 1.0,
+      "Efficiency and Accountability in Education": 0.8
+    },
+    "Foreign Policy": {
+      "Economic Focus": 0.9,
+      "Diplomacy and Alliances": 0.2,
+      "National Interests and Security": 0.3,
+      "Independent Approach": 0.6
+    },
+    "Gun Rights and Gun Control": {
+      "Pro-Gun Rights": 0.7,
+      "Stricter Gun Control": 0.4,
+      "Socialist Perspective": 0.1
+    },
+    "Health Care": {
+      "Market-based Solutions": 0.85,
+      "Affordable Access": 0.4,
+      "Universal Healthcare": 0.1,
+      "Single-payer System": 0.05
+    },
+    "AI and Technology Regulation": {
+      "Pro-Business": 0.7,
+      "Balanced Approach": 0.5,
+      "Pro-Regulation": 0.2
+    },
+    "Housing": {
+      "Market-Driven Solutions": 0.85,
+      "Government Intervention": 0.3,
+      "Comprehensive Reforms": 0.5
+    },
+    "Affordability and cost of living": {
+      "Conservative": 0.9,
+      "Centrist": 0.4,
+      "Progressive": 0.1,
+      "Radical": 0.0
+    },
+    "Infrastructure": {
+      "Pro-Business Infrastructure": 0.9,
+      "Sustainable Infrastructure": 0.2,
+      "Working-Class Infrastructure": 0.3
+    },
+    "Mental health": {
+      "Proactive Advocacy": 0.65,
+      "Unclear Position": 0.35
+    },
+    "Democracy": {
+      "Moderate": 0.7,
+      "Advocacy for Democratic Principles": 0.4,
+      "Progressive": 0.2
+    },
+    "Student debt": {
+      "Market-Based Approach": 0.9,
+      "Moderate Reform": 0.4,
+      "Alternative Education Paths": 0.2,
+      "Progressive Reform": 0.1
+    }
+  },
+  "mikie sherrill": {
+    "Immigration": {
+      "Conservative": 0.3,
+      "Centrist": 0.8,
+      "Progressive": 0.6
+    },
+    "Inflation and Economy": {
+      "Conservative Economic Policies": 0.3,
+      "Balanced Economic Approach": 0.85,
+      "Radical Economic Transformation": 0.1
+    },
+    "Property taxes": {
+      "Tax Reduction": 0.8,
+      "Tax Fairness": 0.9,
+      "High Tax for Public Services": 0.2
+    },
+    "Crime, policing and public safety": {
+      "Reformist": 0.85,
+      "Systemic Change Advocates": 0.9,
+      "Law and Order": 0.3
+    },
+    "Government transparency and accountability": {
+      "Transparency Advocacy": 0.85,
+      "Integrity and Accountability": 0.95,
+      "Policy Support": 0.75,
+      "Direct Democracy": 0.65
+    },
+    "Climate and Energy": {
+      "Pragmatic": 0.3,
+      "Progressive": 0.9,
+      "Radical": 0.1
+    },
+    "Abortion and Reproductive Rights": {
+      "Pro-choice": 1,
+      "Pro-life": 0,
+      "Ambivalent": 0
+    },
+    "Education": {
+      "Equity and Access in Education": 0.9,
+      "Early and Higher Education": 1,
+      "School Choice and Local Control": 0.2,
+      "Efficiency and Accountability in Education": 0.6
+    },
+    "Foreign Policy": {
+      "Economic Focus": 0.5,
+      "Diplomacy and Alliances": 0.9,
+      "National Interests and Security": 0.8,
+      "Independent Approach": 0.7
+    },
+    "Gun Rights and Gun Control": {
+      "Pro-Gun Rights": 0.1,
+      "Stricter Gun Control": 0.9,
+      "Socialist Perspective": 0.2
+    },
+    "Health Care": {
+      "Market-based Solutions": 0.3,
+      "Affordable Access": 0.9,
+      "Universal Healthcare": 0.5,
+      "Single-payer System": 0.2
+    },
+    "AI and Technology Regulation": {
+      "Pro-Business": 0.3,
+      "Balanced Approach": 0.8,
+      "Pro-Regulation": 0.5
+    },
+    "Housing": {
+      "Market-Driven Solutions": 0.2,
+      "Government Intervention": 0.9,
+      "Comprehensive Reforms": 0.85
+    },
+    "Affordability and cost of living": {
+      "Conservative": 0.2,
+      "Centrist": 0.7,
+      "Progressive": 0.8,
+      "Radical": 0.3
+    },
+    "Infrastructure": {
+      "Pro-Business Infrastructure": 0.5,
+      "Sustainable Infrastructure": 0.9,
+      "Working-Class Infrastructure": 0.6
+    },
+    "Mental health": {
+      "Proactive Advocacy": 0.9,
+      "Unclear Position": 0.1
+    },
+    "Democracy": {
+      "Moderate": 0.9,
+      "Advocacy for Democratic Principles": 0.85,
+      "Progressive": 0.4
+    },
+    "Student debt": {
+      "Market-Based Approach": 0.1,
+      "Moderate Reform": 0.85,
+      "Alternative Education Paths": 0.2,
+      "Progressive Reform": 0.65
+    }
+  },
+  "stephen zielinski": {
+    "Immigration": {
+      "Conservative": null,
+      "Centrist": null,
+      "Progressive": null
+    },
+    "Inflation and Economy": {
+      "Conservative Economic Policies": 0.4,
+      "Balanced Economic Approach": 0.85,
+      "Radical Economic Transformation": 0.1
+    },
+    "Property taxes": {},
+    "Crime, policing and public safety": {
+      "Reformist": 0.8,
+      "Systemic Change Advocates": 0.4,
+      "Law and Order": 0.2
+    },
+    "Government transparency and accountability": {
+      "Transparency Advocacy": 0.8,
+      "Integrity and Accountability": 0.7,
+      "Policy Support": 0.9,
+      "Direct Democracy": 0.6
+    },
+    "Climate and Energy": {
+      "Pragmatic": 0.0,
+      "Progressive": 0.0,
+      "Radical": 0.0
+    },
+    "Abortion and Reproductive Rights": {},
+    "Education": {
+      "Equity and Access in Education": 0.9,
+      "Early and Higher Education": 0.85,
+      "School Choice and Local Control": 0.2,
+      "Efficiency and Accountability in Education": 0.5
+    },
+    "Foreign Policy": {
+      "Economic Focus": 0,
+      "Diplomacy and Alliances": 0,
+      "National Interests and Security": 0,
+      "Independent Approach": 0
+    },
+    "Gun Rights and Gun Control": {},
+    "Health Care": {
+      "Market-based Solutions": 0.5,
+      "Affordable Access": 0.5,
+      "Universal Healthcare": 0.75,
+      "Single-payer System": 0.75
+    },
+    "AI and Technology Regulation": {
+      "Pro-Business": 0.5,
+      "Balanced Approach": 0.5,
+      "Pro-Regulation": 0.5
+    },
+    "Housing": {
+      "Market-Driven Solutions": "To be determined based on the candidate's policy positions",
+      "Government Intervention": "To be determined based on the candidate's policy positions",
+      "Comprehensive Reforms": "To be determined based on the candidate's policy positions"
+    },
+    "Affordability and cost of living": {
+      "Conservative": 0.5,
+      "Centrist": 0.5,
+      "Progressive": 0.5,
+      "Radical": 0.5
+    },
+    "Infrastructure": {
+      "Pro-Business Infrastructure": 0,
+      "Sustainable Infrastructure": 0,
+      "Working-Class Infrastructure": 0
+    },
+    "Mental health": {
+      "Proactive Advocacy": 0.5,
+      "Unclear Position": 0.5
+    },
+    "Democracy": {
+      "Moderate": 0.5,
+      "Advocacy for Democratic Principles": 0.7,
+      "Progressive": 0.4
+    },
+    "Student debt": {
+      "Market-Based Approach": 0.2,
+      "Moderate Reform": 0.7,
+      "Alternative Education Paths": 0.5,
+      "Progressive Reform": 0.1
+    }
+  },
+  "vic kaplan": {
+    "Immigration": {},
+    "Inflation and Economy": {
+      "Conservative Economic Policies": null,
+      "Balanced Economic Approach": null,
+      "Radical Economic Transformation": null
+    },
+    "Property taxes": {},
+    "Crime, policing and public safety": {
+      "Reformist": null,
+      "Systemic Change Advocates": null,
+      "Law and Order": null
+    },
+    "Government transparency and accountability": {},
+    "Climate and Energy": {},
+    "Abortion and Reproductive Rights": {
+      "Pro-choice": 1,
+      "Pro-life": 0,
+      "Ambivalent": 0
+    },
+    "Education": {
+      "Equity and Access in Education": 0.7,
+      "Early and Higher Education": 0.0,
+      "School Choice and Local Control": 0.8,
+      "Efficiency and Accountability in Education": 0.8
+    },
+    "Foreign Policy": {
+      "Economic Focus": 0.8,
+      "Diplomacy and Alliances": 0.7,
+      "National Interests and Security": 0.8,
+      "Independent Approach": 0.5
+    },
+    "Gun Rights and Gun Control": {},
+    "Health Care": {
+      "Market-based Solutions": 0.5,
+      "Affordable Access": 0.5,
+      "Universal Healthcare": 0.5,
+      "Single-payer System": 0.5
+    },
+    "AI and Technology Regulation": {},
+    "Housing": {
+      "Market-Driven Solutions": 0.5,
+      "Government Intervention": 0.5,
+      "Comprehensive Reforms": 0.5
+    },
+    "Affordability and cost of living": {
+      "Conservative": 0.6,
+      "Centrist": 0.7,
+      "Progressive": 0.8,
+      "Radical": 0.4
+    },
+    "Infrastructure": {},
+    "Mental health": {
+      "Proactive Advocacy": 0.0,
+      "Unclear Position": 1.0
+    },
+    "Democracy": {
+      "Moderate": 0.6,
+      "Advocacy for Democratic Principles": 0.9,
+      "Progressive": 0.3
+    },
+    "Student debt": {
+      "Market-Based Approach": null,
+      "Moderate Reform": null,
+      "Alternative Education Paths": null,
+      "Progressive Reform": null
+    }
+  },
+  "joanne kuniansky": {
+    "Immigration": {
+      "Conservative": 0.1,
+      "Centrist": 0.4,
+      "Progressive": 0.8
+    },
+    "Inflation and Economy": {
+      "Conservative Economic Policies": 0.0,
+      "Balanced Economic Approach": 0.0,
+      "Radical Economic Transformation": 1.0
+    },
+    "Property taxes": {
+      "Tax Reduction": 0.2,
+      "Tax Fairness": 0.8,
+      "High Tax for Public Services": 0.7
+    },
+    "Crime, policing and public safety": {
+      "Reformist": 0.5,
+      "Systemic Change Advocates": 0.9,
+      "Law and Order": 0.1
+    },
+    "Government transparency and accountability": {
+      "Transparency Advocacy": 0.6,
+      "Integrity and Accountability": 0.6,
+      "Policy Support": 0.6,
+      "Direct Democracy": 0.8
+    },
+    "Climate and Energy": {
+      "Pragmatic": 0.1,
+      "Progressive": 0.6,
+      "Radical": 0.9
+    },
+    "Abortion and Reproductive Rights": {
+      "Pro-choice": 0.95,
+      "Pro-life": 0.05,
+      "Ambivalent": 0.1
+    },
+    "Education": {
+      "Equity and Access in Education": 0.9,
+      "Early and Higher Education": 0.6,
+      "School Choice and Local Control": 0.2,
+      "Efficiency and Accountability in Education": 0.4
+    },
+    "Foreign Policy": {
+      "Economic Focus": 0.6,
+      "Diplomacy and Alliances": 0.5,
+      "National Interests and Security": 0.3,
+      "Independent Approach": 0.5
+    },
+    "Gun Rights and Gun Control": {
+      "Pro-Gun Rights": 0.5,
+      "Stricter Gun Control": 0.2,
+      "Socialist Perspective": 0.9
+    },
+    "Health Care": {
+      "Market-based Solutions": 0.1,
+      "Affordable Access": 0.4,
+      "Universal Healthcare": 0.9,
+      "Single-payer System": 0.8
+    },
+    "AI and Technology Regulation": {
+      "Pro-Business": 0.2,
+      "Balanced Approach": 0.5,
+      "Pro-Regulation": 0.8
+    },
+    "Housing": {
+      "Market-Driven Solutions": 0.1,
+      "Government Intervention": 0.9,
+      "Comprehensive Reforms": 0.7
+    },
+    "Affordability and cost of living": {
+      "Conservative": 0.05,
+      "Centrist": 0.1,
+      "Progressive": 0.6,
+      "Radical": 0.95
+    },
+    "Infrastructure": {
+      "Pro-Business Infrastructure": 0.3,
+      "Sustainable Infrastructure": 0.4,
+      "Working-Class Infrastructure": 0.9
+    },
+    "Mental health": {
+      "Proactive Advocacy": 0.0,
+      "Unclear Position": 1.0
+    },
+    "Democracy": {
+      "Moderate": 0.1,
+      "Advocacy for Democratic Principles": 0.6,
+      "Progressive": 0.9
+    },
+    "Student debt": {
+      "Market-Based Approach": 0.1,
+      "Moderate Reform": 0.3,
+      "Alternative Education Paths": 0.5,
+      "Progressive Reform": 0.9
+    }
+  },
+  "gerardo cedrone": {
+    "Immigration": {
+      "conservative": 0,
+      "centrist": 0,
+      "progressive": 0
+    },
+    "Inflation and Economy": {
+      "Conservative Economic Policies": 0,
+      "Balanced Economic Approach": 0,
+      "Radical Economic Transformation": 0
+    },
+    "Property taxes": {
+      "Tax Reduction": null,
+      "Tax Fairness": null,
+      "High Tax for Public Services": null
+    },
+    "Crime, policing and public safety": {
+      "Reformist": "Unknown",
+      "Systemic Change Advocates": "Unknown",
+      "Law and Order": "Unknown"
+    },
+    "Government transparency and accountability": {
+      "Transparency Advocacy": 0,
+      "Integrity and Accountability": 0,
+      "Policy Support": 0,
+      "Direct Democracy": 0
+    },
+    "Climate and Energy": {},
+    "Abortion and Reproductive Rights": {
+      "Pro-choice": 0.33,
+      "Pro-life": 0.33,
+      "Ambivalent": 0.33
+    },
+    "Education": {},
+    "Foreign Policy": {
+      "Economic Focus": 0,
+      "Diplomacy and Alliances": 0,
+      "National Interests and Security": 0,
+      "Independent Approach": 0
+    },
+    "Gun Rights and Gun Control": {},
+    "Health Care": {},
+    "AI and Technology Regulation": {
+      "Pro-Business": 0,
+      "Balanced Approach": 0,
+      "Pro-Regulation": 0
+    },
+    "Housing": {},
+    "Affordability and cost of living": {
+      "Conservative": 0,
+      "Centrist": 0,
+      "Progressive": 0,
+      "Radical": 0
+    },
+    "Infrastructure": {
+      "Pro-Business Infrastructure": 0,
+      "Sustainable Infrastructure": 0,
+      "Working-Class Infrastructure": 0
+    },
+    "Mental health": {},
+    "Democracy": {
+      "Moderate": 0,
+      "Advocacy for Democratic Principles": 0,
+      "Progressive": 0
+    },
+    "Student debt": {
+      "Market-Based Approach": "unknown",
+      "Moderate Reform": "unknown",
+      "Alternative Education Paths": "unknown",
+      "Progressive Reform": "unknown"
+    }
+  },
+  "karen zaletel": {
+    "Immigration": {},
+    "Inflation and Economy": {
+      "Conservative Economic Policies": 0,
+      "Balanced Economic Approach": 0,
+      "Radical Economic Transformation": 0
+    },
+    "Property taxes": {
+      "Tax Reduction": 0,
+      "Tax Fairness": 0,
+      "High Tax for Public Services": 0
+    },
+    "Crime, policing and public safety": {
+      "Reformist": null,
+      "Systemic Change Advocates": null,
+      "Law and Order": null
+    },
+    "Government transparency and accountability": {},
+    "Climate and Energy": {},
+    "Abortion and Reproductive Rights": {
+      "Pro-choice": 0,
+      "Pro-life": 0,
+      "Ambivalent": 0
+    },
+    "Education": {
+      "Equity and Access in Education": null,
+      "Early and Higher Education": null,
+      "School Choice and Local Control": null,
+      "Efficiency and Accountability in Education": null
+    },
+    "Foreign Policy": {
+      "Economic Focus": 0,
+      "Diplomacy and Alliances": 0,
+      "National Interests and Security": 0,
+      "Independent Approach": 0
+    },
+    "Gun Rights and Gun Control": {},
+    "Health Care": {},
+    "AI and Technology Regulation": {
+      "Pro-Business": 0.5,
+      "Balanced Approach": 0.7,
+      "Pro-Regulation": 0.8
+    },
+    "Housing": {},
+    "Affordability and cost of living": {
+      "Conservative": 0.4,
+      "Centrist": 0.7,
+      "Progressive": 0.6,
+      "Radical": 0.2
+    },
+    "Infrastructure": {
+      "Pro-Business Infrastructure": 0.5,
+      "Sustainable Infrastructure": 0.75,
+      "Working-Class Infrastructure": 0.6
+    },
+    "Mental health": {
+      "Proactive Advocacy": 0.0,
+      "Unclear Position": 1.0
+    },
+    "Democracy": {
+      "Moderate": null,
+      "Advocacy for Democratic Principles": null,
+      "Progressive": null
+    },
+    "Student debt": {}
+  }
+}

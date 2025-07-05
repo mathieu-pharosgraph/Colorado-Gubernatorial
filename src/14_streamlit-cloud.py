@@ -403,6 +403,18 @@ with tabs[4]:
 # --- Tab X: Voter Persuasion Insights ---
 with tabs[5]:  # adjust index if needed
     st.header("🧠 Voter Persuasion Insights")
+    with st.expander("ℹ️ How to interpret Persuasion and Clarity scores"):
+        st.markdown("""
+        This view summarizes how **persuasive** and **clear** each candidate's responses appear to voters.
+
+        - **Persuasion Score**: Reflects how compelling and emotionally resonant the candidate’s arguments are.
+        - High scores often reflect strong framing, vivid language, or motivational tone.
+        - **Clarity Score**: Measures how easy the language is to follow and how clearly the core point is communicated.
+        - High clarity often reflects concise sentences, minimal jargon, and a clear logical structure.
+        
+        **Use Case**: Spot candidates who may be inspiring but vague, or others who are clear but less emotionally persuasive. Look for balance in both dimensions.
+        """)
+
 
     # Filter structured voter_pov entries
     voter_df = sdf[sdf["prompt_type"] == "voter_pov"]

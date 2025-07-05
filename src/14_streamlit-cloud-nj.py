@@ -96,14 +96,14 @@ for col in ["salience_score", "salience_mentions", "framing_polarity_score"]:
 # --- Tabs ---
 tabs = st.tabs([
     "Roles", 
-    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights", "Voter Persuasion Insights", "State Tables", "Precinct Maps", "Precinct Tables", "Opposition Insights", "Frames", "Topics"
+    "Framing Polarity", "Top Issues", "Framing Wordclouds", "Narrative Insights", "Voter Persuasion Insights", "State Tables", "Census Block Group Maps", "Census Block Group Tables", "Opposition Insights", "Frames", "Topics"
 ])
 
 candidates = sorted(df["candidate"].dropna().unique())
 
 @st.cache_data
-def load_precinct_data():
-    shapes = gpd.read_file("data/new_jersey/tl_2020_34_vtd20.shp", engine="fiona")
+def load_blockgroup_data():
+    shapes = gpd.read_file("data/new_jersey/tl_2020_34_bg.shp", engine="fiona")
 
     fips_to_name = {
         "001": "atlantic",
@@ -131,30 +131,30 @@ def load_precinct_data():
 
     shapes["county_fips"] = shapes["COUNTYFP20"].astype(str).str.zfill(3)
     shapes["county_name"] = shapes["county_fips"].map(fips_to_name)
-    shapes["precinct_num"] = shapes["VTDST20"].astype(str).str.zfill(6)
-    shapes["precinct_code"] = shapes["precinct_num"].str[-3:]
+    shapes["block_group"] = shapes["VTDST20"].astype(str).str.zfill(6)
+    shapes["block_group"] = shapes["GEOID"]  
     shapes["geometry"] = shapes["geometry"].simplify(0.001, preserve_topology=True)
 
-    shapes = shapes[["county_name", "precinct_code", "geometry"]]
+    shapes = shapes[["county_name", "block_group", "geometry"]]
 
     scores = pd.read_csv("data/precinct_candidate_scores_with_confidence_nj.csv")
-    scores["precinct_num"] = scores["precinct_num"].astype(str).str.zfill(3)
+    scores["block_group"] = scores["block_group"].astype(str).str.zfill(3)
     scores["county_name"] = scores["county_name"].str.strip().str.lower()
-    scores["precinct_code"] = scores["precinct_num"]
+    scores["block_group"] = scores["block_group"]
 
-    turnout = pd.read_stata("data/socio_demo_politics_precinct_final_json.dta")
-    turnout["precinct_num"] = turnout["precinct_num"].astype(str).str.zfill(3)
+    turnout = pd.read_csv("outputs/block_level_census_voting.csv")
+    turnout["block_group"] = turnout["block_group"].astype(str).str.zfill(3)
     turnout["county_name"] = turnout["county_name"].str.strip().str.lower()
-    turnout["precinct_code"] = turnout["precinct_num"]
+    turnout["block_group"] = turnout["block_group"]
 
-    merged = shapes.merge(scores, on=["county_name", "precinct_code"], how="inner")
-    merged = merged.merge(turnout[["county_name", "precinct_code", "totalvoters", "totalvoterturnout1"]],
-                          on=["county_name", "precinct_code"], how="left")
+    merged = shapes.merge(scores, on=["county_name", "block_group"], how="inner")
+    merged = merged.merge(turnout[["county_name", "block_group", "totalvoters", "totalvoterturnout1"]],
+                          on=["county_name", "block_group"], how="left")
     return gpd.GeoDataFrame(merged, geometry="geometry", crs=shapes.crs), shapes
 
 
 
-gdf, shapes = load_precinct_data()
+gdf, shapes = load_blockgroup_data()
 
 
 
@@ -194,7 +194,7 @@ def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=Non
     tooltip = f"""
         <b>Candidate:</b> {candidate_name if candidate_name else 'N/A'}<br>
         <b>County:</b> {{county_name}}<br>
-        <b>Precinct:</b> {{precinct_code}}<br>
+        <b>Precinct:</b> {{block_group}}<br>
         <b>{value_col.title()}:</b> {{{value_col}}}
     """
     if value_col == "net_score" and second_name:
@@ -203,7 +203,7 @@ def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=Non
             <b>{second_name}:</b> {{cand2_score}}<br>
             <b>Net Score:</b> {{net_score}}<br>
             <b>County:</b> {{county_name}}<br>
-            <b>Precinct:</b> {{precinct_code}}
+            <b>Precinct:</b> {{block_group}}
         """
 
     view_state = pdk.ViewState(latitude=39.0, longitude=-105.5, zoom=7.5)
@@ -428,6 +428,18 @@ with tabs[4]:
 # --- Tab X: Voter Persuasion Insights ---
 with tabs[5]:  # adjust index if needed
     st.header("🧠 Voter Persuasion Insights")
+    with st.expander("ℹ️ How to interpret Persuasion and Clarity scores"):
+        st.markdown("""
+        This view summarizes how **persuasive** and **clear** each candidate's responses appear to voters.
+
+        - **Persuasion Score**: Reflects how compelling and emotionally resonant the candidate’s arguments are.
+        - High scores often reflect strong framing, vivid language, or motivational tone.
+        - **Clarity Score**: Measures how easy the language is to follow and how clearly the core point is communicated.
+        - High clarity often reflects concise sentences, minimal jargon, and a clear logical structure.
+        
+        **Use Case**: Spot candidates who may be inspiring but vague, or others who are clear but less emotionally persuasive. Look for balance in both dimensions.
+        """)
+
 
     # Filter structured voter_pov entries
     voter_df = sdf[sdf["prompt_type"] == "voter_pov"]
@@ -482,16 +494,17 @@ with tabs[6]:
 
     with st.expander("ℹ️ What do the state-level scores mean?"):
         st.markdown("""
-        **📊 State Score** – Weighted average narrative strength of each candidate, where each precinct contributes:  
+        **📊 State Score** – Weighted average narrative strength of each candidate, where each Census Block Group contributes:  
         **Raw Score × Number of Voters × Turnout**  
-        normalized by total **Voters × Turnout** across precincts with scores.
+        normalized by total **Voters × Turnout** across Census Blocks with scores.
+        Note: Turnout at the Census Block Group level is a proxy calculated by dividing the number of ballots cast by total population in the block group.
 
         This reflects **narrative alignment scaled by potential electoral impact**.
         """)
 
     # Calculate state-level weighted scores
     gdf_valid = gdf[gdf["score"].notnull()]
-    gdf_valid["weight"] = gdf_valid["totalvoters"] * gdf_valid["totalvoterturnout1"]
+    gdf_valid["weight"] = gdf_valid["totalvotes"] * gdf_valid["turnout"]
 
     state_scores = gdf_valid.groupby("candidate").apply(
         lambda g: (g["score"] * g["weight"]).sum() / g["weight"].sum()
@@ -508,7 +521,7 @@ with tabs[6]:
 
     if cand1 != cand2:
         pivot = gdf[gdf["candidate"].isin([cand1, cand2])].pivot_table(
-            index=["county_name", "precinct_code", "totalvoters", "totalvoterturnout1"],
+            index=["county_name", "block_group", "totalvoters", "totalvoterturnout1"],
             columns="candidate", values="score"
         ).dropna().reset_index()
 
@@ -519,14 +532,14 @@ with tabs[6]:
         pivot["opportunity_score"] = ((pivot[cand1] < pivot[cand2]).astype(int)) * (1 / (1 + (pivot[cand2] - pivot[cand1]).abs())) * pivot["weight"]
 
         # Protect table
-        st.subheader(f"🛡️ Precincts to Protect for {cand1}")
-        with st.expander("ℹ️ What do the precincts to protect scores mean?"):
+        st.subheader(f"🛡️ Census Blocks to Protect for {cand1}")
+        with st.expander("ℹ️ What do the Census Block Groups to protect scores mean?"):
             st.markdown("""
-            **📊 Protect Score** – Considers only the precinct where the first candidate LEADS the second candidates. Score then based on number of voters * turnout weighted by the inverse of how much the first candidate leads in that precinct (i.e., precinct where the first candidate leads by only a small margin will show higher scores (for the same voters * turnout)). 
+            **📊 Protect Score** – Considers only the Census Block Groups where the first candidate LEADS the second candidates. Score then based on number of voters * turnout weighted by the inverse of how much the first candidate leads in that block (i.e., Blocks where the first candidate leads by only a small margin will show higher scores (for the same voters * turnout)). 
 
             """)
         protect_table = pivot[pivot["protect_score"] > 0][[
-            "county_name", "precinct_code", cand1, cand2, "protect_score"
+            "county_name", "block_group", cand1, cand2, "protect_score"
         ]].rename(columns={
             cand1: f"{cand1} Score",
             cand2: f"{cand2} Score"
@@ -534,14 +547,14 @@ with tabs[6]:
         st.dataframe(protect_table, use_container_width=True)
 
         # Opportunity table
-        st.subheader(f"🚀 Opportunity Precincts for {cand1}")
-        with st.expander("ℹ️ What do the opportinity precincts scores mean?"):
+        st.subheader(f"🚀 Opportunity Census Block Groups for {cand1}")
+        with st.expander("ℹ️ What do the opportinity Census Block scores mean?"):
             st.markdown("""
-            **📊 Opportunity Score** – Considers only the precinct where the first candidate LAGS the second candidates. Score then based on number of voters * turnout weighted by the inverse of how much the first candidate lags in that precinct (i.e., precinct where the first candidate lags by only a small margin will show higher scores (for the same voters * turnout)). 
+            **📊 Opportunity Score** – Considers only the Census Blocks where the first candidate LAGS the second candidates. Score then based on number of voters * turnout weighted by the inverse of how much the first candidate lags in that block (i.e., blocks where the first candidate lags by only a small margin will show higher scores (for the same voters * turnout)). 
 
             """)
         opportunity_table = pivot[pivot["opportunity_score"] > 0][[
-            "county_name", "precinct_code", cand1, cand2, "opportunity_score"
+            "county_name", "block_group", cand1, cand2, "opportunity_score"
         ]].rename(columns={
             cand1: f"{cand1} Score",
             cand2: f"{cand2} Score"
@@ -552,9 +565,9 @@ with tabs[6]:
 with tabs[7]:
     with st.expander("ℹ️ What do the scores mean?"):
         st.markdown("""
-    **🧠 Raw Score** – AI-detected narrative alignment in this precinct for the selected candidate  
-    **📉 Normalized Score** – Relative strength of support (0–100) within the candidate’s precinct footprint  
-    **⚖️ Net Score** – The difference in narrative strength between two candidates in a given precinct  
+    **🧠 Raw Score** – AI-detected narrative alignment in this Census Block Group for the selected candidate  
+    **📉 Normalized Score** – Relative strength of support (0–100) within the candidate’s Census Block Group footprint  
+    **⚖️ Net Score** – The difference in narrative strength between two candidates in a given Census Block Group 
     **🎯 Priority Score** – Weighted opportunity metric based on:  
     **Normalized Score × Voter Base × Turnout**
 
@@ -567,23 +580,23 @@ with tabs[7]:
     filtered = gdf.copy()
 
     # Pivot table with all candidate scores for winner map later
-    pivot_all = gdf.pivot(index=["county_name", "precinct_code"], columns="candidate", values="score").reset_index()
+    pivot_all = gdf.pivot(index=["county_name", "block_group"], columns="candidate", values="score").reset_index()
 
     # --- Map for Candidate A ---
     if cand1 != "All":
         st.subheader(f"🗺️ Precinct Scores for {cand1}")
-        pivot1 = gdf[gdf["candidate"] == cand1][["county_name", "precinct_code", "score"]].copy()
+        pivot1 = gdf[gdf["candidate"] == cand1][["county_name", "block_group", "score"]].copy()
         pivot1 = pivot1.rename(columns={"score": "cand1_score"})
-        df1 = shapes.copy().merge(pivot1, on=["county_name", "precinct_code"], how="inner")
+        df1 = shapes.copy().merge(pivot1, on=["county_name", "block_group"], how="inner")
         df1 = df1.rename(columns={"cand1_score": "score"})
         show_pydeck_map(df1, "score", candidate_name=cand1)
 
     # --- Map for Candidate B ---
     if cand2 != "All":
         st.subheader(f"🗺️ Precinct Scores for {cand2}")
-        pivot2 = gdf[gdf["candidate"] == cand2][["county_name", "precinct_code", "score"]].copy()
+        pivot2 = gdf[gdf["candidate"] == cand2][["county_name", "block_group", "score"]].copy()
         pivot2 = pivot2.rename(columns={"score": "cand2_score"})
-        df2 = shapes.copy().merge(pivot2, on=["county_name", "precinct_code"], how="inner")
+        df2 = shapes.copy().merge(pivot2, on=["county_name", "block_group"], how="inner")
         df2 = df2.rename(columns={"cand2_score": "score"})
         show_pydeck_map(df2, "score", candidate_name=cand2)
 
@@ -592,14 +605,14 @@ with tabs[7]:
 
 
     if cand1 != "All" and cand2 != "All" and cand1 != cand2:
-        wide = filtered.pivot(index=["county_name", "precinct_code"], columns="candidate", values="score").reset_index()
+        wide = filtered.pivot(index=["county_name", "block_group"], columns="candidate", values="score").reset_index()
         wide = wide.dropna(subset=[cand1, cand2])
         wide["net_score"] = (wide[cand1] - wide[cand2]).round(2)
         wide["cand1_score"] = wide[cand1].round(2)
         wide["cand2_score"] = wide[cand2].round(2)
-        geo_net = shapes[["county_name", "precinct_code", "geometry"]].merge(
-            wide[["county_name", "precinct_code", "net_score", "cand1_score", "cand2_score"]],
-            on=["county_name", "precinct_code"],
+        geo_net = shapes[["county_name", "block_group", "geometry"]].merge(
+            wide[["county_name", "block_group", "net_score", "cand1_score", "cand2_score"]],
+            on=["county_name", "block_group"],
             how="inner"
         )
 
@@ -611,13 +624,13 @@ with tabs[7]:
 
 
     winner_df = gdf.copy()
-    pivot = winner_df.pivot_table(index=["county_name", "precinct_code"], columns="candidate", values="score")
+    pivot = winner_df.pivot_table(index=["county_name", "block_group"], columns="candidate", values="score")
     score_only = pivot[candidates]  # restrict to candidate score columns
     pivot["winner"] = score_only.idxmax(axis=1)
     pivot["max_score"] = score_only.max(axis=1).round(2)
 
 
-    winner_geo = shapes.merge(pivot.reset_index(), on=["county_name", "precinct_code"], how="inner")
+    winner_geo = shapes.merge(pivot.reset_index(), on=["county_name", "block_group"], how="inner")
     winner_geo["rgb"] = winner_geo["winner"].apply(name_to_rgb)
     winner_geo[["r", "g", "b", "a"]] = pd.DataFrame(winner_geo["rgb"].tolist(), index=winner_geo.index)
 
@@ -635,12 +648,12 @@ with tabs[7]:
 
 
 with tabs[8]:
-    st.header("📊 Precinct Tables")
+    st.header("📊 Census Block Group Tables")
     with st.expander("ℹ️ What do the scores mean?"):
         st.markdown("""
-    **🧠 Raw Score** – AI-detected narrative alignment in this precinct for the selected candidate  
-    **📉 Normalized Score** – Relative strength of support (0–100) within the candidate’s precinct footprint  
-    **⚖️ Net Score** – The difference in narrative strength between two candidates in a given precinct  
+    **🧠 Raw Score** – AI-detected narrative alignment in this Census Block Group for the selected candidate  
+    **📉 Normalized Score** – Relative strength of support (0–100) within the candidate’s Census Block Group footprint  
+    **⚖️ Net Score** – The difference in narrative strength between two candidates in a given Census Block Group 
     **🎯 Priority Score** – Weighted opportunity metric based on:  
     **Normalized Score × Voter Base × Turnout**
 
@@ -648,12 +661,12 @@ with tabs[8]:
     """)
 
     # --- Winner calculation (run once) ---
-    pivot_scores = gdf.pivot_table(index=["county_name", "precinct_code"], columns="candidate", values="score")
+    pivot_scores = gdf.pivot_table(index=["county_name", "block_group"], columns="candidate", values="score")
     numeric_scores = pivot_scores[candidates]  # only candidate columns
     pivot_scores["precinct_winner"] = numeric_scores.idxmax(axis=1)
     pivot_scores["winner_score"] = numeric_scores.max(axis=1).round(2)
     winner_lookup = pivot_scores[["precinct_winner", "winner_score"]].reset_index()
-    gdf = gdf.merge(winner_lookup, on=["county_name", "precinct_code"], how="left")
+    gdf = gdf.merge(winner_lookup, on=["county_name", "block_group"], how="left")
 
     # --- Preprocess for display ---
     gdf["priority"] = (gdf["normalized_score"] * gdf["totalvoters"] * gdf["totalvoterturnout1"]).round(0)
@@ -668,7 +681,7 @@ with tabs[8]:
     filtered_table = gdf if table_cand1 == "All" else gdf[gdf["candidate"] == table_cand1]
 
     display_df = filtered_table.rename(columns={"totalvoters": "number of voters"})[[
-        "county_name", "precinct_code", "candidate", "score", "normalized_score",
+        "county_name", "block_group", "candidate", "score", "normalized_score",
         "number of voters", "voter turnout", "priority", "precinct_winner", "winner_score"
     ]]
     st.dataframe(display_df.sort_values("priority", ascending=False), use_container_width=True)
@@ -680,7 +693,7 @@ with tabs[8]:
 
     if cand_x != cand_y:
         net_df = gdf[gdf["candidate"].isin([cand_x, cand_y])].pivot_table(
-            index=["county_name", "precinct_code", "totalvoters", "totalvoterturnout1"],
+            index=["county_name", "block_group", "totalvoters", "totalvoterturnout1"],
             columns="candidate", values="score"
         ).dropna().reset_index()
 
@@ -691,7 +704,7 @@ with tabs[8]:
         )
 
         # Merge winner info
-        net_df = net_df.merge(winner_lookup, on=["county_name", "precinct_code"], how="left")
+        net_df = net_df.merge(winner_lookup, on=["county_name", "block_group"], how="left")
 
         net_display = net_df.rename(columns={
             cand_x: f"{cand_x} Score",
@@ -699,17 +712,17 @@ with tabs[8]:
             "winner_score": "Winner Score",
             "precinct_winner": "Precinct Winner"
         })[[
-            "county_name", "precinct_code", f"{cand_x} Score", f"{cand_y} Score",
+            "county_name", "block_group", f"{cand_x} Score", f"{cand_y} Score",
             "net_score", "Winner Score", "Precinct Winner", "number of voters", "voter turnout"
         ]]
         st.dataframe(net_display.sort_values("net_score", ascending=False), use_container_width=True)
 
 with tabs[9]:
-    st.header("🧠 Opposition Research: Precinct Alignment & Attack Angles")
+    st.header("🧠 Opposition Research: Census Block Group Alignment & Attack Angles")
 
     with st.expander("ℹ️ What does the dominant issue map show?"):
         st.markdown("""
-        This map shows the **top 1–5 most salient issues** per precinct, based on estimated voter concern levels.
+        This map shows the **top 1–5 most salient issues** per Census Block Group, based on estimated voter concern levels.
         
         - **Color**: Encodes the selected top issue (e.g., "Inflation and Economy").
         - **Tooltip**: Shows the issue label and salience score (normalized to 100).
@@ -742,8 +755,8 @@ with tabs[9]:
     alignment_data, candidate_scores, attack_lines, issue_position_map = load_opposition_data()
     candidate_list = sorted(candidate_scores.keys())
 
-    st.subheader("📍 Dominant Issue by Precinct")
-    top_n = st.selectbox("Number of top issues to display per precinct", [1, 2, 3, 4, 5], index=0)
+    st.subheader("📍 Dominant Issue by Census Block Group")
+    top_n = st.selectbox("Number of top issues to display per Census Block Group", [1, 2, 3, 4, 5], index=0)
 
     issue_records = []
     for row in alignment_data:
@@ -752,7 +765,7 @@ with tabs[9]:
         for rank, (issue, sal_score) in enumerate(top_issues, 1):
             issue_records.append({
                 "county_name": row["county"],
-                "precinct_code": row["precinct"],
+                "block_group": row["precinct"],
                 "issue": issue,
                 "salience": sal_score,
                 "top_issue_rank": f"Top {rank}"
@@ -765,7 +778,7 @@ with tabs[9]:
         df_issue["rgb"] = df_issue["issue"].apply(name_to_rgb)
         df_issue[["r", "g", "b", "a"]] = pd.DataFrame(df_issue["rgb"].tolist(), index=df_issue.index)
 
-        map_df = shapes.merge(df_issue, on=["county_name", "precinct_code"], how="inner")
+        map_df = shapes.merge(df_issue, on=["county_name", "block_group"], how="inner")
 
         def show_pydeck_map(gdf_map, value_col, candidate_name=None, other_score_col=None, second_name=None):
 
@@ -793,7 +806,7 @@ with tabs[9]:
             if "issue" in gdf_map.columns and "salience" in gdf_map.columns:
                 tooltip = f"""
                     <b>County:</b> {{county_name}}<br>
-                    <b>Precinct:</b> {{precinct_code}}<br>
+                    <b>Precinct:</b> {{block_group}}<br>
                     <b>Top Issue:</b> {{issue}}<br>
                     <b>Salience Score (0–100):</b> {{salience}}<br>
                     <b>Rank:</b> {{top_issue_rank}}
@@ -801,7 +814,7 @@ with tabs[9]:
             else:
                 tooltip = f"""
                     <b>County:</b> {{county_name}}<br>
-                    <b>Precinct:</b> {{precinct_code}}<br>
+                    <b>Precinct:</b> {{block_group}}<br>
                     <b>{value_col.title()}:</b> {{{value_col}}}
                 """
 
@@ -823,11 +836,11 @@ with tabs[9]:
     st.subheader("📌 Issue Position Map")
     with st.expander("ℹ️ What does the position map show?"):
         st.markdown("""
-        This map displays the **dominant ideological position** on a selected issue in each precinct.
+        This map displays the **dominant ideological position** on a selected issue in each Census Block Group.
         
         - **Color**: Encodes the dominant stance (e.g., "Progressive", "Moderate").
         - **Tooltip**: Shows the position and a brief summary.
-        - **Use Case**: Understand how the public's issue-level ideology varies by precinct.
+        - **Use Case**: Understand how the public's issue-level ideology varies by Census Block Group.
         """)
 
     pos_issue = st.selectbox(
@@ -849,7 +862,7 @@ with tabs[9]:
             summary = cluster_defs.get(dominant_position, "")
             pos_records.append({
                 "county_name": row["county"],
-                "precinct_code": row["precinct"],
+                "block_group": row["precinct"],
                 "dominant_position": dominant_position,
                 "cluster_summary": summary
             })
@@ -858,7 +871,7 @@ with tabs[9]:
     if not pos_df.empty:
         pos_df["rgb"] = pos_df["dominant_position"].apply(name_to_rgb)
         pos_df[["r", "g", "b", "a"]] = pd.DataFrame(pos_df["rgb"].tolist(), index=pos_df.index)
-        pos_geo = shapes.merge(pos_df, on=["county_name", "precinct_code"], how="inner")
+        pos_geo = shapes.merge(pos_df, on=["county_name", "block_group"], how="inner")
 
         def show_position_map(gdf_map):
             gdf_map = gdf_map.dropna(subset=["geometry"]).copy()
@@ -867,7 +880,7 @@ with tabs[9]:
 
             tooltip = """
                 <b>County:</b> {county_name}<br>
-                <b>Precinct:</b> {precinct_code}<br>
+                <b>Precinct:</b> {block_group}<br>
                 <b>Position:</b> {dominant_position}<br>
                 <b>Summary:</b> {cluster_summary}
             """
@@ -899,12 +912,12 @@ with tabs[9]:
     else:
         st.info("No valid position data available for this issue.")
     st.subheader("🆚 A vs B Opportunity/Protect Tables")
-    with st.expander("ℹ️ How to interpret Protect and Opportunity precincts"):
+    with st.expander("ℹ️ How to interpret Protect and Opportunity Census Block Groups"):
         st.markdown("""
-        These tables highlight **high-impact precincts** based on issue alignment and position contrast between two candidates.
+        These tables highlight **high-impact Census Block Groups** based on issue alignment and position contrast between two candidates.
 
-        - **Issue**: One of the top 3 most salient issues in the precinct based on voter concern.
-        - **Candidate Position Score**: How closely each candidate's positions align with the **dominant stance** in the precinct.
+        - **Issue**: One of the top 3 most salient issues in the Census Block Group based on voter concern.
+        - **Candidate Position Score**: How closely each candidate's positions align with the **dominant stance** in the Census Block Group.
         - **Advantage**: Gap in alignment — positive means Candidate A has edge.
         - **Protect Score**: Priority score where Candidate A leads but must defend.
         - **Opportunity Score**: Priority score where Candidate A trails but has opening.
@@ -918,13 +931,13 @@ with tabs[9]:
 
     # ✅ Recompute pivot table for scores
     pivot = gdf.pivot_table(
-        index=["county_name", "precinct_code"],
+        index=["county_name", "block_group"],
         columns="candidate",
         values="score"
     ).reset_index()
 
-    turnout_map = gdf.groupby(["county_name", "precinct_code"])[["totalvoters", "totalvoterturnout1"]].first().reset_index()
-    pivot = pivot.merge(turnout_map, on=["county_name", "precinct_code"], how="left")
+    turnout_map = gdf.groupby(["county_name", "block_group"])[["totalvoters", "totalvoterturnout1"]].first().reset_index()
+    pivot = pivot.merge(turnout_map, on=["county_name", "block_group"], how="left")
     pivot["weight"] = pivot["totalvoters"] * pivot["totalvoterturnout1"]
     pivot = pivot.fillna(0)
 
@@ -968,7 +981,7 @@ with tabs[9]:
 
                 match = pivot[
                     (pivot["county_name"] == row["county"]) & 
-                    (pivot["precinct_code"] == row["precinct"])
+                    (pivot["block_group"] == row["precinct"])
                 ]
                 if not match.empty:
                     s1 = match.iloc[0].get(cand1, 0)
@@ -1001,15 +1014,15 @@ with tabs[9]:
         else:
             df = df[df["opportunity_score"] > 0]
 
-        # ✅ SORT by county, precinct, salience descending
+        # ✅ SORT by county, Census Block Group, salience descending
         df = df.sort_values(by=["county", "precinct", "salience"], ascending=[True, True, False])
         st.dataframe(df, use_container_width=True)
         st.download_button(f"Download {mode.title()} Table", df.to_csv(index=False), file_name=f"{cand1}_vs_{cand2}_{mode}.csv")
 
-    st.markdown("### 🛡️ Protect Precincts")
+    st.markdown("### 🛡️ Protect Census Block Group")
     display_enriched_table("protect")
 
-    st.markdown("### 🚀 Opportunity Precincts")
+    st.markdown("### 🚀 Opportunity Census Block Group")
     display_enriched_table("opportunity")
 
 

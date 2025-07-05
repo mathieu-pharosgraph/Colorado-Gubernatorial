@@ -1,0 +1,492 @@
+{
+  "Immigration": [
+    {
+      "cluster_label": "Conservative",
+      "cluster_summary": "This cluster emphasizes strict immigration policies, border security, and prioritizing national economic stability. It advocates for legal immigration and enforcement of immigration laws.",
+      "includes": [
+        "Strict Immigration Policies and Border Security",
+        "Conservative Immigration Policies"
+      ]
+    },
+    {
+      "cluster_label": "Centrist",
+      "cluster_summary": "This cluster focuses on pragmatic, bipartisan solutions to immigration issues. It supports measures for law-abiding undocumented immigrants to earn legal status, and comprehensive immigration reform that includes border security enhancements and pathways to citizenship.",
+      "includes": [
+        "Pathway to Legal Status for Law-Abiding Undocumented Immigrants",
+        "Comprehensive Immigration Reform with Pathways to Citizenship",
+        "Bipartisan Solutions to Immigration Issues"
+      ]
+    },
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "This cluster favors liberal immigration policies, such as pathways to citizenship for undocumented immigrants, protecting DACA recipients, and increasing refugee admissions. It supports open borders and opposes deportation and detention of undocumented immigrants.",
+      "includes": [
+        "Liberal Immigration Policies",
+        "Open Borders and Rights of Immigrants"
+      ]
+    }
+  ],
+  "Inflation and Economy": [
+    {
+      "cluster_label": "Conservative Economic Policies",
+      "cluster_summary": "This cluster focuses on fiscal conservatism, tax reform, and business-friendly policies as a means to stimulate economic growth and curb inflation.",
+      "includes": [
+        "Fiscal conservatism and business-friendly policies"
+      ]
+    },
+    {
+      "cluster_label": "Balanced Economic Approach",
+      "cluster_summary": "This cluster advocates for a balanced approach to economic recovery, focusing on both fiscal responsibility and strategic investments in key industries, with a particular emphasis on small businesses and working families.",
+      "includes": [
+        "Balanced approach with focus on small businesses and working families",
+        "Pragmatic economist with balanced approach"
+      ]
+    },
+    {
+      "cluster_label": "Radical Economic Transformation",
+      "cluster_summary": "This cluster critiques capitalism and advocates for a worker-led revolution and the establishment of a workers' government as a solution to economic instability and inflation.",
+      "includes": [
+        "Critique of capitalism and advocacy for worker-led revolution"
+      ]
+    }
+  ],
+  "Property taxes": [
+    {
+      "cluster_label": "Tax Reduction",
+      "cluster_summary": "This cluster includes positions that advocate for reducing property taxes with the goal of stimulating economic growth and reducing the burden on homeowners and businesses.",
+      "includes": [
+        "Reducing property taxes and revising school funding formula",
+        "Lowering property taxes to stimulate economic growth"
+      ]
+    },
+    {
+      "cluster_label": "Tax Fairness",
+      "cluster_summary": "This cluster includes positions that aim to make the tax system more equitable, either by opposing policies that disproportionately affect states with higher taxes or by implementing a progressive tax system.",
+      "includes": [
+        "Opposing cap on state and local tax deductions",
+        "Implementing a progressive property tax system"
+      ]
+    },
+    {
+      "cluster_label": "High Tax for Public Services",
+      "cluster_summary": "This cluster includes the position that supports high property taxes as a means to fund robust public services, such as education, public safety, and infrastructure.",
+      "includes": [
+        "Supporting high property taxes for robust public services"
+      ]
+    }
+  ],
+  "Crime, policing and public safety": [
+    {
+      "cluster_label": "Reformist",
+      "cluster_summary": "This cluster supports law enforcement but acknowledges the need for some reforms to increase transparency, fairness, and justice. It also emphasizes the importance of community policing and calls for increased accountability within the police force.",
+      "includes": [
+        "Support for law enforcement with some reforms",
+        "Balanced approach with resource reallocation",
+        "Promoting police reform with community-oriented approach"
+      ]
+    },
+    {
+      "cluster_label": "Systemic Change Advocates",
+      "cluster_summary": "This cluster focuses on addressing the root causes of crime through comprehensive criminal justice reforms. It advocates for systemic change, including addiction and mental health services, prisoner rehabilitation, and re-entry initiatives. It also supports economic growth, education, and community development as ways to reduce crime.",
+      "includes": [
+        "Addressing root causes of crime with systemic change",
+        "Advocating for significant systemic changes",
+        "Progressive approach with focus on racial disparities"
+      ]
+    },
+    {
+      "cluster_label": "Law and Order",
+      "cluster_summary": "This cluster advocates for stronger law enforcement, including harsher sentencing for criminals, and a more traditional approach to public safety. It also proposes increased funding for police departments, stricter sentencing for offenders, and more proactive policing strategies.",
+      "includes": [
+        "Tough on crime with proactive policing strategies",
+        "Conservative approach with stronger law enforcement"
+      ]
+    }
+  ],
+  "Government transparency and accountability": [
+    {
+      "cluster_label": "Transparency Advocacy",
+      "cluster_summary": "This cluster focuses on the advocacy for increased transparency and accountability in government functions, particularly in fiscal matters and budgetary processes. It includes calls for increased public scrutiny of government activities and decision-making processes.",
+      "includes": [
+        "Advocacy for increased government transparency and accountability"
+      ]
+    },
+    {
+      "cluster_label": "Integrity and Accountability",
+      "cluster_summary": "This cluster emphasizes the importance of integrity, accountability, and transparency in government functions. It includes calls for bipartisan cooperation in ensuring that government functions are transparent and officials are accountable for their actions.",
+      "includes": [
+        "Emphasis on integrity, accountability, and transparency"
+      ]
+    },
+    {
+      "cluster_label": "Policy Support",
+      "cluster_summary": "This cluster involves advocating for policies that increase the accessibility of information, reduce bureaucratic red tape, and hold officials accountable for their actions. It includes support for legislation to protect whistleblowers, strengthen the Freedom of Information Act, and increase penalties for corruption.",
+      "includes": [
+        "Support for policies increasing transparency and accountability"
+      ]
+    },
+    {
+      "cluster_label": "Direct Democracy",
+      "cluster_summary": "This cluster involves advocating for a more open and direct form of democracy, where citizens have more say in governmental affairs. It includes championing initiatives to make the government more transparent and accountable, and supporting measures to provide citizens with more information about the government's actions.",
+      "includes": [
+        "Advocacy for a more open and direct form of democracy"
+      ]
+    }
+  ],
+  "Climate and Energy": [
+    {
+      "cluster_label": "Pragmatic",
+      "cluster_summary": "This cluster acknowledges the reality of climate change but emphasizes the importance of balancing environmental protection with economic growth. It supports the use of natural gas and nuclear energy as a means to maintain economic stability while considering environmental impacts.",
+      "includes": [
+        "Balancing Economic Growth and Environmental Protection"
+      ]
+    },
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "This cluster views climate change as a pressing issue that requires immediate and comprehensive action. It supports the transition to a clean energy economy as a means to reduce greenhouse gas emissions and stimulate economic development.",
+      "includes": [
+        "Strong Advocacy for Environmental Protection and Renewable Energy"
+      ]
+    },
+    {
+      "cluster_label": "Radical",
+      "cluster_summary": "This cluster advocates for radical societal changes to address climate change and promote renewable energy. It sees a connection between the capitalist system and environmental degradation, arguing for a fundamental societal shift away from fossil fuels.",
+      "includes": [
+        "Radical Environmental Change and Renewable Energy Focus"
+      ]
+    }
+  ],
+  "Abortion and Reproductive Rights": [
+    {
+      "cluster_label": "Pro-choice",
+      "cluster_summary": "These positions advocate for a woman's right to choose, supporting legislation that protects and expands women's access to reproductive healthcare, including abortion services. They emphasize women's rights and autonomy, and aim to remove governmental or financial barriers to abortion.",
+      "includes": [
+        "Pro-choice and pro-reproductive healthcare",
+        "Pro-choice with emphasis on women's rights",
+        "Progressive pro-choice",
+        "Socialist pro-choice"
+      ]
+    },
+    {
+      "cluster_label": "Pro-life",
+      "cluster_summary": "These positions support the right to life of the unborn, opposing abortion except in certain circumstances. They emphasize the rights of the unborn and resonate with voters who believe that life begins at conception and that abortion is morally wrong.",
+      "includes": [
+        "Pro-life with exceptions",
+        "Pro-life emphasizing rights of the unborn"
+      ]
+    },
+    {
+      "cluster_label": "Ambivalent",
+      "cluster_summary": "This position could either support the right of women to choose what happens to their bodies, including the right to an abortion, or it could align with those who believe that fetuses have a right to life, opposing abortion. The stance depends on how the issue is portrayed.",
+      "includes": [
+        "Pro-choice or pro-life depending on portrayal"
+      ]
+    }
+  ],
+  "Education": [
+    {
+      "cluster_label": "Equity and Access in Education",
+      "cluster_summary": "This cluster focuses on ensuring equal access to quality education for all students, regardless of their location or socioeconomic status. It includes positions advocating for equitable distribution of resources, investment in public schools, and promotion of education equity.",
+      "includes": [
+        "Education Reform and School Funding Equity",
+        "Investment in Public Schools",
+        "Promotion of Education Equity",
+        "Access to Quality Education"
+      ]
+    },
+    {
+      "cluster_label": "Early and Higher Education",
+      "cluster_summary": "This cluster emphasizes the importance of both early and higher education. It includes positions advocating for universal pre-kindergarten and affordable higher education, including reduction of student loan debt.",
+      "includes": [
+        "Support for Universal Pre-Kindergarten",
+        "Affordable Higher Education and Student Loan Debt Reduction"
+      ]
+    },
+    {
+      "cluster_label": "School Choice and Local Control",
+      "cluster_summary": "This cluster supports the idea of school choice and local control over education. It includes positions favoring the expansion of charter schools, voucher programs, and reducing federal involvement in education.",
+      "includes": [
+        "Support for School Choice",
+        "Local Control and Fiscal Responsibility in Education"
+      ]
+    },
+    {
+      "cluster_label": "Efficiency and Accountability in Education",
+      "cluster_summary": "This cluster emphasizes the need for efficiency and accountability in the education system. It includes positions advocating for fiscal responsibility, effective use of resources, and increased oversight of school budgets.",
+      "includes": [
+        "Efficiency and Accountability in Education"
+      ]
+    }
+  ],
+  "Foreign Policy": [
+    {
+      "cluster_label": "Economic Focus",
+      "cluster_summary": "These positions prioritize economic interests, both domestically and globally, and emphasize the importance of fair trade, global competitiveness, and economic implications in foreign policy decisions.",
+      "includes": [
+        "Emphasizing Fair Trade and Global Competitiveness",
+        "Pragmatic and Economic-focused Approach",
+        "Promoting State's Economic Interests Abroad",
+        "Advocacy for International Workers' Rights and Global Economic Equality"
+      ]
+    },
+    {
+      "cluster_label": "Diplomacy and Alliances",
+      "cluster_summary": "These positions underscore the importance of diplomacy, alliances, and international institutions in maintaining global stability and security.",
+      "includes": [
+        "Emphasizing Diplomacy, Alliances, and International Institutions",
+        "Understanding of International Security Issues"
+      ]
+    },
+    {
+      "cluster_label": "National Interests and Security",
+      "cluster_summary": "These positions are characterized by prioritizing national interests and security in foreign policy decisions.",
+      "includes": [
+        "Prioritizing American Interests and Security"
+      ]
+    },
+    {
+      "cluster_label": "Independent Approach",
+      "cluster_summary": "This position is characterized by a willingness to break with party lines when necessary, indicating a more independent approach to foreign policy.",
+      "includes": [
+        "Willingness to Break with Party Lines"
+      ]
+    }
+  ],
+  "Gun Rights and Gun Control": [
+    {
+      "cluster_label": "Pro-Gun Rights",
+      "cluster_summary": "This cluster supports the protection of Second Amendment rights, advocating for the right to bear arms with varying degrees of regulation for public safety.",
+      "includes": [
+        "Pro-Gun Rights with Some Regulation",
+        "Pro-Gun Rights within a Socialist Framework"
+      ]
+    },
+    {
+      "cluster_label": "Stricter Gun Control",
+      "cluster_summary": "This cluster advocates for stricter gun control measures, including comprehensive background checks, closing loopholes, banning certain weapons and magazines, and implementing red flag laws.",
+      "includes": [
+        "Support for Stricter Gun Control"
+      ]
+    },
+    {
+      "cluster_label": "Socialist Perspective",
+      "cluster_summary": "This cluster supports the right to bear arms within a critique of the capitalist system, suggesting changes to the economic structure could lessen the need for firearms.",
+      "includes": [
+        "Pro-Gun Rights within a Socialist Framework"
+      ]
+    }
+  ],
+  "Health Care": [
+    {
+      "cluster_label": "Market-based Solutions",
+      "cluster_summary": "These positions support reducing healthcare costs and improving quality through market competition and private sector solutions. They maintain certain aspects of the ACA, but are generally critical of government-run healthcare.",
+      "includes": [
+        "Market-based healthcare solutions",
+        "Private sector healthcare solutions"
+      ]
+    },
+    {
+      "cluster_label": "Affordable Access",
+      "cluster_summary": "These positions support improving and securing the ACA, with a focus on expanding access to healthcare and reducing costs. They do not necessarily endorse a single-payer system or 'Medicare for All'.",
+      "includes": [
+        "Affordable and accessible healthcare"
+      ]
+    },
+    {
+      "cluster_label": "Universal Healthcare",
+      "cluster_summary": "These positions advocate for comprehensive, universal healthcare or a Medicare-for-All type system. They focus on expanding access to healthcare, reducing costs, and ensuring everyone has access to quality care, regardless of income.",
+      "includes": [
+        "Universal healthcare or Medicare-for-All",
+        "Comprehensive, universal healthcare"
+      ]
+    },
+    {
+      "cluster_label": "Single-payer System",
+      "cluster_summary": "This position champions for a single-payer healthcare system, focusing on expanding Medicaid or the ACA. It revolves around providing healthcare access to everyone, irrespective of their economic status.",
+      "includes": [
+        "Single-payer healthcare system"
+      ]
+    }
+  ],
+  "AI and Technology Regulation": [
+    {
+      "cluster_label": "Pro-Business",
+      "cluster_summary": "This cluster emphasizes the importance of business growth and innovation, advocating for less stringent regulations on AI and technology to avoid hindering technological advancements and job creation in the tech industry.",
+      "includes": [
+        "Less Regulation for Business Growth"
+      ]
+    },
+    {
+      "cluster_label": "Balanced Approach",
+      "cluster_summary": "This cluster supports a balanced approach to regulation, recognizing the need to protect consumer interests and national interests without stifling innovation and the potential benefits of AI and technology.",
+      "includes": [
+        "Balanced Regulation for Consumer Protection"
+      ]
+    },
+    {
+      "cluster_label": "Pro-Regulation",
+      "cluster_summary": "This cluster advocates for strong regulations on AI and technology to address a range of concerns including ethical issues, data privacy, security, and workers' rights. It emphasizes the importance of human oversight and responsible use of AI and technology.",
+      "includes": [
+        "Pro-Regulation for Ethical Concerns",
+        "Regulation for Workers' Rights",
+        "Regulation for Data Privacy and Security"
+      ]
+    }
+  ],
+  "Housing": [
+    {
+      "cluster_label": "Market-Driven Solutions",
+      "cluster_summary": "This cluster advocates for less government intervention, more market-driven solutions, and increased private sector involvement in housing. It emphasizes the need for comprehensive tax reform and less regulation to stimulate economic growth and make homeownership more attainable.",
+      "includes": [
+        "Less Government Intervention, More Market-Driven Solutions",
+        "Stimulating Private Sector Involvement in Housing"
+      ]
+    },
+    {
+      "cluster_label": "Government Intervention",
+      "cluster_summary": "This cluster supports large-scale government intervention to address housing issues. It advocates for policies like rent control, increased affordable housing, more funding for homeless services, and views housing as a fundamental right.",
+      "includes": [
+        "Advocating for Rent Control, Increased Affordable Housing, and More Funding for Homeless Services",
+        "Housing as a Fundamental Right and Large-Scale Government Intervention"
+      ]
+    },
+    {
+      "cluster_label": "Comprehensive Reforms",
+      "cluster_summary": "This cluster proposes comprehensive reforms to address affordable housing, homelessness, and gentrification. It supports increasing federal investment in affordable housing and expanding programs like the Low-Income Housing Tax Credit (LIHTC).",
+      "includes": [
+        "Increasing Federal Investment in Affordable Housing",
+        "Comprehensive Reforms Addressing Affordable Housing, Homelessness, and Gentrification"
+      ]
+    }
+  ],
+  "Affordability and cost of living": [
+    {
+      "cluster_label": "Conservative",
+      "cluster_summary": "These policies advocate for lower taxes, less government spending, and a more business-friendly regulatory environment to improve affordability and reduce the cost of living.",
+      "includes": [
+        "Fiscal Conservatism and Lower Taxes",
+        "Economic Growth and Job Creation"
+      ]
+    },
+    {
+      "cluster_label": "Centrist",
+      "cluster_summary": "These positions emphasize reducing the tax burden on middle-class families and the importance of economic growth and job creation in improving affordability.",
+      "includes": [
+        "Tax Reform for Middle-Class Relief"
+      ]
+    },
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "These policies support measures that make housing, healthcare, and education more affordable, often in combination with support for increasing the federal minimum wage and reducing taxes.",
+      "includes": [
+        "Affordable Housing, Healthcare, and Education",
+        "Progressive Economic Policies"
+      ]
+    },
+    {
+      "cluster_label": "Radical",
+      "cluster_summary": "This stance calls for radical changes to the current economic system, such as implementing rent control, increasing minimum wage, and taxing wealth to fund public services.",
+      "includes": [
+        "Radical Economic System Change"
+      ]
+    }
+  ],
+  "Infrastructure": [
+    {
+      "cluster_label": "Pro-Business Infrastructure",
+      "cluster_summary": "This cluster focuses on economic growth and job creation through infrastructure development, with an emphasis on fiscal responsibility and public-private partnerships. It advocates for traditional infrastructure projects like road and bridge repair.",
+      "includes": [
+        "Pro-Business and Fiscal Responsibility in Infrastructure"
+      ]
+    },
+    {
+      "cluster_label": "Sustainable Infrastructure",
+      "cluster_summary": "This cluster advocates for federal investment in infrastructure with a focus on modern, sustainable solutions. It emphasizes the need to address climate change through infrastructure projects like electric vehicle charging stations and green buildings.",
+      "includes": [
+        "Federal Investment and Sustainable Infrastructure"
+      ]
+    },
+    {
+      "cluster_label": "Working-Class Infrastructure",
+      "cluster_summary": "This cluster advocates for increased public spending on infrastructure to benefit the working class and ensure social equity. It emphasizes the need for public investment to provide equal access to quality infrastructure for all communities.",
+      "includes": [
+        "Working-Class Perspective and Public Investment in Infrastructure"
+      ]
+    }
+  ],
+  "Mental health": [
+    {
+      "cluster_label": "Proactive Advocacy",
+      "cluster_summary": "These positions actively advocate for improved mental health services, increased funding, and better integration of mental health care into the broader healthcare system.",
+      "includes": [
+        "Emphasizing Mental Health in Holistic Healthcare",
+        "Advocacy for Improved Mental Health Services",
+        "Potential Champion for Mental Health"
+      ]
+    },
+    {
+      "cluster_label": "Unclear Position",
+      "cluster_summary": "These positions are unclear or unspecified, with the candidates either having not made any significant statements or actions concerning mental health policy, or their stance likely aligning with their party's general principles without specific remarks or proposals.",
+      "includes": [
+        "Unknown Stance on Mental Health",
+        "Potential Alignment with Party's Healthcare Principles"
+      ]
+    }
+  ],
+  "Democracy": [
+    {
+      "cluster_label": "Moderate",
+      "cluster_summary": "This cluster focuses on a balanced approach to democracy, emphasizing individual rights, transparency, accountability, and bipartisan solutions. It includes both moderate Republican and Democratic stances.",
+      "includes": [
+        "Moderate Republicanism, Emphasis on Individual Rights",
+        "Moderate Democratic Stance, Advocacy for Transparency and Accountability"
+      ]
+    },
+    {
+      "cluster_label": "Advocacy for Democratic Principles",
+      "cluster_summary": "This cluster is characterized by a strong emphasis on democratic principles, including voting rights, transparency in government, and the defense of democratic institutions. It may face criticism over practicality and potential risks.",
+      "includes": [
+        "Advocacy for Democratic Principles",
+        "Defense of Democratic Principles, Expansion of Voter Rights"
+      ]
+    },
+    {
+      "cluster_label": "Progressive",
+      "cluster_summary": "This cluster involves a broader definition of democracy, encompassing not just voting rights but also economic equality and social justice. It may face criticism for being seen as radical or impractical in a capitalist context.",
+      "includes": [
+        "Socialist Stance, Emphasis on Grassroots Movements and Economic Equality"
+      ]
+    }
+  ],
+  "Student debt": [
+    {
+      "cluster_label": "Market-Based Approach",
+      "cluster_summary": "This cluster favors market-based solutions, financial literacy, and transparency in student lending. It criticizes government intervention such as free tuition for all, arguing that it doesn't address the root causes of high college costs.",
+      "includes": [
+        "Market-Based Solutions & Financial Literacy"
+      ]
+    },
+    {
+      "cluster_label": "Moderate Reform",
+      "cluster_summary": "This cluster advocates for moderate reforms to reduce the burden of student loans. It supports measures like lowering interest rates on federal student loans, increasing federal funding for public colleges, and expanding income-driven repayment plans.",
+      "includes": [
+        "Reduction of Student Loan Burden",
+        "Lower Tuition & Loan Forgiveness"
+      ]
+    },
+    {
+      "cluster_label": "Alternative Education Paths",
+      "cluster_summary": "This cluster endorses free community college and the expansion of vocational training and apprenticeships as alternatives to traditional college education.",
+      "includes": [
+        "Free Community College & Vocational Training"
+      ]
+    },
+    {
+      "cluster_label": "Progressive Reform",
+      "cluster_summary": "This cluster supports significant state intervention in higher education funding, including the reduction or elimination of student debt and the promotion of free tuition. It argues that the current system disproportionately burdens the working class and younger generations.",
+      "includes": [
+        "Elimination of Student Debt & Free Tuition"
+      ]
+    }
+  ]
+}
